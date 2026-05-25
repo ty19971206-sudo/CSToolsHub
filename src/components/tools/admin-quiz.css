@@ -1,0 +1,46 @@
+.admin-quiz-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.admin-quiz-page h1 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.admin-btn {
+  margin: 16px 0;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-msg {
+  margin: 12px 0;
+  padding: 10px 14px;
+  background: var(--accent-light);
+  border-radius: 8px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #f7fafd;
+}

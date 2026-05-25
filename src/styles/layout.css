@@ -1,0 +1,253 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-full {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-full .shell-main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  padding: 0;
+}
+
+.shell-main {
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 4px 32px;
+}
+
+.app-header {
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  flex-shrink: 0;
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.logo-area:hover {
+  background: var(--accent-light);
+  transform: scale(1.02);
+}
+
+.logo-area:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.app-header h1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.header-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  border-radius: 24px;
+  padding: 4px 6px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-btn {
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  will-change: transform;
+}
+
+.nav-btn:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+  transform: translateY(-1px);
+}
+
+.nav-btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+.dropdown[open] > summary.nav-btn {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.arrow {
+  font-size: 11px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+  display: inline-block;
+}
+
+.dropdown[open] > summary.nav-btn .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: var(--glass-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-glow);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  padding: 8px 0;
+  z-index: 100;
+  animation: menuPop 0.2s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+
+@keyframes menuPop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+.item-icon {
+  width: 22px;
+  text-align: center;
+}
+
+.global-lang-switch {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  border-radius: 24px;
+  padding: 4px 6px;
+}
+
+.lang-global-btn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.lang-global-btn:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+  transform: translateY(-1px);
+}
+
+.lang-global-btn:active {
+  transform: scale(0.96);
+}
+
+.lang-global-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 16px;
+    gap: 8px;
+  }
+  .header-left {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

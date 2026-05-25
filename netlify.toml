@@ -1,0 +1,63 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/home.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/MailCraft.html"
+  to = "/tools/mailcraft/"
+  status = 301
+
+[[redirects]]
+  from = "/mailcraft.html"
+  to = "/tools/mailcraft/"
+  status = 301
+
+[[redirects]]
+  from = "/MT4TP.html"
+  to = "/tools/mt4tp/"
+  status = 301
+
+[[redirects]]
+  from = "/mt4tp.html"
+  to = "/tools/mt4tp/"
+  status = 301
+
+[[redirects]]
+  from = "/MT5TP.html"
+  to = "/tools/mt5tp/"
+  status = 301
+
+[[redirects]]
+  from = "/mt5tp.html"
+  to = "/tools/mt5tp/"
+  status = 301
+
+[[redirects]]
+  from = "/MUCREDIT.html"
+  to = "/tools/mucredit/"
+  status = 301
+
+[[redirects]]
+  from = "/mucredit.html"
+  to = "/tools/mucredit/"
+  status = 301
+
+[[redirects]]
+  from = "/QUIZ.html"
+  to = "/tools/quiz/industry-terminology/"
+  status = 301
+
+[[redirects]]
+  from = "/quiz.html"
+  to = "/tools/quiz/industry-terminology/"
+  status = 301

@@ -1,0 +1,32 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import QuizApp from '../../../components/tools/QuizApp';
+import { getQuizCategoryBySlug } from '../../../lib/i18n';
+import type { QuizCategoryKey } from '../../../lib/tools/quiz/types';
+
+export function getStaticPaths() {
+  const slugs = [
+    'industry-terminology',
+    'company-background',
+    'trading-knowledge',
+    'product-knowledge',
+    'trading-groups',
+    'trading-calculations',
+    'trading-software',
+    'simulation',
+    'account-opening-process',
+    'deposit-and-withdrawal-process',
+    'daily-workflow',
+    'commission-settings',
+  ];
+  return slugs.map((category) => ({ params: { category } }));
+}
+
+const { category: slug } = Astro.params;
+const cat = getQuizCategoryBySlug(slug!);
+const categoryKey = cat.key as QuizCategoryKey;
+---
+
+<AppLayout title={`Quiz: ${cat.label} | ATCS Tools`}>
+  <QuizApp client:load category={categoryKey} categorySlug={slug!} />
+</AppLayout>

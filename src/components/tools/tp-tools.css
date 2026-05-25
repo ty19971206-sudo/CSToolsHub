@@ -1,0 +1,349 @@
+.tp-page {
+  padding: 20px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: transparent;
+  min-height: calc(100vh - 50px);
+}
+
+.tp-page .tool-card {
+  background: var(--glass-bg, linear-gradient(145deg, #ffffff 0%, #f6f9fc 100%));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-glow, var(--shadow-sm));
+  padding: 28px 32px;
+  border: 1px solid var(--glass-border, var(--border-light));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow var(--duration-med, 300ms) ease, transform var(--duration-med, 300ms) ease;
+}
+
+.tp-page .tool-card:hover {
+  box-shadow: var(--shadow-glow, 0 12px 32px -8px rgba(59, 95, 138, 0.18));
+  transform: translateY(-2px);
+}
+
+.tp-page .subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.tp-page .file-upload-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tp-page .fake-file-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--input-bg, #f9fafb);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 260px;
+}
+
+.tp-page .file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-page .btn {
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tp-page .btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.tp-page .btn-reset {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.tp-page .btn-copy {
+  background: #4a7c59;
+  color: #fff;
+  margin-left: auto;
+}
+
+.tp-page .stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--accent-light);
+  border-radius: var(--radius);
+}
+
+.tp-page .stat-badge {
+  background: white;
+  border-radius: 20px;
+  padding: 5px 18px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-light);
+}
+
+.tp-page .stat-badge strong {
+  color: var(--accent);
+  margin-left: 4px;
+}
+
+.tp-page .table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 16px 0;
+}
+
+.tp-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  min-width: 1000px;
+}
+
+.tp-page th,
+.tp-page td {
+  padding: 10px 6px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tp-page th {
+  background: #f7fafd;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.tp-page th.sortable {
+  cursor: pointer;
+}
+
+.tp-page tr:hover td {
+  background: #fff9ec;
+}
+
+.tp-page .close-cell {
+  background: #fff2df;
+  font-weight: 600;
+}
+
+.tp-page .empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.tp-page .footer-note {
+  background: #f9fafc;
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+/* Legacy tool animations */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-med: 300ms;
+}
+@keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .tp-page {
+            font-family:var(--font-stack);
+            background:var(--bg);
+            color:var(--text-primary);
+            line-height:1.6;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            animation: pageFadeIn 0.5s var(--ease-smooth) both;
+        }
+        .app-header {
+            background:var(--card-bg);
+            border-bottom:1px solid var(--border);
+            padding:0 24px;
+            height:54px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:var(--shadow-sm);
+            flex-shrink:0;
+            z-index:10;
+        }
+        .app-header .logo-area { display:flex; align-items:center; gap:10px; }
+        .app-header .logo-icon {
+            width:34px; height:34px; background:var(--accent); border-radius:var(--radius-sm);
+            display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px;
+            transition: transform var(--duration-spring) var(--ease-spring);
+        }
+        .app-header .logo-area:hover .logo-icon { transform: scale(1.05) rotate(-3deg); }
+        .app-header h1 { font-size:17px; font-weight:600; }
+        .header-actions { display:flex; align-items:center; gap:12px; }
+        .lang-toggle-btn {
+            display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px;
+            border:1.5px solid var(--border); background:var(--card-bg); cursor:pointer;
+            font-size:13px; font-weight:500; color:var(--text-secondary); 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        background-color var(--duration-fast) ease,
+                        border-color var(--duration-fast) ease,
+                        color var(--duration-fast) ease;
+            font-family:var(--font-stack);
+            will-change: transform;
+        }
+        .lang-toggle-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); transform: translateY(-1px); }
+        .lang-toggle-btn:active { transform: scale(0.96); }
+        .main-container {
+            flex:1;
+            padding:20px 24px;
+            max-width:1400px;
+            margin:0 auto;
+            width:100%;
+        }
+        
+        /* 高级动效：卡片入场与悬停 */
+        @keyframes slideUpCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tp-page .tool-card {
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow-sm);
+            padding:28px 32px;
+            margin-bottom:20px;
+            border:1px solid var(--border-light);
+            animation: slideUpCard 0.6s var(--ease-smooth) both;
+            transition: box-shadow var(--duration-med) var(--ease-smooth),
+                        transform var(--duration-med) var(--ease-smooth);
+        }
+        .tp-page .tool-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .section-label { font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); font-weight:600; margin-bottom:12px; }
+        
+        /* 高级动效：按钮悬停与按压物理反馈 */
+        .tp-page .btn {
+            padding:10px 18px; border-radius:var(--radius-sm); border:none; cursor:pointer; font-size:13px;
+            font-weight:600; display:inline-flex; align-items:center; gap:6px; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) var(--ease-smooth);
+            font-family:var(--font-stack);
+            will-change: transform;
+        }
+        .tp-page .btn:hover { transform: translateY(-1.5px); }
+        .tp-page .btn:active { transform: scale(0.96) translateY(0); }
+        .tp-page .btn-primary { background:var(--accent); color:#fff; box-shadow: var(--shadow-sm); }
+        .tp-page .btn-primary:hover { background:var(--accent-hover); box-shadow: 0 4px 10px rgba(59, 95, 138, 0.3); }
+        .tp-page .btn-outline { background:#fff; color:var(--accent); border:1.5px solid var(--border); }
+        .tp-page .btn-outline:hover { background:var(--accent-light); border-color:var(--accent); box-shadow: var(--shadow-sm); }
+        .tp-page .btn-copy { background:var(--success); color:#fff; box-shadow: var(--shadow-sm); }
+        .tp-page .btn-copy:hover { background:#3d6a4b; box-shadow: 0 4px 10px rgba(74, 124, 89, 0.3); }
+        
+        .file-upload-area { display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+        .file-group { flex:1; min-width:260px; }
+        
+        /* 高级动效：假文件上传区响应式反馈 */
+        .tp-page .fake-file-input {
+            display:flex; align-items:center; gap:12px; background:var(--input-bg);
+            border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:10px 16px;
+            cursor:pointer; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        border-color var(--duration-fast) ease,
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) ease;
+        }
+        .tp-page .fake-file-input:hover { 
+            border-color:var(--accent); background:#fff; 
+            box-shadow: 0 2px 8px rgba(59, 95, 138, 0.1);
+            transform: translateY(-1px);
+        }
+        .tp-page .fake-file-input:active { transform: scale(0.98); }
+        .tp-page .fake-file-input span { color:var(--text-secondary); font-size:0.9rem; }
+        #fileNameDisplay { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); }
+        input[type="file"] { display:none; }
+        
+        /* 高级动效：统计徽章渐进式进入 */
+        @keyframes badgeEnter {
+            from { opacity: 0; transform: scale(0.9) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .tp-page .stats-row {
+            display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:20px 0;
+            padding:14px 20px; background:var(--accent-light); border-radius:var(--radius); border:1px solid var(--border-light);
+        }
+        .tp-page .stat-badge {
+            background:white; border-radius:20px; padding:5px 18px; font-size:0.8rem; font-weight:500;
+            color:var(--text-primary); border:1px solid var(--border-light);
+            animation: badgeEnter 0.4s var(--ease-spring) backwards;
+        }
+        .tp-page .stat-badge:nth-child(1) { animation-delay: 0.05s; }
+        .tp-page .stat-badge:nth-child(2) { animation-delay: 0.1s; }
+        .tp-page .stat-badge:nth-child(3) { animation-delay: 0.15s; }
+        .tp-page .stat-badge:nth-child(4) { animation-delay: 0.2s; }
+        .tp-page .stat-badge strong { color:var(--accent); margin-left:4px; }
+        
+        /* 高级动效：表格淡入与行悬停反馈 */
+        @keyframes tableEnter {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tp-page .table-container {
+            overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border);
+            margin:16px 0;
+            animation: tableEnter 0.4s var(--ease-smooth) both;
+        }
+        table { width:100%; border-collapse:collapse; font-size:0.75rem; min-width:1000px; }
+        th {
+            background:#F7FAFD; padding:12px 8px; text-align:center; font-weight:700;
+            color:var(--text-secondary); border-bottom:1px solid var(--border);
+            transition: background-color var(--duration-fast) ease;
+        }
+        th.sortable { cursor:pointer; user-select:none; }
+        th.sortable:hover { background:#eaf0f7; }
+        td {
+            padding:10px 6px; text-align:center; border-bottom:1px solid var(--border-light);
+            font-family:'SF Mono','Courier New',monospace;
+            transition: background-color var(--duration-fast) ease;
+        }
+        tr { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        tr:hover td { background:#FFF9EC; }
+        .positive { background:var(--success-bg); color:var(--success); font-weight:600; border-radius:12px; }
+        .negative { background:#FDE8E8; color:#B91C1C; font-weight:600; border-radius:12px; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .tp-page .empty-state {
+            text-align:center; padding:60px 20px; color:var(--text-muted); font-size:0.9rem;
+            animation: fadeIn 0.4s ease;
+        }
+        .footer-note {
+            background:#F9FAFC; border-radius:var(--radius); padding:12px 20px; font-size:0.7rem;
+            color:var(--text-secondary); margin-top:20px; line-height:1.6;
+        }
+        

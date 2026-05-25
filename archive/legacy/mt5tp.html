@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MT5 TP</title>
+    <style>
+        :root {
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-primary: #1e2a36;
+            --text-secondary: #4a5c6c;
+            --text-muted: #7b8c9d;
+            --accent: #3b5f8a;
+            --accent-hover: #2d4a6e;
+            --accent-light: #e8eef5;
+            --success: #4a7c59;
+            --success-bg: #edf5ef;
+            --danger: #c23d2b;
+            --danger-bg: #fde8e8;
+            --border: #dce3ea;
+            --border-light: #e8ecf1;
+            --input-bg: #f9fafb;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            /* 高级动效：物理直觉全局变量 */
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-fast: 150ms;
+            --duration-med: 300ms;
+            --radius: 8px;
+            --radius-sm: 5px;
+            --transition: var(--duration-fast) var(--ease-smooth);
+            --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* 高级动效：页面整体平滑入场 */
+        @keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            font-family: var(--font-stack);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            animation: pageFadeIn 0.5s var(--ease-smooth) both;
+        }
+        .app-header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .app-header .logo-area { display: flex; align-items: center; gap: 10px; }
+        .app-header .logo-icon {
+            width: 34px; height: 34px; background: var(--accent); border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 15px;
+            transition: transform var(--duration-spring) var(--ease-spring);
+        }
+        .app-header .logo-area:hover .logo-icon { transform: scale(1.05) rotate(-3deg); }
+        .app-header h1 { font-size: 17px; font-weight: 600; }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .main-container { flex: 1; padding: 20px 24px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        
+        /* 高级动效：卡片入场与悬停 */
+        @keyframes slideUpCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tool-card {
+            background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            padding: 28px 32px; margin-bottom: 20px; border: 1px solid var(--border-light);
+            animation: slideUpCard 0.6s var(--ease-smooth) both;
+            transition: box-shadow var(--duration-med) var(--ease-smooth),
+                        transform var(--duration-med) var(--ease-smooth);
+        }
+        .tool-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; }
+        
+        /* 高级动效：按钮悬停与按压物理反馈 */
+        .btn {
+            padding: 10px 18px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 13px;
+            font-weight: 600; display: inline-flex; align-items: center; gap: 6px; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) var(--ease-smooth);
+            font-family: var(--font-stack); white-space: nowrap;
+            will-change: transform;
+        }
+        .btn:hover { transform: translateY(-1.5px); }
+        .btn:active { transform: scale(0.96) translateY(0); }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: var(--shadow-sm); }
+        .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 10px rgba(59, 95, 138, 0.3); }
+        .btn-outline { background: #fff; color: var(--accent); border: 1.5px solid var(--border); }
+        .btn-outline:hover { background: var(--accent-light); border-color: var(--accent); box-shadow: var(--shadow-sm); }
+        .btn-copy { background: var(--success); color: #fff; box-shadow: var(--shadow-sm); }
+        .btn-copy:hover { background: #3d6a4b; box-shadow: 0 4px 10px rgba(74, 124, 89, 0.3); }
+        .btn-reset { background: #fff; color: var(--text-secondary); border: 1.5px solid var(--border); }
+        .btn-reset:hover { background: #f8f9fa; border-color: #aaa; box-shadow: var(--shadow-sm); }
+        
+        .file-upload-area { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+        .file-group { flex: 1; min-width: 260px; }
+        
+        /* 高级动效：假文件上传区响应式反馈 */
+        .fake-file-input {
+            display: flex; align-items: center; gap: 12px; background: var(--input-bg);
+            border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 16px;
+            cursor: pointer; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        border-color var(--duration-fast) ease,
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) ease;
+        }
+        .fake-file-input:hover { 
+            border-color: var(--accent); background: #fff; 
+            box-shadow: 0 2px 8px rgba(59, 95, 138, 0.1);
+            transform: translateY(-1px);
+        }
+        .fake-file-input:active { transform: scale(0.98); }
+        .fake-file-input span { color: var(--text-secondary); font-size: 0.9rem; }
+        #fileNameDisplay { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-primary); }
+        input[type="file"] { display: none; }
+        
+        /* 高级动效：统计徽章渐进式进入 */
+        @keyframes badgeEnter {
+            from { opacity: 0; transform: scale(0.9) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .stats-row {
+            display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 20px 0;
+            padding: 14px 20px; background: var(--accent-light); border-radius: var(--radius); border: 1px solid var(--border-light);
+        }
+        .stat-badge {
+            background: white; border-radius: 20px; padding: 5px 18px; font-size: 0.8rem; font-weight: 500;
+            color: var(--text-primary); border: 1px solid var(--border-light);
+            animation: badgeEnter 0.4s var(--ease-spring) backwards;
+        }
+        .stat-badge:nth-child(1) { animation-delay: 0.05s; }
+        .stat-badge:nth-child(2) { animation-delay: 0.1s; }
+        .stat-badge:nth-child(3) { animation-delay: 0.15s; }
+        .stat-badge:nth-child(4) { animation-delay: 0.2s; }
+        .stat-badge:nth-child(5) { animation-delay: 0.25s; }
+        .stat-badge strong { color: var(--accent); margin-left: 4px; }
+        .stat-badge.warn strong { color: var(--danger); }
+        .stat-badge.good strong { color: var(--success); }
+        
+        /* 高级动效：表格淡入与行悬停反馈 */
+        @keyframes tableEnter {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .table-container {
+            overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border);
+            margin: 16px 0; max-height: 65vh; overflow-y: auto;
+            animation: tableEnter 0.4s var(--ease-smooth) both;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.73rem; min-width: 1050px; }
+        th {
+            background: #F7FAFD; padding: 11px 7px; text-align: center; font-weight: 700;
+            color: var(--text-secondary); border-bottom: 2px solid var(--border);
+            position: sticky; top: 0; z-index: 2;
+            transition: background-color var(--duration-fast) ease;
+        }
+        th:hover { background: #eaf0f7; }
+        td {
+            padding: 9px 6px; text-align: center; border-bottom: 1px solid var(--border-light);
+            font-family: 'SF Mono', 'Courier New', 'Consolas', monospace;
+            transition: background-color var(--duration-fast) ease;
+        }
+        tr { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        tr:hover td { background: #FFF9EC; }
+        .positive { background: var(--success-bg); color: var(--success); font-weight: 600; border-radius: 12px; }
+        .negative { background: var(--danger-bg); color: var(--danger); font-weight: 600; border-radius: 12px; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 0.9rem;
+            animation: fadeIn 0.4s ease;
+        }
+        .footer-note {
+            background: #F9FAFC; border-radius: var(--radius); padding: 12px 20px; font-size: 0.7rem;
+            color: var(--text-secondary); margin-top: 20px; line-height: 1.6;
+        }
+        
+        /* 高级动效：更平滑的加载动画 */
+        @keyframes spinnerSmooth {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%;
+            animation: spinnerSmooth 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            margin-right: 6px;
+        }
+        @media (max-width: 760px) {
+            .main-container { padding: 12px; }
+            .tool-card { padding: 20px; }
+            .stats-row { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; justify-content: center; }
+            .file-upload-area { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <div class="logo-area">
+            <div class="logo-icon">TP</div>
+            <h1 id="titleText">MT5 TP</h1>
+        </div>
+        <div class="header-actions">
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="tool-card">
+            <p class="section-label" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;" id="subtitleText">
+                上传 XLSX 交易报表 · 提取 [tp] out 平仓单 · 根据对应原始开仓方向计算滑点
+            </p>
+            <div class="file-upload-area">
+                <div class="file-group">
+                    <div class="fake-file-input" id="selectFileBtn">
+                        <span>📂</span>
+                        <span id="selectFileText">选择文件</span>
+                        <span id="fileNameDisplay"></span>
+                    </div>
+                    <input type="file" id="xlsxUpload" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                </div>
+                <button class="btn btn-primary" id="runAnalysis" style="height:46px;">🔍 提取止盈滑点订单</button>
+                <button class="btn btn-reset" id="resetBtn" style="height:46px;">↺ 重置</button>
+            </div>
+            <div class="stats-row" id="statsArea" style="display: none;">
+                <div class="stat-badge"><span id="statTotalLabel">🏷️ 成交表总行数</span> <strong id="totalRows">0</strong></div>
+                <div class="stat-badge"><span id="statTpLabel">🎯 止盈订单 ([tp] out)</span> <strong id="totalTp">0</strong></div>
+                <div class="stat-badge"><span id="statSlippageLabel">⚡ 滑点订单 (TP≠平仓价)</span> <strong id="slipCount">0</strong></div>
+                <div class="stat-badge good"><span id="statFavorableLabel">📈 有利滑点 (多赚)</span> <strong id="goodSlip">0</strong></div>
+                <div class="stat-badge warn"><span id="statUnfavorableLabel">📉 不利滑点 (少赚)</span> <strong id="badSlip">0</strong></div>
+                <button class="btn btn-copy" id="copyTableDataBtn" style="display: none; margin-left: auto;" onclick="copyTableData()">📋 复制滑点数据</button>
+            </div>
+
+            <div id="resultContainer">
+                <div class="empty-state" id="emptyMsg">
+                    ⬆️ 上传您的 .xlsx 交易报表，点击「提取止盈滑点订单」<br>
+                    识别所有带 [tp] 标记的平仓(out)单，并根据其对应的原始开仓方向（buy/sell）计算滑点
+                </div>
+            </div>
+            <div class="footer-note" id="footerNote">
+                💡 <b>方向修正逻辑</b>：MT5 成交表中 [tp] 标记出现在平仓(out)行，类型列(buy/sell)是平仓操作的方向，与原始开仓方向相反。<br>
+                🎯 <b>滑点计算规则</b>：若原仓为<b>买单</b>（类型=sell·out），滑点 = 平仓价 - TP（正=多赚，负=少赚）；<br>
+                       若原仓为<b>卖单</b>（类型=buy·out），滑点 = TP - 平仓价（正=多赚，负=少赚）。
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js">
+    </script>
+    <script>
+        (function() {
+            const translations = {
+                zh: {
+                    titleText: "MT5 TP",
+                    subtitle: "上传 XLSX 交易报表 · 定位「成交」表格 · 提取 [tp] out 平仓单 · 根据对应原始开仓方向计算滑点",
+                    selectFileBtn: "选择文件",
+                    analyzeBtn: "🔍 提取止盈滑点订单",
+                    resetBtn: "↺ 重置",
+                    statTotal: "🏷️ 成交表总行数",
+                    statTp: "🎯 止盈订单 ([tp] out)",
+                    statSlippage: "⚡ 滑点订单 (TP≠平仓价)",
+                    statFavorable: "📈 有利滑点 (多赚)",
+                    statUnfavorable: "📉 不利滑点 (少赚)",
+                    copyBtn: "📋 复制滑点数据",
+                    emptyMsg: "⬆️ 上传您的 .xlsx 交易报表，点击「提取止盈滑点订单」<br>自动定位「成交」表，识别所有带 [tp] 标记的平仓(out)单，并根据其对应的原始开仓方向（buy/sell）计算滑点",
+                    footer: "💡 <b>方向修正逻辑</b>：MT5 成交表中 [tp] 标记出现在平仓(out)行，类型列(buy/sell)是平仓操作的方向，与原始开仓方向相反。<br>🎯 <b>滑点计算规则</b>：若原仓为<b>买单</b>（类型=sell·out），滑点 = 平仓价 - TP（正=多赚，负=少赚）；<br>       若原仓为<b>卖单</b>（类型=buy·out），滑点 = TP - 平仓价（正=多赚，负=少赚）。",
+                    tableHeaders: [
+                        "成交编号", "时间", "品种", "平仓方向", "原仓方向", "手数",
+                        "平仓价(G)", "止盈价(TP)", "滑差点数", "盈亏(USD)", "滑点评估"
+                    ],
+                    favorableText: "✨ 有利滑点 (多赚)",
+                    unfavorableText: "⚠️ 不利滑点 (少赚)",
+                    copySuccess: "✅ 已复制 {count} 条滑点订单数据到剪贴板",
+                    noDataCopy: "暂无滑点数据可供复制",
+                    noTpOrders: "✅ 在「成交」表格中未找到任何 [tp] 止盈标记的 out 平仓订单。",
+                    noSlippageFound: "🔍 未检测到止盈滑点订单 (所有已识别止盈订单均精准触发，TP = 平仓价)",
+                    noDealTable: "⚠️ 未在 xlsx 中找到「成交」表格区域（A列含「成交」的合并单元格）。请确认上传的是正确的 MT5 交易报表。",
+                    parseError: "❌ 解析 xlsx 文件时出错，请确认文件格式正确。",
+                    loading: "⏳ 正在解析..."
+                },
+                en: {
+                    titleText: "MT5 TP",
+                    subtitle: "Upload XLSX · Locate '成交' table · Extract [tp] out close orders · Calculate slippage based on original position direction",
+                    selectFileBtn: "Choose File",
+                    analyzeBtn: "🔍 Extract TP Slippage",
+                    resetBtn: "↺ Reset",
+                    statTotal: "🏷️ Deal Table Rows",
+                    statTp: "🎯 TP Orders ([tp] out)",
+                    statSlippage: "⚡ Slippage (TP≠Close)",
+                    statFavorable: "📈 Favorable (Better)",
+                    statUnfavorable: "📉 Unfavorable (Worse)",
+                    copyBtn: "📋 Copy Slippage Data",
+                    emptyMsg: "⬆️ Upload .xlsx trade report and click Analyze<br>Auto-locate '成交' table, detect all [tp] out orders with correct slippage direction",
+                    footer: "💡 <b>Direction Fix</b>: In MT5, [tp] appears on close (out) row. The Type (buy/sell) is the closing action, opposite to original position.<br>🎯 <b>Slippage</b>: For original buy (sell·out): Slip = ClosePrice - TP; For original sell (buy·out): Slip = TP - ClosePrice.",
+                    tableHeaders: [
+                        "Ticket", "Time", "Item", "Close Dir", "Orig Dir", "Volume",
+                        "Close Price(G)", "TP", "Slip Pts", "P&L(USD)", "Effect"
+                    ],
+                    favorableText: "✨ Favorable (Better)",
+                    unfavorableText: "⚠️ Unfavorable (Worse)",
+                    copySuccess: "✅ Copied {count} slippage orders to clipboard",
+                    noDataCopy: "No slippage data to copy",
+                    noTpOrders: "✅ No [tp] out orders found in deal table.",
+                    noSlippageFound: "🔍 No slippage detected (all TP orders executed exactly at T/P).",
+                    noDealTable: "⚠️ Could not locate '成交' deal table in xlsx.",
+                    parseError: "❌ Error parsing xlsx.",
+                    loading: "⏳ Parsing..."
+                }
+            };
+
+            let currentLang = 'zh';
+            let currentSlippageData = [];
+            let originalSlippageData = [];
+            let allDealRows = [];
+            let allTpOrders = [];
+            let sortField = null;
+            let sortOrder = null;
+
+            function t(key) { return translations[currentLang][key] || key; }
+
+            function applyLanguage() {
+                const tr = translations[currentLang];
+                document.getElementById('titleText').textContent = tr.titleText;
+                document.getElementById('subtitleText').innerHTML = tr.subtitle;
+                document.getElementById('selectFileText').textContent = tr.selectFileBtn;
+                document.getElementById('runAnalysis').innerHTML = tr.analyzeBtn;
+                document.getElementById('resetBtn').innerHTML = tr.resetBtn;
+                document.getElementById('statTotalLabel').innerHTML = tr.statTotal;
+                document.getElementById('statTpLabel').innerHTML = tr.statTp;
+                document.getElementById('statSlippageLabel').innerHTML = tr.statSlippage;
+                document.getElementById('statFavorableLabel').innerHTML = tr.statFavorable;
+                document.getElementById('statUnfavorableLabel').innerHTML = tr.statUnfavorable;
+                document.getElementById('copyTableDataBtn').innerHTML = tr.copyBtn;
+                document.getElementById('emptyMsg').innerHTML = tr.emptyMsg;
+                document.getElementById('footerNote').innerHTML = tr.footer;
+                const file = document.getElementById('xlsxUpload').files[0];
+                document.getElementById('fileNameDisplay').innerText = file ? file.name : (currentLang === 'zh' ? '未选择 .xlsx 文件' : 'No .xlsx file selected');
+
+                if (currentSlippageData.length > 0) {
+                    renderSlippageTable(currentSlippageData, allDealRows.length, allTpOrders.length);
+                }
+            }
+
+            function robustParseNumber(value) {
+                if (value === undefined || value === null) return NaN;
+                if (typeof value === 'number') return value;
+                let str = String(value).trim().replace(/[\s,]/g, '');
+                return parseFloat(str) || 0;
+            }
+
+            function getCleanText(cell) {
+                if (cell === undefined || cell === null) return '';
+                return String(cell).replace(/\u00A0/g, ' ').trim();
+            }
+
+            function extractTpFromComment(comment) {
+                if (!comment) return null;
+                const text = String(comment).trim();
+                const match = text.match(/\[tp\s+([\d.]+)\]/i);
+                return match && match[1] ? robustParseNumber(match[1]) : null;
+            }
+
+            function locateDealTable(rows) {
+                if (!rows || rows.length === 0) return null;
+                let dealMarkerIndex = -1;
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row || row.length === 0) continue;
+                    const firstCell = getCleanText(row[0]);
+                    if (firstCell === '成交' || firstCell.includes('成交')) { dealMarkerIndex = i; break; }
+                }
+                if (dealMarkerIndex < 0) return null;
+
+                let headerRowIndex = -1;
+                for (let i = dealMarkerIndex + 1; i < Math.min(dealMarkerIndex + 10, rows.length); i++) {
+                    const row = rows[i];
+                    if (!row || row.length < 5) continue;
+                    if (getCleanText(row[0]) === '时间' && getCleanText(row[1]) === '成交') { headerRowIndex = i; break; }
+                }
+                if (headerRowIndex < 0) return null;
+
+                const headerRow = rows[headerRowIndex];
+                const colMap = {};
+                for (let j = 0; j < headerRow.length; j++) colMap[getCleanText(headerRow[j])] = j;
+                const required = ['时间', '成交', '类型', '趋势', '价格', '注释'];
+                for (const c of required) {
+                    if (!(c in colMap)) {
+                        let found = false;
+                        for (const key of Object.keys(colMap)) {
+                            if (key.includes(c) || c.includes(key)) { colMap[c] = colMap[key]; found = true; break; }
+                        }
+                        if (!found) return null;
+                    }
+                }
+
+                const dataStart = headerRowIndex + 1;
+                let dataEnd = dataStart;
+                for (let i = dataStart; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row || row.length === 0) { dataEnd = i; break; }
+                    const fc = getCleanText(row[0]);
+                    if (fc === '' || fc === '结果' || fc === '结余:' || fc === '总净盈利:') { dataEnd = i; break; }
+                    if (!/\d{4}\.\d{2}\.\d{2}/.test(fc) && i > dataStart + 5) { dataEnd = i; break; }
+                    dataEnd = i + 1;
+                }
+                return { headerRowIndex, dataStartIndex: dataStart, dataEndIndex: dataEnd, colMap, dealMarkerIndex };
+            }
+
+            function parseDealRow(row, colMap) {
+                const ticket = getCleanText(row[colMap['成交'] || 1]);
+                const timeVal = getCleanText(row[colMap['时间'] || 0]);
+                const item = getCleanText(row[colMap['交易品种'] || 2]);
+                const typeVal = getCleanText(row[colMap['类型'] || 3]);
+                const direction = getCleanText(row[colMap['趋势'] || 4]);
+                const volume = robustParseNumber(row[colMap['交易量'] || 5]);
+                const price = robustParseNumber(row[colMap['价格'] || 6]);
+                const profit = robustParseNumber(row[colMap['盈利'] || 11]);
+                const comment = getCleanText(row[colMap['注释'] || 13]);
+
+                if (!ticket || isNaN(parseInt(ticket))) return null;
+                return { ticket, time: timeVal, item, type: typeVal.toLowerCase(), direction: direction.toLowerCase(),
+                    volume, price, profit, comment, _raw: row };
+            }
+
+            function analyzeXlsx(rows) {
+                const dealInfo = locateDealTable(rows);
+                if (!dealInfo) return { error: 'noDealTable' };
+                const { dataStartIndex, dataEndIndex, colMap } = dealInfo;
+                const dealRows = [];
+                const tpOrders = [];
+
+                for (let i = dataStartIndex; i < dataEndIndex; i++) {
+                    const row = rows[i];
+                    if (!row || row.length < 5) continue;
+                    const parsed = parseDealRow(row, colMap);
+                    if (!parsed) continue;
+                    if (parsed.direction !== 'out') continue;
+                    dealRows.push(parsed);
+
+                    const tpPrice = extractTpFromComment(parsed.comment);
+                    if (tpPrice !== null && !isNaN(tpPrice)) {
+                        tpOrders.push({ ...parsed, tpPrice, isSlippage: Math.abs(parsed.price - tpPrice) > 1e-8 });
+                    }
+                }
+
+                const slippageOrders = tpOrders.filter(o => o.isSlippage).map(order => {
+                    let origDir, slipDiff;
+                    if (order.type === 'sell') { origDir = 'buy'; slipDiff = order.price - order.tpPrice; } 
+                    else if (order.type === 'buy') { origDir = 'sell'; slipDiff = order.tpPrice - order.price; } 
+                    else { origDir = order.type; slipDiff = Math.abs(order.price - order.tpPrice); }
+                    return { ...order, origDir, slipDiff, isFavorable: slipDiff > 0 };
+                });
+
+                return { dealRows, tpOrders, slippageOrders, dealInfo };
+            }
+
+            function sortTable(field) {
+                if (!currentSlippageData.length) return;
+                if (sortField !== field) { sortField = field; sortOrder = 'desc'; } 
+                else {
+                    if (sortOrder === 'desc') sortOrder = 'asc';
+                    else if (sortOrder === 'asc') {
+                        sortField = null; sortOrder = null;
+                        currentSlippageData = [...originalSlippageData];
+                        renderSlippageTable(currentSlippageData, allDealRows.length, allTpOrders.length);
+                        return;
+                    }
+                }
+                currentSlippageData.sort((a, b) => {
+                    let valA = field === 'slipDiff' ? a.slipDiff : (field === 'profit' ? a.profit : 0);
+                    let valB = field === 'slipDiff' ? b.slipDiff : (field === 'profit' ? b.profit : 0);
+                    return sortOrder === 'desc' ? valB - valA : valA - valB;
+                });
+                renderSlippageTable(currentSlippageData, allDealRows.length, allTpOrders.length);
+            }
+            window.sortTable = sortTable;
+
+            function renderSlippageTable(slippageOrders, totalDealRows, totalTpCount) {
+                currentSlippageData = slippageOrders;
+                const total = slippageOrders.length;
+                const favorable = slippageOrders.filter(o => o.isFavorable).length;
+                const unfavorable = total - favorable;
+                document.getElementById('totalRows').innerText = totalDealRows;
+                document.getElementById('totalTp').innerText = totalTpCount;
+                document.getElementById('slipCount').innerText = total;
+                document.getElementById('goodSlip').innerText = favorable;
+                document.getElementById('badSlip').innerText = unfavorable;
+                
+                // Trigger badge animations
+                const statsArea = document.getElementById('statsArea');
+                statsArea.style.display = 'flex';
+                statsArea.classList.remove('animate');
+                void statsArea.offsetWidth;
+                statsArea.classList.add('animate');
+                
+                document.getElementById('copyTableDataBtn').style.display = total > 0 ? 'inline-flex' : 'none';
+
+                if (totalTpCount === 0) {
+                    document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t('noTpOrders')}</div>`;
+                    return;
+                }
+                if (total === 0) {
+                    document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t('noSlippageFound')}</div>`;
+                    return;
+                }
+
+                const headers = t('tableHeaders');
+                let html = `<div class="table-container"><table><thead><tr>`;
+                headers.forEach((h, idx) => {
+                    let headerContent = h;
+                    if (idx === 8 || idx === 9) {
+                        const field = idx === 8 ? 'slipDiff' : 'profit';
+                        let arrow = ' ⇅';
+                        if (sortField === field) arrow = sortOrder === 'desc' ? ' ↓' : ' ↑';
+                        headerContent += arrow;
+                        html += `<th style="cursor:pointer;" onclick="window.sortTable('${field}')" title="${currentLang === 'zh' ? '点击切换排序：降序 → 升序 → 原始' : 'Click to cycle: desc → asc → original'}">${headerContent}</th>`;
+                    } else {
+                        html += `<th>${headerContent}</th>`;
+                    }
+                });
+                html += `</tr></thead><tbody>`;
+
+                slippageOrders.forEach(ord => {
+                    const slipVal = ord.slipDiff.toFixed(4);
+                    const effectText = ord.isFavorable ? t('favorableText') : t('unfavorableText');
+                    const diffSign = ord.slipDiff > 0 ? '+' : '';
+                    const slipColor = ord.slipDiff > 0 ? '#19794d' : (ord.slipDiff < 0 ? '#c23d2b' : 'inherit');
+                    html += `<tr>
+                        <td>${ord.ticket}</td><td>${ord.time||'-'}</td><td>${ord.item}</td>
+                        <td>${ord.type.toUpperCase()}</td><td><strong>${ord.origDir.toUpperCase()}</strong></td>
+                        <td>${ord.volume}</td>
+                        <td style="background:#FFF2DF;font-weight:600;">${ord.price.toFixed(2)}</td>
+                        <td><strong>${ord.tpPrice.toFixed(2)}</strong></td>
+                        <td style="font-weight:bold;color:${slipColor}">${diffSign}${slipVal}</td>
+                        <td>${ord.profit.toFixed(2)}</td>
+                        <td>${effectText}</td>
+                    </tr>`;
+                });
+                html += `</tbody></table></div>`;
+                document.getElementById('resultContainer').innerHTML = html;
+            }
+
+            function showEmptyState(msgKey) {
+                document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t(msgKey)}</div>`;
+                document.getElementById('statsArea').style.display = 'none';
+                document.getElementById('copyTableDataBtn').style.display = 'none';
+                currentSlippageData = []; originalSlippageData = []; allDealRows = []; allTpOrders = []; sortField = null; sortOrder = null;
+            }
+
+            async function parseAndDisplay(file) {
+                if (!file) { alert(currentLang === 'zh' ? '请选择 XLSX 文件' : 'Please select an XLSX file'); return; }
+                const runBtn = document.getElementById('runAnalysis');
+                const origText = runBtn.innerHTML;
+                runBtn.innerHTML = `<span class="loading-spinner"></span>${t('loading')}`;
+                runBtn.disabled = true;
+                try {
+                    const buffer = await file.arrayBuffer();
+                    const workbook = XLSX.read(buffer, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+                    if (!rows || rows.length === 0) { showEmptyState('noDealTable'); return; }
+                    const result = analyzeXlsx(rows);
+                    if (result.error === 'noDealTable') { showEmptyState('noDealTable'); return; }
+                    allDealRows = result.dealRows;
+                    allTpOrders = result.tpOrders;
+                    currentSlippageData = result.slippageOrders;
+                    originalSlippageData = [...result.slippageOrders];
+                    sortField = null; sortOrder = null;
+                    if (!result.tpOrders || result.tpOrders.length === 0) {
+                        document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t('noTpOrders')}</div>`;
+                        document.getElementById('statsArea').style.display = 'none';
+                        return;
+                    }
+                    renderSlippageTable(result.slippageOrders, result.dealRows.length, result.tpOrders.length);
+                } catch (err) {
+                    document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t('parseError')}<br><small>${err.message}</small></div>`;
+                } finally { 
+                    runBtn.innerHTML = origText; runBtn.disabled = false; 
+                }
+            }
+
+            async function copyTableData() {
+                if (!currentSlippageData.length) { alert(t('noDataCopy')); return; }
+                const headers = t('tableHeaders');
+                let tsv = [headers.join('\t')];
+                currentSlippageData.forEach(ord => {
+                    const effectText = ord.isFavorable ? "Favorable" : "Unfavorable";
+                    tsv.push([
+                        ord.ticket, ord.time || '', ord.item, ord.type.toUpperCase(), ord.origDir.toUpperCase(),
+                        ord.volume, ord.price.toFixed(2), ord.tpPrice.toFixed(2),
+                        (ord.slipDiff > 0 ? '+' : '') + ord.slipDiff.toFixed(4),
+                        ord.profit.toFixed(2), effectText
+                    ].join('\t'));
+                });
+                try {
+                    await navigator.clipboard.writeText(tsv.join('\n'));
+                    alert(t('copySuccess').replace('{count}', currentSlippageData.length));
+                } catch { alert("复制失败，请手动选择表格内容复制"); }
+            }
+
+            function resetAll() {
+                document.getElementById('xlsxUpload').value = '';
+                document.getElementById('fileNameDisplay').innerText = currentLang === 'zh' ? '' : 'No .xlsx file selected';
+                document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t('emptyMsg')}</div>`;
+                document.getElementById('statsArea').style.display = 'none';
+                document.getElementById('copyTableDataBtn').style.display = 'none';
+                currentSlippageData = []; originalSlippageData = []; allDealRows = []; allTpOrders = []; sortField = null; sortOrder = null;
+            }
+
+            document.getElementById('selectFileBtn').addEventListener('click', () => document.getElementById('xlsxUpload').click());
+            document.getElementById('xlsxUpload').addEventListener('change', e => {
+                document.getElementById('fileNameDisplay').innerText = e.target.files[0]?.name || (currentLang === 'zh' ? '' : 'No .xlsx file selected');
+            });
+            document.getElementById('runAnalysis').addEventListener('click', () => {
+                const file = document.getElementById('xlsxUpload').files[0];
+                if (!file) alert(currentLang === 'zh' ? '请先上传 XLSX 交易报表' : 'Please upload an XLSX trade report first');
+                else parseAndDisplay(file);
+            });
+            document.getElementById('resetBtn').addEventListener('click', resetAll);
+            document.getElementById('copyTableDataBtn').addEventListener('click', copyTableData);
+
+            const card = document.querySelector('.tool-card');
+            card.addEventListener('dragover', e => { e.preventDefault(); card.style.borderColor = 'var(--accent)'; card.style.background = 'var(--accent-light)'; });
+            card.addEventListener('dragleave', e => { e.preventDefault(); card.style.borderColor = 'var(--border-light)'; card.style.background = 'var(--card-bg)'; });
+            card.addEventListener('drop', e => {
+                e.preventDefault();
+                card.style.borderColor = 'var(--border-light)';
+                card.style.background = 'var(--card-bg)';
+                const file = e.dataTransfer.files[0];
+                if (file && (file.name.endsWith('.xlsx') || file.type.includes('spreadsheet'))) {
+                    const dt = new DataTransfer(); dt.items.add(file);
+                    document.getElementById('xlsxUpload').files = dt.files;
+                    document.getElementById('fileNameDisplay').innerText = file.name;
+                    parseAndDisplay(file);
+                } else alert(currentLang === 'zh' ? '请上传 .xlsx 格式文件' : 'Please upload .xlsx file');
+            });
+            window.addEventListener('message', (e) => {
+                if (e.data && e.data.type === 'setLang' && e.data.data && e.data.data.lang) {
+                    currentLang = e.data.data.lang; applyLanguage();
+                    if (originalSlippageData.length > 0) renderSlippageTable(currentSlippageData, allDealRows.length, allTpOrders.length);
+                }
+            });
+            applyLanguage();
+        })();
+    </script>
+</body>
+</html>

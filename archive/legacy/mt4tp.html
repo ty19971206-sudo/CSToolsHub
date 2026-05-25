@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MT4TP</title>
+    <style>
+        :root {
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-primary: #1e2a36;
+            --text-secondary: #4a5c6c;
+            --text-muted: #7b8c9d;
+            --accent: #3b5f8a;
+            --accent-hover: #2d4a6e;
+            --accent-light: #e8eef5;
+            --success: #4a7c59;
+            --success-bg: #edf5ef;
+            --warning: #b8860b;
+            --border: #dce3ea;
+            --border-light: #e8ecf1;
+            --input-bg: #f9fafb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            /* 高级动效：物理直觉全局变量 */
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-fast: 150ms;
+            --duration-med: 300ms;
+            --radius: 8px;
+            --radius-sm: 5px;
+            --transition: var(--duration-fast) var(--ease-smooth);
+            --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        
+        /* 高级动效：页面整体平滑入场 */
+        @keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            font-family:var(--font-stack);
+            background:var(--bg);
+            color:var(--text-primary);
+            line-height:1.6;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            animation: pageFadeIn 0.5s var(--ease-smooth) both;
+        }
+        .app-header {
+            background:var(--card-bg);
+            border-bottom:1px solid var(--border);
+            padding:0 24px;
+            height:54px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:var(--shadow-sm);
+            flex-shrink:0;
+            z-index:10;
+        }
+        .app-header .logo-area { display:flex; align-items:center; gap:10px; }
+        .app-header .logo-icon {
+            width:34px; height:34px; background:var(--accent); border-radius:var(--radius-sm);
+            display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px;
+            transition: transform var(--duration-spring) var(--ease-spring);
+        }
+        .app-header .logo-area:hover .logo-icon { transform: scale(1.05) rotate(-3deg); }
+        .app-header h1 { font-size:17px; font-weight:600; }
+        .header-actions { display:flex; align-items:center; gap:12px; }
+        .lang-toggle-btn {
+            display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px;
+            border:1.5px solid var(--border); background:var(--card-bg); cursor:pointer;
+            font-size:13px; font-weight:500; color:var(--text-secondary); 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        background-color var(--duration-fast) ease,
+                        border-color var(--duration-fast) ease,
+                        color var(--duration-fast) ease;
+            font-family:var(--font-stack);
+            will-change: transform;
+        }
+        .lang-toggle-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); transform: translateY(-1px); }
+        .lang-toggle-btn:active { transform: scale(0.96); }
+        .main-container {
+            flex:1;
+            padding:20px 24px;
+            max-width:1400px;
+            margin:0 auto;
+            width:100%;
+        }
+        
+        /* 高级动效：卡片入场与悬停 */
+        @keyframes slideUpCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tool-card {
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow-sm);
+            padding:28px 32px;
+            margin-bottom:20px;
+            border:1px solid var(--border-light);
+            animation: slideUpCard 0.6s var(--ease-smooth) both;
+            transition: box-shadow var(--duration-med) var(--ease-smooth),
+                        transform var(--duration-med) var(--ease-smooth);
+        }
+        .tool-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .section-label { font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); font-weight:600; margin-bottom:12px; }
+        
+        /* 高级动效：按钮悬停与按压物理反馈 */
+        .btn {
+            padding:10px 18px; border-radius:var(--radius-sm); border:none; cursor:pointer; font-size:13px;
+            font-weight:600; display:inline-flex; align-items:center; gap:6px; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) var(--ease-smooth);
+            font-family:var(--font-stack);
+            will-change: transform;
+        }
+        .btn:hover { transform: translateY(-1.5px); }
+        .btn:active { transform: scale(0.96) translateY(0); }
+        .btn-primary { background:var(--accent); color:#fff; box-shadow: var(--shadow-sm); }
+        .btn-primary:hover { background:var(--accent-hover); box-shadow: 0 4px 10px rgba(59, 95, 138, 0.3); }
+        .btn-outline { background:#fff; color:var(--accent); border:1.5px solid var(--border); }
+        .btn-outline:hover { background:var(--accent-light); border-color:var(--accent); box-shadow: var(--shadow-sm); }
+        .btn-copy { background:var(--success); color:#fff; box-shadow: var(--shadow-sm); }
+        .btn-copy:hover { background:#3d6a4b; box-shadow: 0 4px 10px rgba(74, 124, 89, 0.3); }
+        
+        .file-upload-area { display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+        .file-group { flex:1; min-width:260px; }
+        
+        /* 高级动效：假文件上传区响应式反馈 */
+        .fake-file-input {
+            display:flex; align-items:center; gap:12px; background:var(--input-bg);
+            border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:10px 16px;
+            cursor:pointer; 
+            transition: transform var(--duration-fast) var(--ease-smooth),
+                        border-color var(--duration-fast) ease,
+                        background-color var(--duration-fast) ease,
+                        box-shadow var(--duration-fast) ease;
+        }
+        .fake-file-input:hover { 
+            border-color:var(--accent); background:#fff; 
+            box-shadow: 0 2px 8px rgba(59, 95, 138, 0.1);
+            transform: translateY(-1px);
+        }
+        .fake-file-input:active { transform: scale(0.98); }
+        .fake-file-input span { color:var(--text-secondary); font-size:0.9rem; }
+        #fileNameDisplay { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); }
+        input[type="file"] { display:none; }
+        
+        /* 高级动效：统计徽章渐进式进入 */
+        @keyframes badgeEnter {
+            from { opacity: 0; transform: scale(0.9) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .stats-row {
+            display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:20px 0;
+            padding:14px 20px; background:var(--accent-light); border-radius:var(--radius); border:1px solid var(--border-light);
+        }
+        .stat-badge {
+            background:white; border-radius:20px; padding:5px 18px; font-size:0.8rem; font-weight:500;
+            color:var(--text-primary); border:1px solid var(--border-light);
+            animation: badgeEnter 0.4s var(--ease-spring) backwards;
+        }
+        .stat-badge:nth-child(1) { animation-delay: 0.05s; }
+        .stat-badge:nth-child(2) { animation-delay: 0.1s; }
+        .stat-badge:nth-child(3) { animation-delay: 0.15s; }
+        .stat-badge:nth-child(4) { animation-delay: 0.2s; }
+        .stat-badge strong { color:var(--accent); margin-left:4px; }
+        
+        /* 高级动效：表格淡入与行悬停反馈 */
+        @keyframes tableEnter {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .table-container {
+            overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border);
+            margin:16px 0;
+            animation: tableEnter 0.4s var(--ease-smooth) both;
+        }
+        table { width:100%; border-collapse:collapse; font-size:0.75rem; min-width:1000px; }
+        th {
+            background:#F7FAFD; padding:12px 8px; text-align:center; font-weight:700;
+            color:var(--text-secondary); border-bottom:1px solid var(--border);
+            transition: background-color var(--duration-fast) ease;
+        }
+        th.sortable { cursor:pointer; user-select:none; }
+        th.sortable:hover { background:#eaf0f7; }
+        td {
+            padding:10px 6px; text-align:center; border-bottom:1px solid var(--border-light);
+            font-family:'SF Mono','Courier New',monospace;
+            transition: background-color var(--duration-fast) ease;
+        }
+        tr { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        tr:hover td { background:#FFF9EC; }
+        .positive { background:var(--success-bg); color:var(--success); font-weight:600; border-radius:12px; }
+        .negative { background:#FDE8E8; color:#B91C1C; font-weight:600; border-radius:12px; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .empty-state {
+            text-align:center; padding:60px 20px; color:var(--text-muted); font-size:0.9rem;
+            animation: fadeIn 0.4s ease;
+        }
+        .footer-note {
+            background:#F9FAFC; border-radius:var(--radius); padding:12px 20px; font-size:0.7rem;
+            color:var(--text-secondary); margin-top:20px; line-height:1.6;
+        }
+        @media (max-width: 760px) {
+            .main-container { padding:12px; }
+            .tool-card { padding:20px; }
+            .stats-row { flex-direction:column; align-items:stretch; }
+            .btn { width:100%; justify-content:center; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-header">
+    <div class="logo-area">
+        <div class="logo-icon">TP</div>
+        <h1 id="titleText">TP 滑点分析器</h1>
+    </div>
+    <div class="header-actions">
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="tool-card">
+        <p class="section-label" style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;" id="subtitleText">
+            上传 HTM 交易报表 · 提取所有 [tp] 标记订单 · 自动列出止盈价与实际平仓价不匹配的订单
+        </p>
+        
+        <div class="file-upload-area">
+            <div class="file-group">
+                <div class="fake-file-input" id="selectFileBtn">
+                    <span>📂</span>
+                    <span id="selectFileText">选择文件</span>
+                    <span id="fileNameDisplay"></span>
+                </div>
+                <input type="file" id="htmUpload" accept=".htm,.html,text/html">
+            </div>
+            <button class="btn btn-primary" id="runAnalysis" style="height:46px;">🔍 提取止盈滑点订单</button>
+        </div>
+        <div class="stats-row" id="statsArea" style="display: none;">
+            <div class="stat-badge"><span id="statTotalLabel">🏷️ 止盈订单总数</span> <strong id="totalTp">0</strong></div>
+            <div class="stat-badge"><span id="statSlippageLabel">⚡ 滑点订单 (TP≠Close)</span> <strong id="slipCount">0</strong></div>
+            <div class="stat-badge"><span id="statFavorableLabel">📈 有利滑点 (多赚)</span> <strong id="goodSlip">0</strong></div>
+            <div class="stat-badge"><span id="statUnfavorableLabel">📉 不利滑点 (少赚)</span> <strong id="badSlip">0</strong></div>
+            <button class="btn btn-copy" id="copyTableDataBtn" style="display: none; margin-left: auto;" onclick="copyTableData()">📋 复制滑点数据</button>
+        </div>
+        
+        <div id="resultContainer">
+            <div class="empty-state" id="emptyMsg">
+                ⬆️ 上传您的 .htm 交易报表，点击分析<br>
+                系统将精准识别所有带止盈标记的订单，展示滑点明细
+            </div>
+        </div>
+        <div class="footer-note" id="footerNote">
+            💡 滑点差值 = 多单：平仓价 - 止盈价；空单：止盈价 - 平仓价 (正值 = 优于预期，额外盈利)<br>
+            📐 滑点影响(USD) = 滑点差值 × 手数 × 100 (基于黄金标准手，展示相对影响) 。原始盈亏已准确解析。
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const translations = {
+            zh: {
+                titleText: "MT4 TP",
+                subtitle: "上传 HTM 交易报表 · 提取所有 [tp] 标记订单 · 自动列出止盈价与实际平仓价不匹配的订单",
+                selectFileBtn: "选择文件",
+                analyzeBtn: "🔍 提取止盈滑点订单",
+                statTotal: "🏷️ 止盈订单总数",
+                statSlippage: "⚡ 滑点订单 (TP≠Close)",
+                statFavorable: "📈 有利滑点 (多赚)",
+                statUnfavorable: "📉 不利滑点 (少赚)",
+                copyBtn: "📋 复制滑点数据",
+                emptyMsg: "⬆️ 上传您的 .htm 交易报表，点击分析<br>系统将精准识别所有带止盈标记的订单，展示滑点明细",
+                footer: "💡 滑点差值 = 多单：平仓价 - 止盈价；空单：止盈价 - 平仓价 (正值 = 优于预期，额外盈利)<br>📐 滑点影响(USD) = 滑点差值 × 手数 × 100 (基于黄金标准手，展示相对影响) 。原始盈亏已准确解析。",
+                tableHeaders: ["订单号","开仓时间","类型","手数","品种","开仓价","止盈价(T/P)","实际平仓价","滑差点数","盈亏(USD)","滑点评估"],
+                favorableText: "✨ 有利滑点 (超预期盈利)",
+                unfavorableText: "⚠️ 不利滑点 (不及预期)",
+                copySuccess: "✅ 已复制 {count} 条滑点订单数据到剪贴板",
+                noDataCopy: "暂无滑点数据可供复制",
+                noTpOrders: "✅ 未在报表中找到任何 [tp] 止盈标记订单。",
+                noSlippageFound: "🔍 未检测到止盈滑点订单 (所有已识别止盈订单均精准触发 T/P = 平仓价)"
+            },
+            en: {
+                titleText: "MT4 TP",
+                subtitle: "Upload HTM trade report · Extract all [tp] orders · Auto-list orders where T/P ≠ Close Price",
+                selectFileBtn: "Choose File",
+                analyzeBtn: "🔍 Extract TP Slippage Orders",
+                statTotal: "🏷️ Total TP Orders",
+                statSlippage: "⚡ Slippage Orders (TP≠Close)",
+                statFavorable: "📈 Favorable Slippage",
+                statUnfavorable: "📉 Unfavorable Slippage",
+                copyBtn: "📋 Copy Slippage Data",
+                emptyMsg: "⬆️ Upload .htm trade report and click Analyze<br>System will detect all take-profit orders & show slippage details",
+                footer: "💡 Slippage pts = for Buy: ClosePrice - TP; for Sell: TP - ClosePrice (positive = better than TP)<br>📐 Est. Impact (USD) = Slippage pts × Volume × 100 (standard lot, indicative).",
+                tableHeaders: ["Ticket","Open Time","Type","Volume","Item","Open Price","TP (T/P)","Close Price","Slippage Pts","P&L","Slippage Effect"],
+                favorableText: "✨ Favorable (better than TP)",
+                unfavorableText: "⚠️ Unfavorable (worse than TP)",
+                copySuccess: "✅ Copied {count} slippage orders to clipboard",
+                noDataCopy: "No slippage data to copy",
+                noTpOrders: "✅ No [tp] take-profit orders found in the report.",
+                noSlippageFound: "🔍 No slippage orders detected (all TP orders executed exactly at T/P level)."
+            }
+        };
+        
+        let currentLang = 'zh';
+        let currentSlippageData = [];
+        let originalSlippageOrders = [];
+        let sortColumn = null;
+        let sortDirection = null;
+        
+        function applyLanguage() {
+            const t = translations[currentLang];
+            document.getElementById('titleText').textContent = t.titleText;
+            document.getElementById('subtitleText').innerHTML = t.subtitle;
+            document.getElementById('selectFileText').textContent = t.selectFileBtn;
+            document.getElementById('runAnalysis').innerHTML = t.analyzeBtn;
+            document.getElementById('statTotalLabel').innerHTML = t.statTotal;
+            document.getElementById('statSlippageLabel').innerHTML = t.statSlippage;
+            document.getElementById('statFavorableLabel').innerHTML = t.statFavorable;
+            document.getElementById('statUnfavorableLabel').innerHTML = t.statUnfavorable;
+            const copyBtn = document.getElementById('copyTableDataBtn');
+            if (copyBtn) copyBtn.innerHTML = t.copyBtn;
+            document.getElementById('emptyMsg').innerHTML = t.emptyMsg;
+            document.getElementById('footerNote').innerHTML = t.footer;
+            
+            if (originalSlippageOrders.length > 0) {
+                renderSlippageTable();
+            }
+        }
+        
+        function robustParseNumber(value) {
+            if (value === undefined || value === null) return NaN;
+            if (typeof value === 'number') return value;
+            let str = String(value).trim().replace(/[\s,]/g, '');
+            return parseFloat(str) || 0;
+        }
+        
+        function getCleanText(cell) {
+            if (!cell) return '';
+            return (cell.textContent || cell.innerText || '').replace(/\u00A0/g, ' ').trim();
+        }
+        
+        function extractFullOrder(tdCells) {
+            if (tdCells.length < 12) return null;
+            const ticketRaw = getCleanText(tdCells[0]);
+            if (!ticketRaw || ticketRaw === "Ticket" || ticketRaw === "No transactions") return null;
+            const typeRaw = getCleanText(tdCells[2]).toLowerCase();
+            if (typeRaw === 'balance') return null;
+            if (ticketRaw.includes('Deposit') || ticketRaw.includes('Withdrawal')) return null;
+            
+            const order = {
+                ticket: ticketRaw,
+                openTime: getCleanText(tdCells[1]),
+                type: typeRaw,
+                volume: robustParseNumber(getCleanText(tdCells[3])),
+                item: getCleanText(tdCells[4]),
+                openPrice: robustParseNumber(getCleanText(tdCells[5])),
+                sl: robustParseNumber(getCleanText(tdCells[6])),
+                tp: robustParseNumber(getCleanText(tdCells[7])),
+                closeTime: getCleanText(tdCells[8]),
+                closePrice: robustParseNumber(getCleanText(tdCells[9])),
+                commission: robustParseNumber(getCleanText(tdCells[10])),
+                taxes: robustParseNumber(getCleanText(tdCells[11])),
+                swap: tdCells[12] ? robustParseNumber(getCleanText(tdCells[12])) : 0,
+                profit: tdCells[13] ? robustParseNumber(getCleanText(tdCells[13])) : 0
+            };
+            if (order.volume === 0 && order.tp === 0 && order.closePrice === 0) return null;
+            return order;
+        }
+        
+        function isTpMarkerRow(rowElement) {
+            if (!rowElement) return false;
+            const cells = rowElement.querySelectorAll('td');
+            for (let cell of cells) {
+                let txt = getCleanText(cell);
+                if (txt === "[tp]" || txt === "[TP]") return true;
+            }
+            return false;
+        }
+        
+        function getAllTakeProfitOrders(htmlDoc) {
+            let tables = htmlDoc.querySelectorAll('table');
+            let targetTable = null;
+            for (let tbl of tables) {
+                if ((tbl.innerText || '').includes('Closed Transactions') && (tbl.innerText || '').includes('Ticket')) {
+                    targetTable = tbl;
+                    break;
+                }
+            }
+            if (!targetTable) return [];
+            
+            const rows = targetTable.querySelectorAll('tr');
+            const tpOrders = [];
+            for (let i = 0; i < rows.length; i++) {
+                const curRow = rows[i];
+                const cells = curRow.querySelectorAll('td');
+                if (cells.length < 10) continue;
+                let firstVal = getCleanText(cells[0]);
+                let isTicket = !isNaN(parseInt(firstVal)) && firstVal !== "" && !firstVal.includes('Deposit') && !firstVal.includes('Withdrawal');
+                if (!isTicket) continue;
+                const order = extractFullOrder(cells);
+                if (!order || order.volume === 0) continue;
+                let nextRow = (i + 1 < rows.length) ? rows[i+1] : null;
+                if (nextRow && isTpMarkerRow(nextRow)) {
+                    tpOrders.push({ ...order, isTakeProfit: true });
+                    i++;
+                }
+            }
+            return tpOrders;
+        }
+        
+        function filterSlippageOrders(tpOrders) {
+            return tpOrders.filter(order => {
+                if (isNaN(order.tp) || isNaN(order.closePrice)) return false;
+                return Math.abs(order.tp - order.closePrice) > 1e-8;
+            }).map(order => {
+                let slipPoints = order.type === 'buy' ? order.closePrice - order.tp : order.tp - order.closePrice;
+                let impactUsd = parseFloat((slipPoints * order.volume * 100).toFixed(2));
+                return {
+                    ...order,
+                    slippagePoints: slipPoints,
+                    impactUSD: impactUsd,
+                    isFavorable: slipPoints > 0
+                };
+            });
+        }
+        
+        function renderSlippageTable() {
+            const t = translations[currentLang];
+            let displayData = [...originalSlippageOrders];
+            if (sortColumn === 'slippage') {
+                displayData.sort((a, b) => {
+                    const diff = a.slippagePoints - b.slippagePoints;
+                    return sortDirection === 'desc' ? -diff : diff;
+                });
+            } else if (sortColumn === 'profit') {
+                displayData.sort((a, b) => {
+                    const diff = a.profit - b.profit;
+                    return sortDirection === 'desc' ? -diff : diff;
+                });
+            }
+            currentSlippageData = displayData;
+            
+            const total = originalSlippageOrders.length;
+            const favorable = displayData.filter(o => o.isFavorable).length;
+            const unfavorable = total - favorable;
+            document.getElementById('totalTp').innerText = total;
+            document.getElementById('slipCount').innerText = total;
+            document.getElementById('goodSlip').innerText = favorable;
+            document.getElementById('badSlip').innerText = unfavorable;
+            
+            // Trigger badge animation by re-inserting
+            const statsArea = document.getElementById('statsArea');
+            statsArea.style.display = 'flex';
+            statsArea.classList.remove('animate');
+            void statsArea.offsetWidth; 
+            statsArea.classList.add('animate');
+
+            const copyBtn = document.getElementById('copyTableDataBtn');
+            copyBtn.style.display = total > 0 ? 'inline-flex' : 'none';
+            
+            if (total === 0) {
+                document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${t.noSlippageFound}</div>`;
+                return;
+            }
+            
+            let headers = [...t.tableHeaders];
+            if (sortColumn === 'slippage') headers[8] += sortDirection === 'desc' ? ' ▼' : ' ▲';
+            else headers[8] += ' ⇅';
+            if (sortColumn === 'profit') headers[9] += sortDirection === 'desc' ? ' ▼' : ' ▲';
+            else headers[9] += ' ⇅';
+            
+            let html = `<div class="table-container"><table><thead><tr>`;
+            headers.forEach((h, idx) => {
+                if (idx === 8 || idx === 9) html += `<th class="sortable">${h}</th>`;
+                else html += `<th>${h}</th>`;
+            });
+            html += `</tr></thead><tbody>`;
+            for (let ord of displayData) {
+                let slipVal = ord.slippagePoints.toFixed(4);
+                let impact = ord.impactUSD;
+                let directionText = ord.isFavorable ? t.favorableText : t.unfavorableText;
+                html += `<tr>
+                    <td>${ord.ticket}</td><td>${ord.openTime||'-'}</td><td>${ord.type.toUpperCase()}</td><td>${ord.volume}</td>
+                    <td>${ord.item}</td><td>${ord.openPrice.toFixed(2)}</td><td><strong>${ord.tp.toFixed(2)}</strong></td>
+                    <td style="background:#FFF2DF;">${ord.closePrice.toFixed(2)}</td>
+                    <td style="font-weight:bold; color:${impact>0?'#19794d':'#c23d2b'}">${slipVal}</td>
+                    <td>${ord.profit.toFixed(2)}</td>
+                    <td>${directionText}</td></tr>`;
+            }
+            html += `</tbody></table></div>`;
+            document.getElementById('resultContainer').innerHTML = html;
+        }
+        
+        async function copyTableData() {
+            if (!currentSlippageData.length) {
+                alert(translations[currentLang].noDataCopy);
+                return;
+            }
+            const t = translations[currentLang];
+            const headers = t.tableHeaders;
+            let tsv = [headers.join('\t')];
+            for (let ord of currentSlippageData) {
+                tsv.push([
+                    ord.ticket, ord.openTime||'', ord.type.toUpperCase(), ord.volume, ord.item,
+                    ord.openPrice.toFixed(2), ord.tp.toFixed(2), ord.closePrice.toFixed(2),
+                    ord.slippagePoints.toFixed(4), ord.profit.toFixed(2),
+                    ord.isFavorable ? "Favorable" : "Unfavorable"
+                ].join('\t'));
+            }
+            try {
+                await navigator.clipboard.writeText(tsv.join('\n'));
+                alert(t.copySuccess.replace('{count}', currentSlippageData.length));
+            } catch {
+                alert("复制失败，请手动选择表格内容复制");
+            }
+        }
+        
+        async function parseAndDisplay(file) {
+            if (!file) { alert("请选择 HTM 文件"); return; }
+            sortColumn = null;
+            sortDirection = null;
+            originalSlippageOrders = [];
+            currentSlippageData = [];
+            
+            const content = await new Promise(res => {
+                const reader = new FileReader();
+                reader.onload = e => res(e.target.result);
+                reader.onerror = () => res(null);
+                reader.readAsText(file, "UTF-8");
+            });
+            if (!content) return;
+            const doc = new DOMParser().parseFromString(content, "text/html");
+            if (!doc.body || doc.body.innerText.trim().length === 0) {
+                alert("无法解析 HTML 内容，请确保上传有效报表"); return;
+            }
+            const allTp = getAllTakeProfitOrders(doc);
+            if (!allTp.length) {
+                document.getElementById('resultContainer').innerHTML = `<div class="empty-state">${translations[currentLang].noTpOrders}</div>`;
+                document.getElementById('statsArea').style.display = 'none';
+                document.getElementById('copyTableDataBtn').style.display = 'none';
+                originalSlippageOrders = [];
+                currentSlippageData = [];
+                return;
+            }
+            const slippage = filterSlippageOrders(allTp);
+            originalSlippageOrders = slippage;
+            renderSlippageTable();
+        }
+        
+        document.getElementById('resultContainer').addEventListener('click', function(e) {
+            const th = e.target.closest('th');
+            if (!th) return;
+            const idx = th.cellIndex;
+            if (idx === 8) {
+                if (sortColumn === 'slippage') {
+                    if (sortDirection === 'desc') sortDirection = 'asc';
+                    else if (sortDirection === 'asc') { sortColumn = null; sortDirection = null; }
+                } else { sortColumn = 'slippage'; sortDirection = 'desc'; }
+                renderSlippageTable();
+            } else if (idx === 9) {
+                if (sortColumn === 'profit') {
+                    if (sortDirection === 'desc') sortDirection = 'asc';
+                    else if (sortDirection === 'asc') { sortColumn = null; sortDirection = null; }
+                } else { sortColumn = 'profit'; sortDirection = 'desc'; }
+                renderSlippageTable();
+            }
+        });
+        
+        const fileInput = document.getElementById('htmUpload');
+        document.getElementById('selectFileBtn').addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', e => {
+            const f = e.target.files[0];
+            document.getElementById('fileNameDisplay').innerText = f ? f.name : "未选择文件";
+        });
+        document.getElementById('runAnalysis').addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (!file) { alert("请先上传 HTM 交易报表"); return; }
+            parseAndDisplay(file);
+        });
+        document.getElementById('copyTableDataBtn').addEventListener('click', copyTableData);
+        window.addEventListener('message', (e) => {
+            if (e.data && e.data.type === 'setLang' && e.data.data && e.data.data.lang) {
+                currentLang = e.data.data.lang;
+                applyLanguage();
+                if (originalSlippageOrders.length > 0) renderSlippageTable();
+            }
+        });
+        applyLanguage();
+    })();
+</script>
+</body>
+</html>

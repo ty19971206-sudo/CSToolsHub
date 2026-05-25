@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ATCS Tools</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233b5f8a'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%23ffffff' font-family='system-ui, -apple-system, sans-serif' font-weight='bold'%3EAT%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-primary: #1e2a36;
+            --text-secondary: #4a5c6c;
+            --text-muted: #7b8c9d;
+            --accent: #3b5f8a;
+            --accent-hover: #2d4a6e;
+            --accent-light: #e8eef5;
+            --border: #dce3ea;
+            --border-light: #e8ecf1;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 8px;
+            --radius-sm: 5px;
+            --transition: 0.2s ease;
+            --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:var(--font-stack);
+            background:var(--bg);
+            color:var(--text-primary);
+            line-height:1.6;
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+        }
+        .app-header {
+            background:var(--card-bg);
+            border-bottom:1px solid var(--border);
+            padding:0 20px;
+            height:50px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:var(--shadow-sm);
+            flex-shrink:0;
+            z-index:10;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-area {
+            display:flex;
+            align-items:center;
+            gap:8px;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .logo-area:hover {
+            background: var(--accent-light);
+            transform: scale(1.02);
+        }
+        .logo-area:active {
+            transform: scale(0.96);
+            transition-duration: 0.08s;
+        }
+        .logo-icon {
+            width:30px;
+            height:30px;
+            background:var(--accent);
+            border-radius:var(--radius-sm);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#fff;
+            font-weight:700;
+            font-size:14px;
+        }
+        .app-header h1 {
+            font-size:15px;
+            font-weight:600;
+        }
+        .header-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+        .nav-tabs {
+            display:flex;
+            gap:6px;
+            background:var(--bg);
+            border-radius:24px;
+            padding:4px 6px;
+            position: relative;
+        }
+        .nav-btn {
+            padding:6px 18px;
+            border-radius:20px;
+            border:none;
+            cursor: pointer;
+            font-size:13px;
+            font-weight:500;
+            color:var(--text-secondary);
+            background:transparent;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            font-family:var(--font-stack);
+            white-space:nowrap;
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
+            will-change: transform;
+        }
+        .nav-btn:hover {
+            color:var(--accent);
+            background:var(--accent-light);
+            transform: translateY(-1px);
+        }
+        .nav-btn:active {
+            transform: scale(0.96);
+            transition-duration: 0.08s;
+        }
+        .nav-btn.active {
+            background:var(--accent);
+            color:#fff;
+            font-weight:600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            gap: 8px;
+        }
+        .dropdown-toggle .arrow {
+            font-size: 11px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+            display: inline-block;
+        }
+        .dropdown.open .dropdown-toggle .arrow {
+            transform: rotate(180deg);
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            left: auto;
+            min-width: 200px;
+            max-width: 300px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            padding: 8px 0;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top right;
+            transform: scale(0.92) translateY(-8px);
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            backdrop-filter: blur(0px);
+        }
+        .dropdown.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.2, 0.9, 0.4, 1);
+            font-family: var(--font-stack);
+            white-space: normal;
+            word-break: break-word;
+            will-change: background, transform;
+        }
+        .dropdown-item:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+        .dropdown-item:active {
+            transform: scale(0.97);
+            transition-duration: 0.05s;
+        }
+        .dropdown-item.active-sub {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+            position: relative;
+            transform: translateX(2px);
+        }
+        .dropdown-item.active-sub::before {
+            content: "✓";
+            margin-right: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .dropdown-item .item-icon {
+            font-size: 15px;
+            width: 22px;
+            flex-shrink: 0;
+            text-align: center;
+            transition: transform 0.15s ease;
+        }
+        .dropdown-item:hover .item-icon {
+            transform: scale(1.1);
+        }
+        .dropdown-item span:last-child {
+            flex: 1;
+        }
+        .global-lang-switch {
+            display: flex;
+            gap: 6px;
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 4px 6px;
+        }
+        .lang-global-btn {
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            font-family: var(--font-stack);
+        }
+        .lang-global-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .lang-global-btn:hover:not(.active) {
+            background: var(--accent-light);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .lang-global-btn:active {
+            transform: scale(0.94);
+            transition-duration: 0.08s;
+        }
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 16px;
+                gap: 8px;
+            }
+            .header-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .global-lang-switch {
+                margin-left: 0;
+                justify-content: center;
+            }
+            .dropdown-menu {
+                top: calc(100% + 4px);
+                right: auto;
+                left: 0;
+                max-width: calc(100vw - 20px);
+                min-width: 240px;
+                transform-origin: top left;
+            }
+        }
+        .iframe-container {
+            flex:1;
+            overflow:hidden;
+            background:#fff;
+            position: relative;
+        }
+        .iframe-item {
+            position: absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            border:none;
+            transition: opacity 0.2s ease;
+            background: #fff;
+        }
+        .iframe-item.hidden {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .iframe-item.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo-area" id="logoHome">
+                <div class="logo-icon">AT</div>
+                <h1>ATCS Tools</h1>
+            </div>
+            <div class="header-divider"></div>
+            <div class="nav-tabs" id="navTabs">
+                <!-- 订单查询下拉菜单 -->
+                <div class="dropdown" id="orderToolsDropdown">
+                    <button class="nav-btn dropdown-toggle" id="dropdownToggleBtn" type="button">
+                        <span class="tab-icon">📋</span>
+                        <span id="dropdownSelectedLabel">Order Inquiry</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="dropdown-item" data-page="MailCraft.html" data-icon="✉️" data-label="MailCraft">
+                            <span class="item-icon">✉️</span>
+                            <span>MailCraft</span>
+                        </button>
+                        <button class="dropdown-item" data-page="MT4TP.html" data-icon="📊" data-label="MT4 TP">
+                            <span class="item-icon">📊</span>
+                            <span>MT4 TP</span>
+                        </button>
+                        <button class="dropdown-item" data-page="MT5TP.html" data-icon="📈" data-label="MT5 TP">
+                            <span class="item-icon">📈</span>
+                            <span>MT5 TP</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- 资金管理下拉菜单 -->
+                <div class="dropdown" id="fundDropdown">
+                    <button class="nav-btn dropdown-toggle" id="fundToggleBtn" type="button">
+                        <span class="tab-icon">💰</span>
+                        <span id="fundNavText">资金管理</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu" id="fundDropdownMenu">
+                        <button class="dropdown-item" data-page="MUCREDIT.html" data-icon="📟" data-label="MU Credit">
+                            <span class="item-icon">📟</span>
+                            <span>MU Credit</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Quiz下拉菜单 -->
+                <div class="dropdown" id="quizDropdown">
+                    <button class="nav-btn dropdown-toggle" id="quizDropdownToggle" type="button">
+                        <span class="tab-icon">📝</span>
+                        <span id="quizNavText">Quiz</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu" id="quizDropdownMenu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="global-lang-switch" id="globalLangSwitch">
+            <button class="lang-global-btn" data-lang="zh">中文</button>
+            <button class="lang-global-btn" data-lang="en">EN</button>
+        </div>
+    </header>
+    <div class="iframe-container" id="iframeContainer">
+        <!-- 动态 iframe 会在此容器中创建，通过 CSS absolute 定位层叠，只显示当前活动的 iframe -->
+    </div>
+
+    <script>
+        (function() {
+            // ======================== 多语言映射 ========================
+            const translations = {
+                zh: {
+                    orderInquiry: "订单查询",
+                    fundManagement: "资金管理",
+                    quiz: "知识测试",
+                    orderOptions: {
+                        MailCraft: "邮件助手",
+                        "MT4 TP": "MT4 止盈滑点",
+                        "MT5 TP": "MT5 止盈滑点"
+                    },
+                    fundOptions: {
+                        "MU Credit": "MU 信用额计算器"
+                    },
+                    quizCategories: [
+                        { key: "Industry Terminology", label: "行业术语", icon: "📚" },
+                        { key: "Company Background", label: "公司背景", icon: "🏢" },
+                        { key: "Trading Knowledge", label: "交易知识", icon: "📖" },
+                        { key: "Product Knowledge", label: "产品知识", icon: "📦" },
+                        { key: "Trading Groups", label: "交易组别", icon: "👥" },
+                        { key: "Trading Calculations", label: "交易计算", icon: "🧮" },
+                        { key: "Trading Software", label: "交易软件", icon: "💻" },
+                        { key: "Simulation", label: "情景模拟", icon: "🎮" },
+                        { key: "Account Opening Process", label: "开户流程", icon: "📄" },
+                        { key: "Deposit and Withdrawal Process", label: "出入金流程", icon: "💳" },
+                        { key: "Daily Workflow", label: "日常工作流程", icon: "⏰" },
+                        { key: "Commission Settings", label: "佣金设置", icon: "⚙️" }
+                    ]
+                },
+                en: {
+                    orderInquiry: "Order Inquiry",
+                    fundManagement: "Fund Management",
+                    quiz: "Quiz",
+                    orderOptions: {
+                        MailCraft: "MailCraft",
+                        "MT4 TP": "MT4 TP",
+                        "MT5 TP": "MT5 TP"
+                    },
+                    fundOptions: {
+                        "MU Credit": "MU Credit"
+                    },
+                    quizCategories: [
+                        { key: "Industry Terminology", label: "Industry Terminology", icon: "📚" },
+                        { key: "Company Background", label: "Company Background", icon: "🏢" },
+                        { key: "Trading Knowledge", label: "Trading Knowledge", icon: "📖" },
+                        { key: "Product Knowledge", label: "Product Knowledge", icon: "📦" },
+                        { key: "Trading Groups", label: "Trading Groups", icon: "👥" },
+                        { key: "Trading Calculations", label: "Trading Calculations", icon: "🧮" },
+                        { key: "Trading Software", label: "Trading Software", icon: "💻" },
+                        { key: "Simulation", label: "Simulation", icon: "🎮" },
+                        { key: "Account Opening Process", label: "Account Opening Process", icon: "📄" },
+                        { key: "Deposit and Withdrawal Process", label: "Deposit and Withdrawal Process", icon: "💳" },
+                        { key: "Daily Workflow", label: "Daily Workflow", icon: "⏰" },
+                        { key: "Commission Settings", label: "Commission Settings", icon: "⚙️" }
+                    ]
+                }
+            };
+
+            let currentLang = localStorage.getItem('atcs_global_lang') || 'zh';
+            // 当前显示的页面标识
+            let activeCategory = 'home';
+            let currentOrderPage = 'MailCraft.html';
+            let currentOrderLabel = 'MailCraft';
+            let currentQuizCategory = 'Industry Terminology';
+            let currentFundPage = 'MUCREDIT.html';
+
+            // ---------- iframe 缓存管理 ----------
+            // 定义所有需要缓存的页面 (除了 Quiz 单独处理，因为需要动态带参数)
+            const CACHED_PAGES = [
+                { id: 'home',      page: 'Home.html',         title: 'Home' },
+                { id: 'mailcraft', page: 'MailCraft.html',    title: 'MailCraft' },
+                { id: 'mt4tp',     page: 'MT4TP.html',        title: 'MT4 TP' },
+                { id: 'mt5tp',     page: 'MT5TP.html',        title: 'MT5 TP' },
+                { id: 'mucredit',  page: 'MUCREDIT.html',     title: 'MU Credit' }
+            ];
+            // quiz iframe 独立管理，需要动态修改 src 以支持 category 参数
+            let quizIframe = null;
+            let iframeMap = new Map(); // key: page id, value: iframe 元素
+
+            const container = document.getElementById('iframeContainer');
+            
+            // 创建所有缓存 iframe (隐藏)
+            function createCachedIframes() {
+                CACHED_PAGES.forEach(item => {
+                    const iframe = document.createElement('iframe');
+                    iframe.className = 'iframe-item hidden';
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.src = item.page;
+                    iframe.setAttribute('data-id', item.id);
+                    iframe.setAttribute('data-page', item.page);
+                    container.appendChild(iframe);
+                    iframeMap.set(item.id, iframe);
+                    // 加载完成后广播当前语言
+                    iframe.addEventListener('load', () => {
+                        sendLangToIframe(iframe);
+                    });
+                });
+                // 创建 quiz iframe (默认带参数)
+                quizIframe = document.createElement('iframe');
+                quizIframe.className = 'iframe-item hidden';
+                quizIframe.setAttribute('frameborder', '0');
+                quizIframe.setAttribute('data-id', 'quiz');
+                quizIframe.setAttribute('data-page', 'QUIZ.html');
+                const defaultCat = currentQuizCategory;
+                quizIframe.src = `QUIZ.html?category=${encodeURIComponent(defaultCat)}`;
+                container.appendChild(quizIframe);
+                quizIframe.addEventListener('load', () => {
+                    sendLangToIframe(quizIframe);
+                });
+                iframeMap.set('quiz', quizIframe);
+            }
+
+            // 显示指定 id 的 iframe，隐藏其他
+            function showIframeById(id) {
+                for (let [key, iframe] of iframeMap.entries()) {
+                    if (key === id) {
+                        iframe.classList.remove('hidden');
+                        iframe.classList.add('visible');
+                    } else {
+                        iframe.classList.remove('visible');
+                        iframe.classList.add('hidden');
+                    }
+                }
+            }
+
+            // 广播语言给所有 iframe (包括缓存的 + quiz)
+            function broadcastLanguage() {
+                for (let iframe of iframeMap.values()) {
+                    sendLangToIframe(iframe);
+                }
+            }
+
+            function sendLangToIframe(iframeEl) {
+                if (iframeEl && iframeEl.contentWindow) {
+                    iframeEl.contentWindow.postMessage({ type: 'setLang', data: { lang: currentLang } }, '*');
+                }
+            }
+
+            // 显示 Home
+            function switchToHome() {
+                showIframeById('home');
+                activeCategory = 'home';
+                updateUIState();
+                closeAllDropdowns();
+                // 不需要额外发送消息，子页面自行管理
+            }
+
+            // 显示订单工具页面 (已缓存的页面，直接显示)
+            function switchToOrderPage(pageUrl, label) {
+                let targetId = null;
+                if (pageUrl === 'MailCraft.html') targetId = 'mailcraft';
+                else if (pageUrl === 'MT4TP.html') targetId = 'mt4tp';
+                else if (pageUrl === 'MT5TP.html') targetId = 'mt5tp';
+                if (targetId && iframeMap.has(targetId)) {
+                    showIframeById(targetId);
+                    currentOrderPage = pageUrl;
+                    currentOrderLabel = label;
+                    activeCategory = 'order';
+                    updateUIState();
+                    closeAllDropdowns();
+                } else {
+                    console.warn('未知订单页面', pageUrl);
+                }
+            }
+
+            // 显示资金管理页面 (MU Credit)
+            function switchToFundPage(pageUrl, label) {
+                if (pageUrl === 'MUCREDIT.html' && iframeMap.has('mucredit')) {
+                    showIframeById('mucredit');
+                    currentFundPage = pageUrl;
+                    activeCategory = 'fund';
+                    updateUIState();
+                    closeAllDropdowns();
+                }
+            }
+
+            // 显示 Quiz 页面，支持 category 参数
+            function switchToQuiz(category) {
+                const encodedCat = encodeURIComponent(category);
+                const targetUrl = `QUIZ.html?category=${encodedCat}`;
+                // 如果当前 quiz iframe 的 src 与目标相同，则无需重载，仅显示
+                if (quizIframe && quizIframe.src !== targetUrl && !quizIframe.src.includes(encodedCat)) {
+                    quizIframe.src = targetUrl;
+                }
+                showIframeById('quiz');
+                currentQuizCategory = category;
+                activeCategory = 'quiz';
+                updateUIState();
+                closeAllDropdowns();
+            }
+
+            // 辅助：关闭所有下拉菜单
+            function closeAllDropdowns() {
+                document.getElementById('orderToolsDropdown')?.classList.remove('open');
+                document.getElementById('fundDropdown')?.classList.remove('open');
+                document.getElementById('quizDropdown')?.classList.remove('open');
+            }
+
+            // ========== UI 状态更新 (高亮菜单、活动子项) ==========
+            function updateUIState() {
+                const orderToggle = document.getElementById('dropdownToggleBtn');
+                const fundToggle = document.getElementById('fundToggleBtn');
+                const quizToggle = document.getElementById('quizDropdownToggle');
+                orderToggle.classList.toggle('active', activeCategory === 'order');
+                fundToggle.classList.toggle('active', activeCategory === 'fund');
+                quizToggle.classList.toggle('active', activeCategory === 'quiz');
+                
+                // 更新订单下拉菜单内的 active-sub
+                document.querySelectorAll('#dropdownMenu .dropdown-item').forEach(item => {
+                    const pageAttr = item.getAttribute('data-page');
+                    if (activeCategory === 'order' && pageAttr === currentOrderPage) {
+                        item.classList.add('active-sub');
+                    } else {
+                        item.classList.remove('active-sub');
+                    }
+                });
+                // 更新资金管理下拉菜单 active-sub
+                document.querySelectorAll('#fundDropdownMenu .dropdown-item').forEach(item => {
+                    const pageAttr = item.getAttribute('data-page');
+                    if (activeCategory === 'fund' && pageAttr === currentFundPage) {
+                        item.classList.add('active-sub');
+                    } else {
+                        item.classList.remove('active-sub');
+                    }
+                });
+                // 更新 quiz 下拉菜单 active-sub
+                document.querySelectorAll('#quizDropdownMenu .dropdown-item').forEach(item => {
+                    const catAttr = item.getAttribute('data-category');
+                    if (activeCategory === 'quiz' && catAttr === currentQuizCategory) {
+                        item.classList.add('active-sub');
+                    } else {
+                        item.classList.remove('active-sub');
+                    }
+                });
+                // 更新导航栏文字
+                const t = translations[currentLang];
+                document.getElementById('dropdownSelectedLabel').innerText = t.orderInquiry;
+                document.getElementById('fundNavText').innerText = t.fundManagement;
+                document.getElementById('quizNavText').innerText = t.quiz;
+            }
+
+            // 生成 Quiz 下拉菜单
+            function renderQuizDropdown() {
+                const t = translations[currentLang];
+                const menu = document.getElementById('quizDropdownMenu');
+                menu.innerHTML = '';
+                t.quizCategories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'dropdown-item';
+                    btn.setAttribute('data-category', cat.key);
+                    btn.innerHTML = `<span class="item-icon">${cat.icon}</span><span>${cat.label}</span>`;
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        switchToQuiz(cat.key);
+                    });
+                    menu.appendChild(btn);
+                });
+                updateUIState();
+            }
+
+            // 全局语言设置 & 广播
+            function setGlobalLang(lang) {
+                if (lang === currentLang) return;
+                currentLang = lang;
+                localStorage.setItem('atcs_global_lang', currentLang);
+                updateGlobalLangUI();
+                updateNavTexts();
+                broadcastLanguage();  // 所有子页面同步语言
+                renderQuizDropdown(); // 重新生成 quiz 下拉菜单文字
+                updateUIState();      // 刷新菜单高亮文字
+            }
+
+            function updateGlobalLangUI() {
+                const btns = document.querySelectorAll('.lang-global-btn');
+                btns.forEach(btn => {
+                    const lang = btn.getAttribute('data-lang');
+                    if (lang === currentLang) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                });
+            }
+
+            function updateNavTexts() {
+                const t = translations[currentLang];
+                document.getElementById('dropdownSelectedLabel').innerText = t.orderInquiry;
+                document.getElementById('fundNavText').innerText = t.fundManagement;
+                document.getElementById('quizNavText').innerText = t.quiz;
+                // 更新订单下拉菜单项文字
+                document.querySelectorAll('#dropdownMenu .dropdown-item').forEach(item => {
+                    const originalLabel = item.getAttribute('data-label');
+                    if (originalLabel && t.orderOptions[originalLabel]) {
+                        const span = item.querySelector('span:last-child');
+                        if (span) span.innerText = t.orderOptions[originalLabel];
+                    }
+                });
+                document.querySelectorAll('#fundDropdownMenu .dropdown-item').forEach(item => {
+                    const originalLabel = item.getAttribute('data-label');
+                    if (originalLabel && t.fundOptions[originalLabel]) {
+                        const span = item.querySelector('span:last-child');
+                        if (span) span.innerText = t.fundOptions[originalLabel];
+                    }
+                });
+            }
+
+            // ========== 监听来自子页面的导航请求 ==========
+            function handleChildMessage(event) {
+                const { type, data } = event.data || {};
+                if (type === 'navigate') {
+                    const { action, page, label, category } = data;
+                    if (action === 'order' && page) {
+                        switchToOrderPage(page, label);
+                    } else if (action === 'fund' && page) {
+                        switchToFundPage(page, label);
+                    } else if (action === 'quiz' && category) {
+                        switchToQuiz(category);
+                    } else if (action === 'home') {
+                        switchToHome();
+                    } else if (action === 'mu') {
+                        switchToFundPage('MUCREDIT.html', 'MU Credit');
+                    }
+                }
+            }
+
+            // 暴露全局 API，方便调试 (可选)
+            window.ATCS = {
+                switchToOrder: switchToOrderPage,
+                switchToFund: switchToFundPage,
+                switchToQuiz: switchToQuiz,
+                switchToHome: switchToHome
+            };
+
+            // ========== 下拉菜单交互 ==========
+            function bindDropdownEvents() {
+                const orderDropdown = document.getElementById('orderToolsDropdown');
+                const fundDropdown = document.getElementById('fundDropdown');
+                const quizDropdown = document.getElementById('quizDropdown');
+                const orderBtn = document.getElementById('dropdownToggleBtn');
+                const fundBtn = document.getElementById('fundToggleBtn');
+                const quizBtn = document.getElementById('quizDropdownToggle');
+
+                orderBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    orderDropdown.classList.toggle('open');
+                    fundDropdown.classList.remove('open');
+                    quizDropdown.classList.remove('open');
+                });
+                fundBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fundDropdown.classList.toggle('open');
+                    orderDropdown.classList.remove('open');
+                    quizDropdown.classList.remove('open');
+                });
+                quizBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    quizDropdown.classList.toggle('open');
+                    orderDropdown.classList.remove('open');
+                    fundDropdown.classList.remove('open');
+                });
+                document.addEventListener('click', () => {
+                    orderDropdown.classList.remove('open');
+                    fundDropdown.classList.remove('open');
+                    quizDropdown.classList.remove('open');
+                });
+                orderDropdown.querySelector('.dropdown-menu')?.addEventListener('click', (e) => e.stopPropagation());
+                fundDropdown.querySelector('.dropdown-menu')?.addEventListener('click', (e) => e.stopPropagation());
+                quizDropdown.querySelector('.dropdown-menu')?.addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            // 绑定订单下拉菜单项点击
+            function bindOrderItems() {
+                document.querySelectorAll('#dropdownMenu .dropdown-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const page = item.getAttribute('data-page');
+                        const label = item.getAttribute('data-label');
+                        if (page && label) switchToOrderPage(page, label);
+                    });
+                });
+                document.querySelectorAll('#fundDropdownMenu .dropdown-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const page = item.getAttribute('data-page');
+                        const label = item.getAttribute('data-label');
+                        if (page && label) switchToFundPage(page, label);
+                    });
+                });
+            }
+
+            // 初始化所有 iframe 缓存、事件、语言
+            function init() {
+                createCachedIframes();      // 创建所有隐藏 iframe (Home 等)
+                // 默认显示 Home
+                showIframeById('home');
+                activeCategory = 'home';
+                // 绑定下拉菜单
+                bindDropdownEvents();
+                bindOrderItems();
+                renderQuizDropdown();
+                // 语言相关
+                updateGlobalLangUI();
+                updateNavTexts();
+                // 监听子页面消息
+                window.addEventListener('message', handleChildMessage);
+                // 监听全局语言切换
+                document.querySelectorAll('.lang-global-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const lang = btn.getAttribute('data-lang');
+                        setGlobalLang(lang);
+                    });
+                });
+                // Logo 返回首页
+                document.getElementById('logoHome').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    switchToHome();
+                });
+                // 设置初始高亮
+                updateUIState();
+                // 额外确保所有 iframe 加载完成后，再同步一次语言 (广播)
+                let loadedCount = 0;
+                const totalIframes = iframeMap.size;
+                const onLoad = () => {
+                    loadedCount++;
+                    if (loadedCount === totalIframes) {
+                        broadcastLanguage();
+                    }
+                };
+                for (let iframe of iframeMap.values()) {
+                    if (iframe.contentWindow) {
+                        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') onLoad();
+                        else iframe.addEventListener('load', onLoad);
+                    } else {
+                        iframe.addEventListener('load', onLoad);
+                    }
+                }
+                // 主动广播一次
+                setTimeout(() => broadcastLanguage(), 300);
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
