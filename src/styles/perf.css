@@ -12,7 +12,8 @@ html[data-tab-hidden='true'] * {
 .tools-section-panel,
 .gm-page .calculator-container,
 .mu-page .calculator-container,
-.app-header {
+.app-header,
+.dropdown-menu {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }

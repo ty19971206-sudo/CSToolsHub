@@ -43,8 +43,19 @@ This project is ready for **GitHub-connected deployment** (recommended), not man
    - `PUBLIC_SUPABASE_ANON_KEY`
 5. Trigger first deploy.
 
-After this, every push to the connected branch auto-deploys.  
-The daily news workflow (`.github/workflows/daily-forex-news.yml`) commits updated news data to GitHub, and Netlify redeploys from that commit automatically.
+After this, every push to the connected branch auto-deploys.
+
+### Homepage forex news (bilingual summaries)
+
+Netlify **only runs** `npm run build`; it does **not** call DeepLX. Chinese/English summaries are produced in GitHub Actions (`.github/workflows/daily-forex-news.yml`) and committed to `src/data/forex-news.json`.
+
+After the first GitHub deploy, run the workflow once manually:
+
+1. GitHub repo → **Actions** → **Daily Forex News Update** → **Run workflow**
+2. Wait for the job to finish and push `chore: update daily forex news`
+3. Netlify will redeploy automatically from that commit
+
+If `summaryZh` and `summaryEn` in `forex-news.json` are identical English text, the workflow has not run successfully yet (or DeepLX was unavailable).
 
 ## Routes
 

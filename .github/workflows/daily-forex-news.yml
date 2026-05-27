@@ -30,6 +30,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Wait for DeepLX
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf -X POST http://127.0.0.1:1188/translate \
+              -H 'Content-Type: application/json' \
+              -d '{"text":"ping","source_lang":"EN","target_lang":"ZH"}' >/dev/null; then
+              echo "DeepLX ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "DeepLX did not become ready in time"
+          exit 1
+
       - name: Update forex news data
         env:
           DEEPLX_URL: http://127.0.0.1:1188/translate

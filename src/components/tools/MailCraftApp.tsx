@@ -14,7 +14,12 @@ export default function MailCraftApp() {
   const initStarted = useRef(false);
 
   useEffect(() => {
-    window.__ATCS_LANG = getStoredLang();
+    const syncLang = () => {
+      const lang = getStoredLang();
+      window.__ATCS_LANG = lang;
+      return lang;
+    };
+    syncLang();
     const onLang = (e: Event) => {
       const detail = (e as CustomEvent<'zh' | 'en'>).detail;
       if (detail) window.__ATCS_LANG = detail;
@@ -28,9 +33,17 @@ export default function MailCraftApp() {
     initStarted.current = true;
 
     const boot = () => {
+      const lang = getStoredLang();
+      window.__ATCS_LANG = lang;
+
+      const finishInit = () => {
+        window.dispatchEvent(new CustomEvent('atcs-lang-change', { detail: lang }));
+        setReady(true);
+      };
+
       if (window.initMailCraft) {
         window.initMailCraft();
-        setReady(true);
+        finishInit();
         return;
       }
       const existing = document.querySelector('script[data-mailcraft-init]');
@@ -43,7 +56,7 @@ export default function MailCraftApp() {
       s.onload = () => {
         try {
           window.initMailCraft?.();
-          setReady(true);
+          finishInit();
         } catch (err) {
           setLoadError(err instanceof Error ? err.message : 'MailCraft 初始化失败');
         }

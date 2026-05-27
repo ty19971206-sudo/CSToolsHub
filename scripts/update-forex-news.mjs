@@ -113,21 +113,37 @@ function detectLang(text) {
   return /[\u4e00-\u9fff]/.test(text) ? 'ZH' : 'EN';
 }
 
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function deeplxTranslate(text, targetLang) {
-  if (!DEEPLX_URL) return null;
-  const res = await fetch(DEEPLX_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      text,
-      source_lang: 'auto',
-      target_lang: targetLang,
-    }),
-  });
-  if (!res.ok) throw new Error(`DeepLX ${res.status}`);
-  const data = await res.json();
-  const out = (data?.data || data?.translation || data?.text || '').toString().trim();
-  return out || null;
+  if (!DEEPLX_URL || !text?.trim()) return null;
+  const payload = {
+    text: text.slice(0, 1200),
+    source_lang: 'auto',
+    target_lang: targetLang,
+  };
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const res = await fetch(DEEPLX_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`DeepLX ${res.status}`);
+      const data = await res.json();
+      const out = (data?.data || data?.translation || data?.text || '').toString().trim();
+      if (out && out !== text) return out;
+      if (out) return out;
+      throw new Error('DeepLX empty response');
+    } catch (err) {
+      lastErr = err;
+      await sleep(400 * (attempt + 1));
+    }
+  }
+  throw lastErr;
 }
 
 async function fetchFeed(url) {
