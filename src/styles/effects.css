@@ -52,8 +52,8 @@
   perspective: 1200px;
 }
 
-.tilt-card:hover {
-  transform: translateY(-6px) rotateX(4deg) rotateY(-3deg);
+.home-page .tilt-card:hover {
+  transform: translateY(-5px);
 }
 
 .glow-accent {

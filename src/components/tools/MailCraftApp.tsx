@@ -71,9 +71,6 @@ export default function MailCraftApp() {
 
   return (
     <div className="mailcraft-root">
-      <div className="mailcraft-toolbar">
-        <span className="shortcut-hint">Ctrl+Enter 快速复制</span>
-      </div>
       {loadError && (
         <div className="mailcraft-error" role="alert">
           {loadError}

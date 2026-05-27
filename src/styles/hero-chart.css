@@ -1,4 +1,4 @@
-/* Hero trend chart — plays when .is-chart-ready is set (see HeroChart.tsx) */
+/* Hero trend chart — animation driven by inline script (WAAPI, Windows-safe) */
 .home-page .hero-visual .chart-grid {
   stroke: rgba(255, 255, 255, 0.12);
   stroke-dasharray: 4 6;
@@ -11,108 +11,24 @@
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  opacity: 1;
 }
 
-.home-page .hero-visual.is-chart-ready .chart-line-path {
-  animation: heroDrawLineOnce 2s ease-out 1 forwards;
-}
-
-@keyframes heroDrawLineOnce {
-  from {
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+/* Before JS: show completed chart so Windows never looks “empty” */
+.home-page .hero-visual .chart-bar {
+  fill: rgba(255, 255, 255, 0.25);
+  opacity: 0.25;
 }
 
 .home-page .hero-visual .chart-dot-highlight {
   fill: #ffffff;
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
+  opacity: 1;
 }
 
-.home-page .hero-visual.is-chart-ready .chart-dot-highlight {
-  animation: heroDotOnce 0.35s ease-out 1 forwards;
-  animation-delay: 1.85s;
-}
-
-@keyframes heroDotOnce {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.home-page .hero-visual .chart-bar {
-  fill: rgba(255, 255, 255, 0.25);
+/* After JS starts animating */
+.home-page .hero-visual[data-chart-animating='true'] .chart-bar {
   opacity: 0;
 }
 
-.home-page .hero-visual.is-chart-ready .chart-bar {
-  animation: heroBarOnce 1.8s ease-out 1 forwards;
-}
-
-.home-page .hero-visual.is-chart-ready .chart-bar-1 {
-  animation-delay: 0.12s;
-}
-.home-page .hero-visual.is-chart-ready .chart-bar-2 {
-  animation-delay: 0.24s;
-}
-.home-page .hero-visual.is-chart-ready .chart-bar-3 {
-  animation-delay: 0.36s;
-}
-.home-page .hero-visual.is-chart-ready .chart-bar-4 {
-  animation-delay: 0.48s;
-}
-.home-page .hero-visual.is-chart-ready .chart-bar-5 {
-  animation-delay: 0.6s;
-}
-.home-page .hero-visual.is-chart-ready .chart-bar-6 {
-  animation-delay: 0.72s;
-}
-
-@keyframes heroBarOnce {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-page .hero-visual .chart-line-path {
-    stroke-dashoffset: 0;
-  }
-  .home-page .hero-visual.is-chart-ready .chart-line-path,
-  .home-page .hero-visual.is-chart-ready .chart-bar,
-  .home-page .hero-visual.is-chart-ready .chart-dot-highlight {
-    animation: none;
-  }
-  .home-page .hero-visual .chart-bar {
-    opacity: 1;
-  }
-  .home-page .hero-visual .chart-dot-highlight {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Hero i18n — driven by <html lang> set in AppLayout inline script */
-html[lang='en'] .home-page .i18n-zh {
-  display: none;
-}
-
-html[lang='zh-CN'] .home-page .i18n-en,
-html:not([lang='en']) .home-page .i18n-en {
-  display: none;
+.home-page .hero-visual[data-chart-animating='true'] .chart-dot-highlight {
+  opacity: 0;
 }

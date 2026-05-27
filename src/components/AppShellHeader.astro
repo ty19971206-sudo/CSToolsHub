@@ -1,0 +1,100 @@
+---
+import { navTranslations } from '../lib/i18n';
+import LangSwitch from './LangSwitch';
+
+const zh = navTranslations.zh;
+const en = navTranslations.en;
+---
+
+<header class="app-header" data-app-header>
+  <div class="header-left">
+    <a class="logo-area" href="/">
+      <div class="logo-icon">AT</div>
+      <h1>ATCS Tools</h1>
+    </a>
+    <div class="header-divider"></div>
+    <nav class="nav-tabs" aria-label="Main">
+      <details class="dropdown">
+        <summary class="nav-btn dropdown-toggle">
+          <span>📋 <span class="i18n-zh">{zh.orderInquiry}</span><span class="i18n-en">{en.orderInquiry}</span></span>
+          <span class="arrow">▼</span>
+        </summary>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/tools/mailcraft/">
+            <span class="item-icon">✉️</span>
+            <span class="i18n-zh">{zh.orderOptions.MailCraft}</span><span class="i18n-en">{en.orderOptions.MailCraft}</span>
+          </a>
+          <a class="dropdown-item" href="/tools/mt4tp/">
+            <span class="item-icon">📊</span>
+            <span class="i18n-zh">{zh.orderOptions['MT4 TP']}</span><span class="i18n-en">{en.orderOptions['MT4 TP']}</span>
+          </a>
+          <a class="dropdown-item" href="/tools/mt5tp/">
+            <span class="item-icon">📈</span>
+            <span class="i18n-zh">{zh.orderOptions['MT5 TP']}</span><span class="i18n-en">{en.orderOptions['MT5 TP']}</span>
+          </a>
+        </div>
+      </details>
+      <details class="dropdown">
+        <summary class="nav-btn dropdown-toggle">
+          <span>💰 <span class="i18n-zh">{zh.fundManagement}</span><span class="i18n-en">{en.fundManagement}</span></span>
+          <span class="arrow">▼</span>
+        </summary>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/tools/mucredit/">
+            <span class="item-icon">📟</span>
+            <span class="i18n-zh">{zh.fundOptions['MU Credit']}</span><span class="i18n-en">{en.fundOptions['MU Credit']}</span>
+          </a>
+          <a class="dropdown-item" href="/tools/gmcalc/">
+            <span class="item-icon">🧮</span>
+            <span class="i18n-zh">{zh.fundOptions['CN GM Calc']}</span><span class="i18n-en">{en.fundOptions['CN GM Calc']}</span>
+          </a>
+        </div>
+      </details>
+      <details class="dropdown">
+        <summary class="nav-btn dropdown-toggle">
+          <span>📝 <span class="i18n-zh">{zh.quiz}</span><span class="i18n-en">{en.quiz}</span></span>
+          <span class="arrow">▼</span>
+        </summary>
+        <div class="dropdown-menu">
+          {
+            zh.quizCategories.map((cat, i) => (
+              <a class="dropdown-item" href={`/tools/quiz/${cat.slug}/`}>
+                <span class="item-icon">{cat.icon}</span>
+                <span class="i18n-zh">{cat.label}</span>
+                <span class="i18n-en">{en.quizCategories[i].label}</span>
+              </a>
+            ))
+          }
+        </div>
+      </details>
+    </nav>
+  </div>
+  <LangSwitch client:load />
+</header>
+
+<script is:inline>
+  (function () {
+    var header = document.querySelector('[data-app-header]');
+    if (!header) return;
+
+    function closeAll() {
+      header.querySelectorAll('details.dropdown[open]').forEach(function (d) {
+        d.open = false;
+      });
+    }
+
+    document.addEventListener('pointerdown', function (e) {
+      if (header.contains(e.target)) return;
+      closeAll();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAll();
+    });
+    header.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a.dropdown-item');
+      if (!a) return;
+      var details = a.closest('details.dropdown');
+      if (details) details.open = false;
+    });
+  })();
+</script>

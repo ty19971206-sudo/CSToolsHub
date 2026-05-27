@@ -6,6 +6,7 @@ const en = homeTranslations.en;
 ---
 
 <div class="hero hero-lite">
+  <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
@@ -14,11 +15,17 @@ const en = homeTranslations.en;
     </div>
     <h1>
       <span class="title-icon">🛠️</span>
-      <span class="i18n-zh">{zh.title}</span>
-      <span class="i18n-en">{en.title}</span>
+      <span class="hero-title-text">
+        <span class="i18n-zh"
+          >{zh.titleLead}<span class="hero-title-hub">{zh.titleHub}</span></span
+        >
+        <span class="i18n-en"
+          >{en.titleLead}<span class="hero-title-hub">{en.titleHub}</span></span
+        >
+      </span>
     </h1>
   </div>
-  <div class="hero-visual is-chart-ready" data-hero-chart aria-hidden="true">
+  <div class="hero-visual" data-hero-chart aria-hidden="true">
     <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="25" y1="15" x2="25" y2="135" class="chart-grid"></line>
       <rect x="35" y="120" width="14" height="15" rx="3" class="chart-bar chart-bar-1"></rect>
@@ -28,7 +35,6 @@ const en = homeTranslations.en;
       <rect x="123" y="45" width="14" height="90" rx="3" class="chart-bar chart-bar-5"></rect>
       <rect x="145" y="25" width="14" height="110" rx="3" class="chart-bar chart-bar-6"></rect>
       <polyline
-        pathLength="100"
         points="28,120 42,120 64,105 86,85 108,65 130,45 152,25 175,15"
         class="chart-line-path"></polyline>
       <circle cx="175" cy="15" r="5" class="chart-dot-highlight"></circle>
@@ -38,18 +44,147 @@ const en = homeTranslations.en;
 
 <script is:inline>
   (function () {
-    function replayHeroChart() {
+    function syncHeroGrid() {
+      var hero = document.querySelector('.hero');
+      var grid = document.querySelector('.hero-grid');
+      if (!hero || !grid) return;
+      var hub = null;
+      var hubs = hero.querySelectorAll('.hero-title-hub');
+      for (var i = 0; i < hubs.length; i++) {
+        var box = hubs[i].getBoundingClientRect();
+        if (box.width > 0 && box.height > 0) {
+          hub = hubs[i];
+          break;
+        }
+      }
+      if (!hub) return;
+      var heroBox = hero.getBoundingClientRect();
+      var hubBox = hub.getBoundingClientRect();
+      grid.style.left = Math.round(hubBox.right - heroBox.left + 8) + 'px';
+    }
+
+    function prefersReducedMotion() {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function showStatic(root) {
+      var line = root.querySelector('.chart-line-path');
+      var bars = root.querySelectorAll('.chart-bar');
+      var dot = root.querySelector('.chart-dot-highlight');
+      root.removeAttribute('data-chart-animating');
+      if (line) {
+        line.style.strokeDasharray = '';
+        line.style.strokeDashoffset = '0';
+      }
+      for (var i = 0; i < bars.length; i++) bars[i].style.opacity = '1';
+      if (dot) dot.style.opacity = '1';
+    }
+
+    function cancelAnimations(el) {
+      if (!el || !el.getAnimations) return;
+      var list = el.getAnimations();
+      for (var i = 0; i < list.length; i++) list[i].cancel();
+    }
+
+    function startHeroChart() {
       var root = document.querySelector('[data-hero-chart]');
       if (!root) return;
-      root.classList.remove('is-chart-ready');
-      var els = root.querySelectorAll('.chart-line-path,.chart-bar,.chart-dot-highlight');
-      for (var i = 0; i < els.length; i++) els[i].style.animation = 'none';
-      void root.offsetWidth;
-      for (var j = 0; j < els.length; j++) els[j].style.animation = '';
-      root.classList.add('is-chart-ready');
+
+      if (prefersReducedMotion()) {
+        showStatic(root);
+        return;
+      }
+
+      var line = root.querySelector('.chart-line-path');
+      var bars = root.querySelectorAll('.chart-bar');
+      var dot = root.querySelector('.chart-dot-highlight');
+
+      cancelAnimations(line);
+      for (var b = 0; b < bars.length; b++) cancelAnimations(bars[b]);
+      cancelAnimations(dot);
+
+      root.setAttribute('data-chart-animating', 'true');
+
+      var lineLen = 200;
+      if (line && typeof line.getTotalLength === 'function') {
+        lineLen = line.getTotalLength();
+      }
+      if (line) {
+        line.style.strokeDasharray = String(lineLen);
+        line.style.strokeDashoffset = String(lineLen);
+        if (typeof line.animate === 'function') {
+          line.animate(
+            [{ strokeDashoffset: lineLen }, { strokeDashoffset: 0 }],
+            { duration: 2000, easing: 'ease-out', fill: 'forwards' }
+          );
+        } else {
+          line.style.strokeDashoffset = '0';
+        }
+      }
+
+      for (var i = 0; i < bars.length; i++) {
+        (function (bar, index) {
+          bar.style.opacity = '0';
+          if (typeof bar.animate === 'function') {
+            bar.animate([{ opacity: 0 }, { opacity: 1 }], {
+              duration: 500,
+              delay: 120 * (index + 1),
+              easing: 'ease-out',
+              fill: 'forwards',
+            });
+          } else {
+            bar.style.opacity = '1';
+          }
+        })(bars[i], i);
+      }
+
+      if (dot) {
+        dot.style.opacity = '0';
+        if (typeof dot.animate === 'function') {
+          dot.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 350,
+            delay: 1850,
+            easing: 'ease-out',
+            fill: 'forwards',
+          });
+        } else {
+          dot.style.opacity = '1';
+        }
+      }
+
+      window.setTimeout(function () {
+        root.removeAttribute('data-chart-animating');
+      }, 2300);
     }
-    window.addEventListener('pageshow', function (e) {
-      if (e.persisted) replayHeroChart();
+
+    var gridResizeTimer;
+    function onLayout() {
+      syncHeroGrid();
+    }
+
+    function boot() {
+      window.requestAnimationFrame(function () {
+        syncHeroGrid();
+        startHeroChart();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    window.addEventListener('pageshow', boot);
+    window.addEventListener('resize', function () {
+      window.clearTimeout(gridResizeTimer);
+      gridResizeTimer = window.setTimeout(onLayout, 120);
     });
+    if (typeof document.fonts !== 'undefined' && document.fonts.ready) {
+      document.fonts.ready.then(onLayout);
+    }
   })();
 </script>

@@ -1,13 +1,16 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import HomeHero from '../components/HomeHero.astro';
-import HomePage from '../components/HomePage';
+import HomeTools from '../components/HomeTools.astro';
+import HomeNews from '../components/HomeNews';
+import forexNews from '../data/forex-news.json';
 import '../components/home.css';
 ---
 
 <AppLayout title="ATCS Tools Hub">
   <div class="home-page container">
     <HomeHero />
-    <HomePage client:only="react" />
+    <HomeNews client:load items={forexNews.items} updatedAt={forexNews.updatedAt} />
+    <HomeTools />
   </div>
 </AppLayout>

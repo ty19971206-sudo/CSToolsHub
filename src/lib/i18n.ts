@@ -65,6 +65,8 @@ export const homeTranslations = {
   zh: {
     badge: 'ATCS',
     title: 'Tools Hub',
+    titleLead: 'Tools ',
+    titleHub: 'Hub',
     subtitle: '',
     orderTools: '📌 查单工具',
     fundTools: '💰 资金管理',
@@ -89,6 +91,8 @@ export const homeTranslations = {
   en: {
     badge: 'ATCS',
     title: 'Tools Hub',
+    titleLead: 'Tools ',
+    titleHub: 'Hub',
     subtitle: '',
     orderTools: '📌 Order Inquiry Tools',
     fundTools: '💰 Fund Management',

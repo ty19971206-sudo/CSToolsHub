@@ -4,7 +4,7 @@ import '../styles/effects.css';
 import '../styles/hero-chart.css';
 import '../styles/perf.css';
 import '../styles/layout.css';
-import AppShell from '../components/AppShell';
+import AppShellHeader from '../components/AppShellHeader.astro';
 
 interface Props {
   title?: string;
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { title = 'ATCS Tools', fullHeight = false } = Astro.props;
+const shellClass = fullHeight ? 'shell shell-full' : 'shell';
 ---
 
 <!doctype html>
@@ -42,8 +43,14 @@ const { title = 'ATCS Tools', fullHeight = false } = Astro.props;
     />
   </head>
   <body>
-    <AppShell client:load fullHeight={fullHeight}>
-      <slot />
-    </AppShell>
+    <div class={shellClass}>
+      <div class="page-ambient" aria-hidden="true">
+        <div class="page-ambient-spot"></div>
+      </div>
+      <AppShellHeader />
+      <main class="shell-main">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>

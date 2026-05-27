@@ -1,0 +1,90 @@
+---
+import { homeTranslations, navTranslations } from '../lib/i18n';
+
+const zh = homeTranslations.zh;
+const en = homeTranslations.en;
+const quizZh = navTranslations.zh.quizCategories;
+const quizEn = navTranslations.en.quizCategories;
+---
+
+<section class="tools-section-panel tools-zone">
+  <h2 class="section-title section-title-glow">
+    <span class="i18n-zh">{zh.orderTools}</span><span class="i18n-en">{en.orderTools}</span>
+  </h2>
+  <div class="tools-grid">
+    <a class="card tilt-card tool-card tool-card--blue" href="/tools/mailcraft/">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap"><span class="card-icon">✉️</span></div>
+      <h3><span class="i18n-zh">{zh.cards.mail.title}</span><span class="i18n-en">{en.cards.mail.title}</span></h3>
+      <p><span class="i18n-zh">{zh.cards.mail.desc}</span><span class="i18n-en">{en.cards.mail.desc}</span></p>
+      <span class="tool-card__cta" aria-hidden="true">→</span>
+    </a>
+    <a class="card tilt-card tool-card tool-card--blue" href="/tools/mt4tp/">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap"><span class="card-icon">📊</span></div>
+      <h3><span class="i18n-zh">{zh.cards.mt4.title}</span><span class="i18n-en">{en.cards.mt4.title}</span></h3>
+      <p><span class="i18n-zh">{zh.cards.mt4.desc}</span><span class="i18n-en">{en.cards.mt4.desc}</span></p>
+      <span class="tool-card__cta" aria-hidden="true">→</span>
+    </a>
+    <a class="card tilt-card tool-card tool-card--blue" href="/tools/mt5tp/">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap"><span class="card-icon">📈</span></div>
+      <h3><span class="i18n-zh">{zh.cards.mt5.title}</span><span class="i18n-en">{en.cards.mt5.title}</span></h3>
+      <p><span class="i18n-zh">{zh.cards.mt5.desc}</span><span class="i18n-en">{en.cards.mt5.desc}</span></p>
+      <span class="tool-card__cta" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="tools-section-panel tools-zone tools-zone--fund">
+  <h2 class="section-title section-title-glow">
+    <span class="i18n-zh">{zh.fundTools}</span><span class="i18n-en">{en.fundTools}</span>
+  </h2>
+  <div class="tools-grid">
+    <a class="card tilt-card tool-card tool-card--amber" href="/tools/mucredit/">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap"><span class="card-icon">📟</span></div>
+      <h3><span class="i18n-zh">{zh.cards.mu.title}</span><span class="i18n-en">{en.cards.mu.title}</span></h3>
+      <p><span class="i18n-zh">{zh.cards.mu.desc}</span><span class="i18n-en">{en.cards.mu.desc}</span></p>
+      <span class="tool-card__cta" aria-hidden="true">→</span>
+    </a>
+    <a class="card tilt-card tool-card tool-card--amber" href="/tools/gmcalc/">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap"><span class="card-icon">🧮</span></div>
+      <h3><span class="i18n-zh">{zh.cards.gm.title}</span><span class="i18n-en">{en.cards.gm.title}</span></h3>
+      <p><span class="i18n-zh">{zh.cards.gm.desc}</span><span class="i18n-en">{en.cards.gm.desc}</span></p>
+      <span class="tool-card__cta" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="tools-section-panel tools-zone tools-zone--quiz">
+  <h2 class="section-title section-title-glow">
+    <span class="i18n-zh">{zh.quizSection}</span><span class="i18n-en">{en.quizSection}</span>
+  </h2>
+  <div class="tools-grid">
+    <div class="card card-wide tool-card tool-card--quiz">
+      <span class="tool-card__accent" aria-hidden="true"></span>
+      <div class="tool-card__icon-wrap tool-card__icon-wrap--lg"><span class="card-icon">📝</span></div>
+      <h3><span class="i18n-zh">{zh.quizCardTitle}</span><span class="i18n-en">{en.quizCardTitle}</span></h3>
+      <p><span class="i18n-zh">{zh.quizCardDesc}</span><span class="i18n-en">{en.quizCardDesc}</span></p>
+      <div class="quiz-subgrid">
+        {
+          quizZh.map((cat, i) => (
+            <a class="quiz-item" href={`/tools/quiz/${cat.slug}/`}>
+              <span class="quiz-item__icon">{cat.icon}</span>
+              <span class="quiz-item__label">
+                <span class="i18n-zh">{cat.label}</span>
+                <span class="i18n-en">{quizEn[i].label}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<p class="footer-note">
+  <span class="i18n-zh">{zh.footer}</span><span class="i18n-en">{en.footer}</span>
+</p>

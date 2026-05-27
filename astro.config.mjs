@@ -5,7 +5,9 @@ export default defineConfig({
   integrations: [react()],
   output: 'static',
   site: 'https://cstools-hub.netlify.app',
-  prefetch: false,
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
   build: {
     format: 'directory',
   },
