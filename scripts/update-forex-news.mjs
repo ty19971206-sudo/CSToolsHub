@@ -96,17 +96,12 @@ function impactSummary(title) {
       en: 'When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.',
     };
   }
-  return {
-    zh: '消息可能改变风险偏好与美元方向，需关注相关货币对波动及已用保证金变化。',
-    en: 'This headline may shift risk sentiment and USD direction; watch pair volatility and used-margin changes.',
-  };
+  return { zh: '', en: '' };
 }
 
 function makeSummary(description, title) {
   const base = description && description.length > 20 ? description : title;
-  const cleaned = base.replace(/\s+/g, ' ').trim();
-  if (cleaned.length <= 180) return cleaned;
-  return `${cleaned.slice(0, 177)}...`;
+  return base.replace(/\s+/g, ' ').trim();
 }
 
 function detectLang(text) {
@@ -117,10 +112,12 @@ async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const DEEPLX_CHUNK = 1200;
+
 async function deeplxTranslate(text, targetLang) {
   if (!DEEPLX_URL || !text?.trim()) return null;
   const payload = {
-    text: text.slice(0, 1200),
+    text,
     source_lang: 'auto',
     target_lang: targetLang,
   };
@@ -144,6 +141,25 @@ async function deeplxTranslate(text, targetLang) {
     }
   }
   throw lastErr;
+}
+
+async function deeplxTranslateLong(text, targetLang) {
+  if (!text?.trim()) return null;
+  if (text.length <= DEEPLX_CHUNK) return deeplxTranslate(text, targetLang);
+
+  const parts = [];
+  let rest = text;
+  while (rest.length > 0) {
+    let chunk = rest.slice(0, DEEPLX_CHUNK);
+    if (rest.length > DEEPLX_CHUNK) {
+      const sentenceEnd = Math.max(chunk.lastIndexOf('. '), chunk.lastIndexOf('。'));
+      if (sentenceEnd > DEEPLX_CHUNK * 0.4) chunk = chunk.slice(0, sentenceEnd + 1);
+    }
+    const translated = (await deeplxTranslate(chunk.trim(), targetLang)) || chunk.trim();
+    parts.push(translated);
+    rest = rest.slice(chunk.length).trim();
+  }
+  return parts.join(' ');
 }
 
 async function fetchFeed(url) {
@@ -187,8 +203,8 @@ async function main() {
         // Optional DeepLX translation (if DEEPLX_URL is provided)
         if (DEEPLX_URL) {
           try {
-            if (!summaryZh) summaryZh = await deeplxTranslate(summary, 'ZH');
-            if (!summaryEn) summaryEn = await deeplxTranslate(summary, 'EN');
+            if (!summaryZh) summaryZh = await deeplxTranslateLong(summary, 'ZH');
+            if (!summaryEn) summaryEn = await deeplxTranslateLong(summary, 'EN');
           } catch (e) {
             console.warn('[news] DeepLX translate failed, fallback to original summary');
             console.warn(String(e));

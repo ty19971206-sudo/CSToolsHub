@@ -57,6 +57,7 @@ export default function HomePage() {
             {t.newsUpdatedAt}: {fmtDateTime(updatedAt)}
           </span>
         </div>
+        <p className="news-disclaimer">{t.newsDisclaimer}</p>
         {newsItems.length === 0 ? (
           <div className="card card-wide">
             <p>{t.newsEmpty}</p>
@@ -65,19 +66,25 @@ export default function HomePage() {
           <div className="news-grid">
             {newsItems.map((item) => (
               <article key={item.url} className="card news-card">
-                <h3>
-                  <a href={item.url} target="_blank" rel="noreferrer">
-                    {item.title}
-                  </a>
-                </h3>
-                <p className="news-meta">
-                  {item.source} · {fmtDateTime(item.publishedAt)}
-                </p>
-                <p className="news-summary">
-                  <strong>{t.newsSummary}: </strong>
-                  {lang === 'zh' ? (item.summaryZh ?? item.summary) : (item.summaryEn ?? item.summary)}
-                </p>
-                <p className="news-impact">{lang === 'zh' ? item.impactZh : item.impactEn}</p>
+                <div className="news-card-head">
+                  <h3>
+                    <a href={item.url} target="_blank" rel="noreferrer">
+                      {item.title}
+                    </a>
+                  </h3>
+                  <p className="news-meta">
+                    {item.source} · {fmtDateTime(item.publishedAt)}
+                  </p>
+                </div>
+                <div className="news-card-body">
+                  <p className="news-summary">
+                    <strong>{t.newsSummary}: </strong>
+                    {lang === 'zh' ? (item.summaryZh ?? item.summary) : (item.summaryEn ?? item.summary)}
+                  </p>
+                  {(lang === 'zh' ? item.impactZh : item.impactEn)?.trim() ? (
+                    <p className="news-impact">{lang === 'zh' ? item.impactZh : item.impactEn}</p>
+                  ) : null}
+                </div>
               </article>
             ))}
           </div>

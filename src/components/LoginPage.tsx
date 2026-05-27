@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { isAuthRequired } from '../lib/auth';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase/client';
 import './login.css';
 
@@ -7,6 +8,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthRequired()) window.location.replace('/');
+  }, []);
+
+  if (!isAuthRequired()) {
+    return (
+      <div className="login-page">
+        <div className="login-card">
+          <p>正在返回首页…</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isSupabaseConfigured()) {
     return (

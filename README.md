@@ -18,7 +18,9 @@ Copy `.env.example` to `.env` and set:
 - `PUBLIC_SUPABASE_URL`
 - `PUBLIC_SUPABASE_ANON_KEY`
 
-Without Supabase variables, the app runs in **offline mode** (local quiz bank, no login gate).
+Without Supabase variables, the app runs in **offline mode** (local quiz bank).
+
+Login is **disabled by default** (public access). To require sign-in again, set `PUBLIC_AUTH_REQUIRED=true` in Netlify env (and keep Supabase variables configured).
 
 ## Build
 
@@ -69,7 +71,7 @@ If `summaryZh` and `summaryEn` in `forex-news.json` are identical English text, 
 | `/tools/gmcalc/` | CN margin & position calculator |
 | `/tools/quiz/:slug/` | Knowledge quiz |
 | `/tools/admin/quiz/` | Quiz DB import (editor/admin) |
-| `/login/` | Supabase auth |
+| `/login/` | Supabase auth (only when `PUBLIC_AUTH_REQUIRED=true`) |
 
 Legacy HTML files are archived under `archive/legacy/`.
 

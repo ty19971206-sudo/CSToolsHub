@@ -72,6 +72,8 @@ export const homeTranslations = {
     newsSection: '📰 每日金融消息',
     newsUpdatedAt: '更新时间',
     newsSummary: '摘要',
+    newsDisclaimer:
+      '內容來自公開 RSS，摘要經機器翻譯，僅供內部參考；若與原文不符，請以來源連結為準。',
     newsEmpty: '今日暂无可用重大消息。',
     quizCardTitle: '选择测试类别',
     quizCardDesc: '点击下方任意主题，即可开始随机抽题测试（10题/套，支持中英文）。',
@@ -94,6 +96,8 @@ export const homeTranslations = {
     newsSection: '📰 Daily Market News',
     newsUpdatedAt: 'Updated',
     newsSummary: 'Summary',
+    newsDisclaimer:
+      'Content is from public RSS feeds. Summaries are machine-translated for internal reference only; if anything differs, follow the source link.',
     newsEmpty: 'No major items available today.',
     quizCardTitle: 'Select Quiz Category',
     quizCardDesc: 'Click any topic below to start a random 10-question test (bilingual support).',
