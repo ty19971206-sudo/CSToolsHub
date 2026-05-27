@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import AppShellHeader from './AppShellHeader';
+import AuthGate from './AuthGate';
 
 export default function AppShell({
   children,
@@ -14,7 +15,9 @@ export default function AppShell({
         <div className="page-ambient-spot" />
       </div>
       <AppShellHeader />
-      <main className="shell-main">{children}</main>
+      <main className="shell-main">
+        <AuthGate>{children}</AuthGate>
+      </main>
     </div>
   );
 }

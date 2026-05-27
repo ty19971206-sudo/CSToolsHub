@@ -1,0 +1,101 @@
+/* Hero trend chart — plays once on load, then stays (no loop) */
+.home-page .hero-visual .chart-grid {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-dasharray: 4 6;
+  stroke-width: 0.8;
+}
+
+.home-page .hero-visual .chart-line-path {
+  fill: none;
+  stroke: #7bb9ff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 280;
+  opacity: 1;
+  animation: heroDrawLineOnce 2s ease-out 1 forwards;
+}
+
+@keyframes heroDrawLineOnce {
+  0% {
+    stroke-dashoffset: 280;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.home-page .hero-visual .chart-dot-highlight {
+  fill: #ffffff;
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: heroDotOnce 2s ease-out 1 forwards;
+  animation-delay: 1.7s;
+}
+
+@keyframes heroDotOnce {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.home-page .hero-visual .chart-bar {
+  fill: rgba(255, 255, 255, 0.25);
+  opacity: 0;
+  transform-origin: bottom;
+  transform-box: fill-box;
+  animation: heroBarOnce 1.8s ease-out 1 forwards;
+}
+
+.home-page .hero-visual rect.chart-bar:nth-of-type(2) {
+  animation-delay: 0.12s;
+}
+.home-page .hero-visual rect.chart-bar:nth-of-type(3) {
+  animation-delay: 0.24s;
+}
+.home-page .hero-visual rect.chart-bar:nth-of-type(4) {
+  animation-delay: 0.36s;
+}
+.home-page .hero-visual rect.chart-bar:nth-of-type(5) {
+  animation-delay: 0.48s;
+}
+.home-page .hero-visual rect.chart-bar:nth-of-type(6) {
+  animation-delay: 0.6s;
+}
+
+@keyframes heroBarOnce {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-visual .chart-line-path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .home-page .hero-visual .chart-bar {
+    opacity: 1;
+    transform: scaleY(1);
+    animation: none;
+  }
+  .home-page .hero-visual .chart-dot-highlight {
+    opacity: 1;
+    transform: scale(1);
+    animation: none;
+  }
+}

@@ -18,88 +18,18 @@
   overflow: hidden;
 }
 
-.page-ambient::before,
-.page-ambient::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
-}
-
-.page-ambient::before {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(91, 143, 212, 0.35), transparent 70%);
-  top: -80px;
-  left: -60px;
-  animation: ambientDrift1 18s ease-in-out infinite alternate;
-}
-
-.page-ambient::after {
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle, rgba(59, 95, 138, 0.28), transparent 70%);
-  bottom: -100px;
-  right: -40px;
-  animation: ambientDrift2 22s ease-in-out infinite alternate;
-}
-
-.page-ambient-spot {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(147, 197, 253, 0.2), transparent 70%);
-  filter: blur(60px);
-  top: 40%;
-  left: 55%;
-  animation: ambientDrift3 15s ease-in-out infinite alternate;
-}
-
-@keyframes ambientDrift1 {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(40px, 30px);
-  }
-}
-
-@keyframes ambientDrift2 {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(-30px, -25px);
-  }
-}
-
-@keyframes ambientDrift3 {
-  from {
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    transform: translate(-20px, 35px) scale(1.08);
-  }
-}
-
 .tools-section-panel {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg, 28px);
   padding: 8px 8px 24px;
   margin-bottom: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 24px rgba(30, 58, 95, 0.04);
 }
 
 .surface-glass {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--blur-md));
-  -webkit-backdrop-filter: blur(var(--blur-md));
 }
 
 .hover-lift {
@@ -176,10 +106,7 @@
 
   .hero-aurora-layer,
   .hero-light-sweep,
-  .hero-spark,
-  .chart-line-path,
-  .chart-bar,
-  .chart-dot-highlight {
+  .hero-spark {
     animation: none !important;
   }
 

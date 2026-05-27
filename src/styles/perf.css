@@ -1,0 +1,18 @@
+/* Low-overhead defaults: no continuous GPU work site-wide */
+
+.page-ambient {
+  display: none;
+}
+
+html[data-tab-hidden='true'] * {
+  animation-play-state: paused !important;
+}
+
+.surface-glass,
+.tools-section-panel,
+.gm-page .calculator-container,
+.mu-page .calculator-container,
+.app-header {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

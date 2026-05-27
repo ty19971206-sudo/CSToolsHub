@@ -14,6 +14,7 @@ export const navTranslations = {
     },
     fundOptions: {
       'MU Credit': 'MU 信用额计算器',
+      'CN GM Calc': 'CN保證金及倉位計算器',
     },
     quizCategories: [
       { key: 'Industry Terminology', slug: 'industry-terminology', label: '行业术语', icon: '📚' },
@@ -41,6 +42,7 @@ export const navTranslations = {
     },
     fundOptions: {
       'MU Credit': 'MU Credit',
+      'CN GM Calc': 'CN Margin & Position Calculator',
     },
     quizCategories: [
       { key: 'Industry Terminology', slug: 'industry-terminology', label: 'Industry Terminology', icon: '📚' },
@@ -67,6 +69,10 @@ export const homeTranslations = {
     orderTools: '📌 查单工具',
     fundTools: '💰 资金管理',
     quizSection: '📚 知识测试',
+    newsSection: '📰 每日金融消息',
+    newsUpdatedAt: '更新时间',
+    newsSummary: '摘要',
+    newsEmpty: '今日暂无可用重大消息。',
     quizCardTitle: '选择测试类别',
     quizCardDesc: '点击下方任意主题，即可开始随机抽题测试（10题/套，支持中英文）。',
     footer: '⚡ 提示：您也可以使用顶部导航栏的下拉菜单快速切换工具。',
@@ -75,6 +81,7 @@ export const homeTranslations = {
       mt4: { title: 'MT4 TP', desc: 'MT4 止盈滑点查询。' },
       mt5: { title: 'MT5 TP', desc: 'MT5 止盈滑点查询。' },
       mu: { title: 'MU 信用额度计算器', desc: '信用额与仓位计算器。' },
+      gm: { title: 'CN保證金及倉位計算器', desc: '多订单保证金、盈亏与预付款比例计算。' },
     },
   },
   en: {
@@ -84,6 +91,10 @@ export const homeTranslations = {
     orderTools: '📌 Order Inquiry Tools',
     fundTools: '💰 Fund Management',
     quizSection: '📚 Knowledge Quiz',
+    newsSection: '📰 Daily Market News',
+    newsUpdatedAt: 'Updated',
+    newsSummary: 'Summary',
+    newsEmpty: 'No major items available today.',
     quizCardTitle: 'Select Quiz Category',
     quizCardDesc: 'Click any topic below to start a random 10-question test (bilingual support).',
     footer: '⚡ Tip: You can also use the dropdown menus in the top navigation bar.',
@@ -92,6 +103,10 @@ export const homeTranslations = {
       mt4: { title: 'MT4 TP', desc: 'Take-Profit Slippage Lookup Tool for MT4.' },
       mt5: { title: 'MT5 TP', desc: 'Take-Profit Slippage Lookup Tool for MT5.' },
       mu: { title: 'MU Credit', desc: 'Credit and position Calculator.' },
+      gm: {
+        title: 'CN Margin & Position Calculator',
+        desc: 'Multi-order margin, P&L and margin level.',
+      },
     },
   },
 } as const;

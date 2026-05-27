@@ -1,9 +1,10 @@
 ---
 import '../styles/tokens.css';
 import '../styles/effects.css';
+import '../styles/hero-chart.css';
+import '../styles/perf.css';
 import '../styles/layout.css';
 import AppShell from '../components/AppShell';
-import AuthGate from '../components/AuthGate';
 
 interface Props {
   title?: string;
@@ -19,6 +20,21 @@ const { title = 'ATCS Tools', fullHeight = false } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <script is:inline>
+      (function () {
+        try {
+          var v = localStorage.getItem('atcs_global_lang');
+          window.__ATCS_LANG = v === 'en' ? 'en' : 'zh';
+          document.documentElement.lang = window.__ATCS_LANG === 'zh' ? 'zh-CN' : 'en';
+        } catch (e) {
+          window.__ATCS_LANG = 'zh';
+        }
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) document.documentElement.setAttribute('data-tab-hidden', 'true');
+          else document.documentElement.removeAttribute('data-tab-hidden');
+        });
+      })();
+    </script>
     <link
       rel="icon"
       type="image/svg+xml"
@@ -27,9 +43,7 @@ const { title = 'ATCS Tools', fullHeight = false } = Astro.props;
   </head>
   <body>
     <AppShell client:load fullHeight={fullHeight}>
-      <AuthGate client:load>
-        <slot />
-      </AuthGate>
+      <slot />
     </AppShell>
   </body>
 </html>

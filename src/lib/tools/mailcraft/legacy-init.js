@@ -1,3 +1,0 @@
-export function initMailCraft(root){ 
-            const SHARED_FIELD_KEYS = ['order_id', 'client_name', 'your_name', 'account_number'];
- ...

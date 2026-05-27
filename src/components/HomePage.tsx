@@ -1,7 +1,5 @@
-import { lazy, Suspense, type CSSProperties } from 'react';
-
-const HeroCanvas = lazy(() => import('./HeroCanvas'));
 import { useLang } from '../lib/lang-context';
+import forexNews from '../data/forex-news.json';
 import { homeTranslations, navTranslations } from '../lib/i18n';
 import './home.css';
 
@@ -9,22 +7,21 @@ export default function HomePage() {
   const { lang } = useLang();
   const t = homeTranslations[lang];
   const quizCats = navTranslations[lang].quizCategories;
+  const newsItems = forexNews.items ?? [];
+  const updatedAt = forexNews.updatedAt;
+
+  const fmtDateTime = (iso: string) =>
+    new Intl.DateTimeFormat(lang === 'zh' ? 'zh-CN' : 'en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(iso));
 
   return (
     <div className="home-page container">
-      <div className="hero">
-        <Suspense fallback={null}>
-          <HeroCanvas />
-        </Suspense>
-        <div className="hero-aurora" aria-hidden="true">
-          <div className="hero-aurora-layer layer1" />
-          <div className="hero-aurora-layer layer2" />
-          <div className="hero-aurora-layer layer3" />
-        </div>
-        <div className="hero-spark" style={{ top: '22%', left: '18%', '--dur': '6s', '--delay': '0s' } as CSSProperties} />
-        <div className="hero-spark" style={{ top: '58%', left: '70%', '--dur': '7s', '--delay': '1.2s' } as CSSProperties} />
-        <div className="hero-spark" style={{ top: '38%', left: '45%', '--dur': '8s', '--delay': '2.5s' } as CSSProperties} />
-        <div className="hero-light-sweep" aria-hidden="true" />
+      <div className="hero hero-lite">
         <div className="hero-content">
           <div className="hero-badge">
             <span className="hero-badge-dot" />
@@ -52,6 +49,40 @@ export default function HomePage() {
           </svg>
         </div>
       </div>
+
+      <section className="tools-section-panel news-panel">
+        <div className="news-header">
+          <h2 className="section-title section-title-glow">{t.newsSection}</h2>
+          <span className="news-updated">
+            {t.newsUpdatedAt}: {fmtDateTime(updatedAt)}
+          </span>
+        </div>
+        {newsItems.length === 0 ? (
+          <div className="card card-wide">
+            <p>{t.newsEmpty}</p>
+          </div>
+        ) : (
+          <div className="news-grid">
+            {newsItems.map((item) => (
+              <article key={item.url} className="card news-card">
+                <h3>
+                  <a href={item.url} target="_blank" rel="noreferrer">
+                    {item.title}
+                  </a>
+                </h3>
+                <p className="news-meta">
+                  {item.source} · {fmtDateTime(item.publishedAt)}
+                </p>
+                <p className="news-summary">
+                  <strong>{t.newsSummary}: </strong>
+                  {lang === 'zh' ? (item.summaryZh ?? item.summary) : (item.summaryEn ?? item.summary)}
+                </p>
+                <p className="news-impact">{lang === 'zh' ? item.impactZh : item.impactEn}</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className="tools-section-panel">
         <h2 className="section-title section-title-glow">{t.orderTools}</h2>
@@ -81,6 +112,11 @@ export default function HomePage() {
             <div className="card-icon">📟</div>
             <h3>{t.cards.mu.title}</h3>
             <p>{t.cards.mu.desc}</p>
+          </a>
+          <a className="card tilt-card" href="/tools/gmcalc/">
+            <div className="card-icon">🧮</div>
+            <h3>{t.cards.gm.title}</h3>
+            <p>{t.cards.gm.desc}</p>
           </a>
         </div>
       </section>
