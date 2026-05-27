@@ -6,7 +6,7 @@ export default defineConfig({
   output: 'static',
   site: 'https://cstools-hub.netlify.app',
   prefetch: {
-    defaultStrategy: 'hover',
+    defaultStrategy: 'tap',
   },
   build: {
     format: 'directory',

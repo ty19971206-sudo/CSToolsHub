@@ -28,5 +28,5 @@ const categoryKey = cat.key as QuizCategoryKey;
 ---
 
 <AppLayout title={`Quiz: ${cat.label} | ATCS Tools`}>
-  <QuizApp client:load category={categoryKey} categorySlug={slug!} />
+  <QuizApp client:idle category={categoryKey} categorySlug={slug!} />
 </AppLayout>
