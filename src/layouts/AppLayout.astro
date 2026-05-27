@@ -42,7 +42,7 @@ const { title = 'ATCS Tools', fullHeight = false } = Astro.props;
     />
   </head>
   <body>
-    <AppShell client:idle fullHeight={fullHeight}>
+    <AppShell client:load fullHeight={fullHeight}>
       <slot />
     </AppShell>
   </body>

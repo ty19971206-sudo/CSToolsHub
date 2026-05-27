@@ -55,8 +55,6 @@
 .home-page .hero-visual .chart-bar {
   fill: rgba(255, 255, 255, 0.25);
   opacity: 0;
-  transform-origin: bottom;
-  transform-box: fill-box;
 }
 
 .home-page .hero-visual.is-chart-ready .chart-bar {
@@ -85,11 +83,9 @@
 @keyframes heroBarOnce {
   from {
     opacity: 0;
-    transform: scaleY(0.3);
   }
   to {
     opacity: 1;
-    transform: scaleY(1);
   }
 }
 
@@ -104,10 +100,19 @@
   }
   .home-page .hero-visual .chart-bar {
     opacity: 1;
-    transform: scaleY(1);
   }
   .home-page .hero-visual .chart-dot-highlight {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Hero i18n — driven by <html lang> set in AppLayout inline script */
+html[lang='en'] .home-page .i18n-zh {
+  display: none;
+}
+
+html[lang='zh-CN'] .home-page .i18n-en,
+html:not([lang='en']) .home-page .i18n-en {
+  display: none;
 }

@@ -1,7 +1,7 @@
 import { useLang } from '../lib/lang-context';
 import forexNews from '../data/forex-news.json';
+import { formatNewsDateTime } from '../lib/format';
 import { homeTranslations, navTranslations } from '../lib/i18n';
-import HeroChart from './HeroChart';
 import './home.css';
 
 export default function HomePage() {
@@ -11,36 +11,13 @@ export default function HomePage() {
   const newsItems = forexNews.items ?? [];
   const updatedAt = forexNews.updatedAt;
 
-  const fmtDateTime = (iso: string) =>
-    new Intl.DateTimeFormat(lang === 'zh' ? 'zh-CN' : 'en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(iso));
-
   return (
-    <div className="home-page container">
-      <div className="hero hero-lite">
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span className="hero-badge-dot" />
-            <span>{t.badge}</span>
-          </div>
-          <h1>
-            <span className="title-icon">🛠️</span> {t.title}
-          </h1>
-          {t.subtitle && <p>{t.subtitle}</p>}
-        </div>
-        <HeroChart />
-      </div>
-
+    <>
       <section className="tools-section-panel news-panel">
         <div className="news-header">
           <h2 className="section-title section-title-glow">{t.newsSection}</h2>
           <span className="news-updated">
-            {t.newsUpdatedAt}: {fmtDateTime(updatedAt)}
+            {t.newsUpdatedAt}: {formatNewsDateTime(updatedAt, lang)}
           </span>
         </div>
         <p className="news-disclaimer">{t.newsDisclaimer}</p>
@@ -59,7 +36,7 @@ export default function HomePage() {
                     </a>
                   </h3>
                   <p className="news-meta">
-                    {item.source} · {fmtDateTime(item.publishedAt)}
+                    {item.source} · {formatNewsDateTime(item.publishedAt, lang)}
                   </p>
                 </div>
                 <div className="news-card-body">
@@ -133,6 +110,6 @@ export default function HomePage() {
       </section>
 
       <p className="footer-note">{t.footer}</p>
-    </div>
+    </>
   );
 }

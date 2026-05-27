@@ -57,7 +57,7 @@ export default function AppShellHeader() {
   }
 
   return (
-    <header className="app-header" ref={headerRef}>
+    <header className="app-header" ref={headerRef} suppressHydrationWarning>
       <div className="header-left">
         <a className="logo-area" href="/">
           <div className="logo-icon">AT</div>

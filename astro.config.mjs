@@ -5,9 +5,7 @@ export default defineConfig({
   integrations: [react()],
   output: 'static',
   site: 'https://cstools-hub.netlify.app',
-  prefetch: {
-    defaultStrategy: 'tap',
-  },
+  prefetch: false,
   build: {
     format: 'directory',
   },

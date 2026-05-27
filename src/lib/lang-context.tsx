@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, startTransition, type ReactNode } from 'react';
+import { useCallback, useSyncExternalStore, type ReactNode } from 'react';
 import { getStoredLang, setStoredLang, type Lang } from './i18n';
 
 declare global {
@@ -12,27 +12,21 @@ function readLang(): Lang {
   return getStoredLang();
 }
 
+function subscribe(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener('atcs-lang-change', handler);
+  return () => window.removeEventListener('atcs-lang-change', handler);
+}
+
 /** Event-based lang hook — works across separate Astro client islands. */
 export function useLang() {
-  const [lang, setLangState] = useState<Lang>(readLang);
-
-  useEffect(() => {
-    const onChange = (e: Event) => {
-      const detail = (e as CustomEvent<Lang>).detail;
-      if (detail) setLangState(detail);
-    };
-    window.addEventListener('atcs-lang-change', onChange);
-    return () => window.removeEventListener('atcs-lang-change', onChange);
-  }, []);
+  const lang = useSyncExternalStore(subscribe, readLang, () => 'zh');
 
   const setLang = useCallback((next: Lang) => {
     setStoredLang(next);
     document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
     window.__ATCS_LANG = next;
-    startTransition(() => {
-      setLangState(next);
-      window.dispatchEvent(new CustomEvent('atcs-lang-change', { detail: next }));
-    });
+    window.dispatchEvent(new CustomEvent('atcs-lang-change', { detail: next }));
   }, []);
 
   return { lang, setLang };

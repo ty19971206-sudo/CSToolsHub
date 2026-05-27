@@ -4,7 +4,8 @@
   display: none;
 }
 
-html[data-tab-hidden='true'] * {
+html[data-tab-hidden='true'] .hero-badge-dot,
+html[data-tab-hidden='true'] .page-ambient {
   animation-play-state: paused !important;
 }
 
