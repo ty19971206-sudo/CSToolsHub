@@ -115,7 +115,8 @@ export default function MuCreditApp() {
     }
   }
 
-  const conditionalClass = `field-group conditional-input ${conditionalAnim}`;
+  const conditionalStateClass = conditionalAnim === 'active' ? 'expand-anim-enter' : 'expand-anim-exit';
+  const conditionalClass = `field-group conditional-input expand-anim ${conditionalAnim} ${conditionalStateClass}`;
 
   return (
     <div className="mu-page">

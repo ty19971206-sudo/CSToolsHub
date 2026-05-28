@@ -92,6 +92,23 @@
   border-radius: 1px;
 }
 
+/* Shared expand/collapse visibility states for animated sections. */
+.expand-anim {
+  overflow: hidden;
+}
+
+.expand-anim-enter {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 120px;
+}
+
+.expand-anim-exit {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-ambient::before,
   .page-ambient::after,
@@ -115,5 +132,20 @@
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .expand-anim-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    max-height: none !important;
+  }
+
+  .expand-anim-exit {
+    animation: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+    max-height: 0 !important;
   }
 }

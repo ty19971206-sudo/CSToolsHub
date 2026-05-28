@@ -363,8 +363,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mu-page .calculator-container,
-  .mu-page .conditional-input.active,
-  .mu-page .conditional-input.hiding,
   .mu-page .result-value.updated,
   .mu-page input.error-shake,
   .mu-page .error-message.show {
