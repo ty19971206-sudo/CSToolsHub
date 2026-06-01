@@ -211,6 +211,16 @@ export default function GmCalcApp() {
     hasProductTable,
   ]);
 
+  const resetCalculator = useCallback(() => {
+    const defaultLeverage: AccountLeverage = '400';
+    setBalance('10000');
+    setAccountLeverage(defaultLeverage);
+    setEquityTier(defaultEquityTier(defaultLeverage));
+    setCalcModes(DEFAULT_MODES);
+    setOrders([emptyOrder()]);
+    setResult(null);
+  }, []);
+
   const applyProducts = useCallback((list: ProductSpec[]) => {
     setProducts(list);
     saveStoredProducts(list);
@@ -621,6 +631,13 @@ export default function GmCalcApp() {
               <div className="gm-calc-bar">
                 <button type="button" className="button-primary gm-calc-btn" onClick={runCalculate}>
                   {t.calcBtn}
+                </button>
+                <button
+                  type="button"
+                  className="button-secondary gm-calc-btn gm-reset-btn"
+                  onClick={resetCalculator}
+                >
+                  {t.resetBtn}
                 </button>
               </div>
             <div className="result-section result-section-sticky">

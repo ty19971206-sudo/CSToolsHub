@@ -115,6 +115,22 @@ export default function MuCreditApp() {
     }
   }
 
+  function onReset() {
+    setClosingPL('');
+    setFloatingPL('');
+    setHistoricalWithdrawal('');
+    setBalance('');
+    setCredit('');
+    setWithdrawalAmount('');
+    setHasPosition(true);
+    setUsedMargin('');
+    setError(null);
+    setResult(undefined);
+    setShakeField(null);
+    setConditionalVisible(true);
+    setConditionalAnim('active');
+  }
+
   const conditionalStateClass = conditionalAnim === 'active' ? 'expand-anim-enter' : 'expand-anim-exit';
   const conditionalClass = `field-group conditional-input expand-anim ${conditionalAnim} ${conditionalStateClass}`;
 
@@ -222,9 +238,14 @@ export default function MuCreditApp() {
                 </div>
               </>
             )}
-            <button type="button" className="button" onClick={onCalculate}>
-              <span>🔍</span> {t.calcBtn}
-            </button>
+            <div className="action-row">
+              <button type="button" className="button" onClick={onCalculate}>
+                <span>🔍</span> {t.calcBtn}
+              </button>
+              <button type="button" className="button button-secondary" onClick={onReset}>
+                <span>↺</span> {t.resetBtn}
+              </button>
+            </div>
             <div className="rule-note" dangerouslySetInnerHTML={{ __html: t.ruleNote }} />
           </div>
           <div className="result-section">

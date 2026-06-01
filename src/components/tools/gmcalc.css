@@ -926,6 +926,10 @@
   font-size: 1rem;
 }
 
+.gm-page .gm-reset-btn {
+  min-height: 40px;
+}
+
 .gm-page .summary-pending {
   margin: 8px 0 4px;
   font-style: italic;

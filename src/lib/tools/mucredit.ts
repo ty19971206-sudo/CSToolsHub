@@ -13,6 +13,7 @@ export const mucreditI18n = {
     hasPosition: '📌 账户当前有持仓（需校验预付款比例/净值）',
     usedMargin: '已用保证金 (Used Margin)',
     calcBtn: '计算出金结果',
+    resetBtn: '重置参数',
     ruleNote:
       '<strong>ⓘ 核心规则：</strong> 可取资金 = Closing P&L + Floating P&L - 历史出金。<br>若可取资金 ≤ 0，出金多少即扣等额信用额（不超现有信用额）。<br>若出金后余额 ≤ 10 USD → 触发清钱，信用额全部清零。<br>持仓时：若保证金 > 0，预付款比例 < 100% 拒绝；若保证金 = 0，则处理后净值 ≤ 0 时拒绝。',
     resultTitle: '📋 计算结果',
@@ -57,6 +58,7 @@ export const mucreditI18n = {
     hasPosition: '📌 Has open positions (Margin level/Equity check)',
     usedMargin: 'Used Margin',
     calcBtn: 'Calculate Withdrawal',
+    resetBtn: 'Reset Inputs',
     ruleNote:
       '<strong>ⓘ Core Rules:</strong> Available = Closing P&L + Floating P&L - Historical Withdrawal.<br>If Available ≤ 0, withdrawal amount is deducted from credit (up to available credit).<br>If post-withdrawal balance ≤ 10 USD → Clearance, credit fully deducted.<br>With positions: if Margin > 0, reject if Margin Level < 100%; if Margin = 0, reject if Equity ≤ 0.',
     resultTitle: '📋 Calculation Result',
