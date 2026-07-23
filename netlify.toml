@@ -2,6 +2,21 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  # Keep site open without login gate unless explicitly enabled in Netlify UI later
+  PUBLIC_AUTH_REQUIRED = "false"
+
+# Hide login while auth gate is off
+[[redirects]]
+  from = "/login"
+  to = "/"
+  status = 302
+
+[[redirects]]
+  from = "/login/"
+  to = "/"
+  status = 302
+
 [[redirects]]
   from = "/index.html"
   to = "/"

@@ -9,7 +9,7 @@ export async function signOut() {
   const supabase = getSupabase();
   if (!supabase) return;
   await supabase.auth.signOut();
-  window.location.href = '/login/';
+  window.location.href = '/';
 }
 
 export async function sendPasswordResetEmail(email: string) {
