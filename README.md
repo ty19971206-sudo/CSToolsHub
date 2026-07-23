@@ -1,6 +1,6 @@
 # CSToolsHub (ATCS Tools)
 
-Internal tools hub built with **Astro + React islands**, deployed on **Netlify**, with **Supabase** for auth and quiz data (Phase 2).
+Internal tools hub built with **Astro + React islands**, deployed on **Netlify**, with **Supabase** for auth, quiz, mail templates, and product specs.
 
 ## Development
 
@@ -17,10 +17,9 @@ Copy `.env.example` to `.env` and set:
 
 - `PUBLIC_SUPABASE_URL`
 - `PUBLIC_SUPABASE_ANON_KEY`
+- `PUBLIC_AUTH_REQUIRED=true` — requires email/password login for all pages (except `/login`)
 
-Without Supabase variables, the app runs in **offline mode** (local quiz bank).
-
-Login is **disabled by default** (public access). To require sign-in again, set `PUBLIC_AUTH_REQUIRED=true` in Netlify env (and keep Supabase variables configured).
+Without Supabase variables, calculators and quiz fall back to **bundled local data**; login gate still requires Supabase when auth is enabled.
 
 ## Build
 
@@ -33,47 +32,32 @@ Netlify uses `netlify.toml` (`publish = dist`, `build = npm run build`).
 
 ## Deploy via GitHub Repository (Netlify)
 
-This project is ready for **GitHub-connected deployment** (recommended), not manual Drag & Drop.
-
 1. Push this repository to GitHub.
-2. In Netlify: **Add new site** -> **Import an existing project** -> pick this repo.
-3. Build settings (Netlify should auto-detect from `netlify.toml`):
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-4. Add required environment variables in Netlify Site settings:
+2. In Netlify: import the repo; build `npm run build`, publish `dist`.
+3. Set environment variables:
    - `PUBLIC_SUPABASE_URL`
    - `PUBLIC_SUPABASE_ANON_KEY`
-5. Trigger first deploy.
+   - `PUBLIC_AUTH_REQUIRED=true`
 
-After this, every push to the connected branch auto-deploys.
+### Homepage forex news
 
-### Homepage forex news (bilingual summaries)
-
-Netlify **only runs** `npm run build`; it does **not** call DeepLX. Chinese/English summaries are produced in GitHub Actions (`.github/workflows/daily-forex-news.yml`) and committed to `src/data/forex-news.json`.
-
-After the first GitHub deploy, run the workflow once manually:
-
-1. GitHub repo → **Actions** → **Daily Forex News Update** → **Run workflow**
-2. Wait for the job to finish and push `chore: update daily forex news`
-3. Netlify will redeploy automatically from that commit
-
-If `summaryZh` and `summaryEn` in `forex-news.json` are identical English text, the workflow has not run successfully yet (or DeepLX was unavailable).
+Summaries are updated by GitHub Actions (`.github/workflows/daily-forex-news.yml`) into `src/data/forex-news.json`.
 
 ## Routes
 
 | Path | Tool |
 |------|------|
 | `/` | Home |
-| `/tools/mailcraft/` | MailCraft |
+| `/login/` | Supabase sign-in (forgot password on same page) |
+| `/auth/reset-password/` | Set new password from email reset link |
+| `/tools/mailcraft/` | MailCraft (DB templates when configured) |
 | `/tools/mt4tp/` | MT4 TP slippage |
 | `/tools/mt5tp/` | MT5 TP slippage |
 | `/tools/mucredit/` | MU Credit calculator |
-| `/tools/gmcalc/` | CN margin & position calculator |
+| `/tools/gmcalc/` | CN margin & position calculator (DB product_specs) |
 | `/tools/quiz/:slug/` | Knowledge quiz |
-| `/tools/admin/quiz/` | Quiz DB import (editor/admin) |
-| `/login/` | Supabase auth (only when `PUBLIC_AUTH_REQUIRED=true`) |
-
-Legacy HTML files are archived under `archive/legacy/`.
+| `/tools/quiz/history/` | My quiz scores |
+| `/tools/admin/` | Admin hub (editor/admin) |
 
 ## Supabase
 
@@ -83,7 +67,20 @@ Apply migrations:
 supabase db push
 ```
 
-Promote a user to `editor` or `admin` in `profiles.role`, then use **Admin Quiz** to import questions from `src/lib/tools/quiz/bank.ts`.
+1. Create users in Supabase Auth (email/password). Add your site URL and `/auth/reset-password/` to **Auth → URL Configuration → Redirect URLs** for password reset emails.
+2. Signed-in users: header account menu → change password or sign out.
+3. Set `profiles.role` to `editor` or `admin` for staff who manage content.
+4. In **Admin** (`/tools/admin/`):
+   - Import quiz from `bank.ts`
+   - Seed mail templates from MailCraft built-ins
+   - Seed GmCalc `product_specs` from `defaultProducts.ts`
+5. **Admin user creation** (optional): set `SUPABASE_SERVICE_ROLE_KEY` in Netlify (not in client). Use **用户管理** tab or `npx netlify dev` locally.
+
+Apply new migrations after pull:
+
+```bash
+supabase db push
+```
 
 ## Verify quiz bank
 

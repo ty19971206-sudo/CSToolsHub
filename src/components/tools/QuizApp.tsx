@@ -2,7 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLang } from '../../lib/lang-context';
 import { buildQuizBank } from '../../lib/tools/quiz/bank';
 import { categoryNames } from '../../lib/tools/quiz/categories';
-import { fetchQuizQuestionsBySlug, saveQuizAttempt } from '../../lib/tools/quiz/supabase-quiz';
+import {
+  fetchQuizQuestionsBySlug,
+  saveQuizAttempt,
+  upsertQuizCertification,
+  type QuizAnswerLogItem,
+} from '../../lib/tools/quiz/supabase-quiz';
 import { isSupabaseConfigured } from '../../lib/supabase/client';
 import type { QuizCategoryKey, QuizQuestion } from '../../lib/tools/quiz/types';
 import './quiz.css';
@@ -71,6 +76,7 @@ export default function QuizApp({ category, categorySlug }: Props) {
   >([]);
   const [deckKey, setDeckKey] = useState(0);
   const [scoreReveal, setScoreReveal] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error' | 'skipped'>('idle');
 
   const title = categoryNames[category]
     ? lang === 'zh'
@@ -88,6 +94,7 @@ export default function QuizApp({ category, categorySlug }: Props) {
       setScore(null);
       setDetails([]);
       setScoreReveal(false);
+      setSaveStatus('idle');
       setDeckKey((k) => k + 1);
     },
     [qSet.length],
@@ -114,14 +121,19 @@ export default function QuizApp({ category, categorySlug }: Props) {
   function evaluate() {
     let correctCount = 0;
     const detailRows: typeof details = [];
-    const answerLog: { index: number; selected: number | null; correct: number }[] = [];
+    const answerLog: QuizAnswerLogItem[] = [];
     questionIndices.forEach((origIdx, i) => {
       const localized = getLocalized(origIdx);
-      const correctIdx = qSet[origIdx]?.correct ?? 0;
+      const q = qSet[origIdx];
+      const correctIdx = q?.correct ?? 0;
       const userAns = answers[i];
       const ok = userAns === correctIdx;
       if (ok) correctCount++;
-      answerLog.push({ index: origIdx, selected: userAns, correct: correctIdx });
+      const questionId =
+        q && 'id' in q && q.id
+          ? q.id
+          : `local:${category}:${origIdx}`;
+      answerLog.push({ questionId, selected: userAns, correct: correctIdx });
       detailRows.push({
         q: localized.text,
         correct: localized.options[correctIdx] ?? '',
@@ -136,12 +148,24 @@ export default function QuizApp({ category, categorySlug }: Props) {
     setScoreReveal(true);
     window.setTimeout(() => setScoreReveal(false), 500);
     if (source === 'db' && categoryId) {
-      void saveQuizAttempt({
-        categoryId,
-        score: correctCount,
-        total: questionIndices.length,
-        answers: answerLog,
-      });
+      void (async () => {
+        const res = await saveQuizAttempt({
+          categoryId,
+          score: correctCount,
+          total: questionIndices.length,
+          answers: answerLog,
+        });
+        setSaveStatus(res.ok ? 'saved' : 'error');
+        if (res.ok) {
+          await upsertQuizCertification({
+            categoryId,
+            score: correctCount,
+            total: questionIndices.length,
+          });
+        }
+      })();
+    } else {
+      setSaveStatus('skipped');
     }
   }
 
@@ -170,6 +194,9 @@ export default function QuizApp({ category, categorySlug }: Props) {
               ? `正确率 ${Math.round(((score ?? 0) / questionIndices.length) * 100)}%`
               : '请答完所有题目后提交',
             needAll: '请答完所有题目后再提交',
+            saved: '成绩已记录',
+            saveError: '成绩保存失败',
+            certified: '已通过本类测验',
           }
         : {
             sub: '10 random questions | Random from bank',
@@ -181,6 +208,9 @@ export default function QuizApp({ category, categorySlug }: Props) {
               ? `Accuracy ${Math.round(((score ?? 0) / questionIndices.length) * 100)}%`
               : 'Answer all questions to submit',
             needAll: 'Please answer all questions before submitting',
+            saved: 'Score saved',
+            saveError: 'Failed to save score',
+            certified: 'Category passed',
           },
     [lang, submitted, score, questionIndices.length],
   );
@@ -249,6 +279,18 @@ export default function QuizApp({ category, categorySlug }: Props) {
                 {submitted ? `${score}/${questionIndices.length}` : `?/${questionIndices.length}`}
               </div>
               <div className="score-detail">{labels.scoreTip}</div>
+              {submitted && saveStatus === 'saved' && (
+                <p className="quiz-save-hint">{labels.saved}</p>
+              )}
+              {submitted && saveStatus === 'error' && (
+                <p className="quiz-save-hint quiz-save-hint--error">{labels.saveError}</p>
+              )}
+              {submitted &&
+                score !== null &&
+                questionIndices.length > 0 &&
+                score / questionIndices.length >= 0.8 && (
+                  <p className="quiz-cert-badge">{labels.certified}</p>
+                )}
             </div>
             <div className="action-buttons">
               <button

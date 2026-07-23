@@ -10,6 +10,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const outPath = path.join(root, 'src/data/forex-news.json');
 const DEEPLX_URL = process.env.DEEPLX_URL || '';
+/** Optional: "mymemory" when DeepLX is unavailable (GitHub Actions shared IPs often get 429). */
+const TRANSLATE_FALLBACK = (process.env.TRANSLATE_FALLBACK || '').toLowerCase();
 
 const FEEDS = [
   'https://www.forexlive.com/feed/news',
@@ -101,7 +103,14 @@ function impactSummary(title) {
 
 function makeSummary(description, title) {
   const base = description && description.length > 20 ? description : title;
-  return base.replace(/\s+/g, ' ').trim();
+  const cleaned = base.replace(/\s+/g, ' ').trim();
+  const max = 360;
+  if (cleaned.length <= max) return cleaned;
+  const cut = cleaned.slice(0, max);
+  const sentenceEnd = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('。'), cut.lastIndexOf('! '));
+  if (sentenceEnd > max * 0.5) return cut.slice(0, sentenceEnd + 1).trim();
+  const space = cut.lastIndexOf(' ');
+  return `${(space > 40 ? cut.slice(0, space) : cut).trim()}…`;
 }
 
 function detectLang(text) {
@@ -112,7 +121,8 @@ async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const DEEPLX_CHUNK = 1200;
+/** DeepL oneshot free path caps ~1500 chars; keep chunks under that. */
+const DEEPLX_CHUNK = 1400;
 
 async function deeplxTranslate(text, targetLang) {
   if (!DEEPLX_URL || !text?.trim()) return null;
@@ -122,13 +132,18 @@ async function deeplxTranslate(text, targetLang) {
     target_lang: targetLang,
   };
   let lastErr;
-  for (let attempt = 0; attempt < 3; attempt += 1) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
     try {
       const res = await fetch(DEEPLX_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      if (res.status === 429) {
+        lastErr = new Error('DeepLX 429');
+        await sleep(2000 * (attempt + 1) ** 2);
+        continue;
+      }
       if (!res.ok) throw new Error(`DeepLX ${res.status}`);
       const data = await res.json();
       const out = (data?.data || data?.translation || data?.text || '').toString().trim();
@@ -137,10 +152,62 @@ async function deeplxTranslate(text, targetLang) {
       throw new Error('DeepLX empty response');
     } catch (err) {
       lastErr = err;
-      await sleep(400 * (attempt + 1));
+      await sleep(500 * (attempt + 1));
     }
   }
   throw lastErr;
+}
+
+async function mymemoryTranslate(text, targetLang) {
+  if (!text?.trim()) return null;
+  const pair =
+    targetLang === 'ZH' || targetLang === 'ZH-CN' || targetLang === 'ZH-HANS'
+      ? 'en|zh-CN'
+      : targetLang === 'EN'
+        ? 'zh-CN|en'
+        : null;
+  if (!pair) return null;
+
+  // MyMemory free tier: keep queries short
+  const q = text.slice(0, 450);
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=${pair}`;
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const res = await fetch(url, {
+        headers: { Accept: 'application/json', 'User-Agent': 'ATCS-NewsBot/1.0' },
+      });
+      if (res.status === 429) {
+        lastErr = new Error('MyMemory 429');
+        await sleep(1500 * (attempt + 1));
+        continue;
+      }
+      if (!res.ok) throw new Error(`MyMemory ${res.status}`);
+      const data = await res.json();
+      const out = (data?.responseData?.translatedText || '').toString().trim();
+      if (!out || /MYMEMORY WARNING/i.test(out)) throw new Error('MyMemory quota or empty');
+      return out;
+    } catch (err) {
+      lastErr = err;
+      await sleep(800 * (attempt + 1));
+    }
+  }
+  throw lastErr;
+}
+
+async function translateText(text, targetLang) {
+  if (!text?.trim()) return null;
+  if (DEEPLX_URL) {
+    try {
+      return await deeplxTranslateLong(text, targetLang);
+    } catch (err) {
+      console.warn(`[news] DeepLX failed (${String(err)}); trying fallback=${TRANSLATE_FALLBACK || 'none'}`);
+    }
+  }
+  if (TRANSLATE_FALLBACK === 'mymemory') {
+    return mymemoryTranslate(text, targetLang);
+  }
+  return null;
 }
 
 async function deeplxTranslateLong(text, targetLang) {
@@ -158,6 +225,7 @@ async function deeplxTranslateLong(text, targetLang) {
     const translated = (await deeplxTranslate(chunk.trim(), targetLang)) || chunk.trim();
     parts.push(translated);
     rest = rest.slice(chunk.length).trim();
+    await sleep(800);
   }
   return parts.join(' ');
 }
@@ -194,22 +262,6 @@ async function main() {
         if (!item.title || !item.link || score < 1) continue;
         const impact = impactSummary(item.title);
         const summary = makeSummary(item.description, item.title);
-        const impactZh = impact.zh;
-        const impactEn = impact.en;
-
-        let summaryZh = detectLang(summary) === 'ZH' ? summary : null;
-        let summaryEn = detectLang(summary) === 'EN' ? summary : null;
-
-        // Optional DeepLX translation (if DEEPLX_URL is provided)
-        if (DEEPLX_URL) {
-          try {
-            if (!summaryZh) summaryZh = await deeplxTranslateLong(summary, 'ZH');
-            if (!summaryEn) summaryEn = await deeplxTranslateLong(summary, 'EN');
-          } catch (e) {
-            console.warn('[news] DeepLX translate failed, fallback to original summary');
-            console.warn(String(e));
-          }
-        }
 
         candidates.push({
           title: item.title,
@@ -217,10 +269,8 @@ async function main() {
           source: item.source || new URL(url).hostname,
           publishedAt: toISODate(item.pubDate),
           summary,
-          summaryZh: summaryZh || summary,
-          summaryEn: summaryEn || summary,
-          impactZh,
-          impactEn,
+          impactZh: impact.zh,
+          impactEn: impact.en,
           score,
         });
       }
@@ -244,7 +294,36 @@ async function main() {
     return new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf();
   });
 
-  const top = unique.slice(0, 3).map(({ score, ...rest }) => rest);
+  // Translate only the final top items — avoids burning DeepLX/MyMemory quota on rejects.
+  const picked = unique.slice(0, 3);
+  const top = [];
+  for (const row of picked) {
+    let summaryZh = detectLang(row.summary) === 'ZH' ? row.summary : null;
+    let summaryEn = detectLang(row.summary) === 'EN' ? row.summary : null;
+
+    if (DEEPLX_URL || TRANSLATE_FALLBACK) {
+      try {
+        if (!summaryZh) {
+          summaryZh = await translateText(row.summary, 'ZH');
+          await sleep(800);
+        }
+        if (!summaryEn) {
+          summaryEn = await translateText(row.summary, 'EN');
+          await sleep(800);
+        }
+      } catch (e) {
+        console.warn('[news] translate failed, keep original summary');
+        console.warn(String(e));
+      }
+    }
+
+    const { score: _score, ...rest } = row;
+    top.push({
+      ...rest,
+      summaryZh: summaryZh || row.summary,
+      summaryEn: summaryEn || row.summary,
+    });
+  }
 
   const next =
     top.length > 0

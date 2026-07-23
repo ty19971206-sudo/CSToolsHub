@@ -20,6 +20,19 @@
   gap: 16px;
 }
 
+.login-card-top {
+  display: flex;
+  justify-content: flex-end;
+  margin: -8px -8px 0 0;
+}
+
+.login-subtitle {
+  margin: -8px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  line-height: 1.45;
+}
+
 .login-card h1 {
   font-size: 1.4rem;
 }

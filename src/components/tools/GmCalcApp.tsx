@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, startTransition } from 'react';
+import { useCallback, useEffect, useMemo, useState, startTransition } from 'react';
 import { useLang } from '../../lib/lang-context';
 import { defaultProducts } from '../../lib/tools/gmcalc/defaultProducts';
 import { computePortfolio } from '../../lib/tools/gmcalc/engine';
@@ -20,7 +20,9 @@ import {
 import { equityTierLabel, fxRequirementLabel, gmcalcI18n } from '../../lib/tools/gmcalc/i18n';
 import { previewFxRequirements } from '../../lib/tools/gmcalc/fxRequirement';
 import { parseMarkdownSpec, parseSheetRows, parseTableSpec } from '../../lib/tools/gmcalc/parseSpec';
+import { fetchProductSpecs } from '../../lib/tools/gmcalc/supabase-products';
 import { loadStoredProducts, saveStoredProducts } from '../../lib/tools/gmcalc/storage';
+import { isSupabaseConfigured } from '../../lib/supabase/client';
 import type {
   AccountLeverage,
   CalcModes,
@@ -176,6 +178,16 @@ export default function GmCalcApp() {
   const [orders, setOrders] = useState<OrderInput[]>(() => [emptyOrder()]);
   const [result, setResult] = useState<PortfolioResult | null>(null);
 
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    void fetchProductSpecs().then((specs) => {
+      if (specs?.length) {
+        setProducts(specs);
+        saveStoredProducts(specs);
+      }
+    });
+  }, []);
+
   const productMap = useMemo(() => new Map(products.map((p) => [p.code, p])), [products]);
   const specCodes = useMemo(() => products.map((p) => p.code), [products]);
   const hasProductTable = products.length > 0;
@@ -223,7 +235,7 @@ export default function GmCalcApp() {
 
   const applyProducts = useCallback((list: ProductSpec[]) => {
     setProducts(list);
-    saveStoredProducts(list);
+    if (!isSupabaseConfigured()) saveStoredProducts(list);
   }, []);
 
   function toggleCalcMode(key: keyof CalcModes) {

@@ -1,10 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { getStoredLang } from '../../lib/i18n';
+import { fetchProfile, isEditorOrAdmin } from '../../lib/profile';
+import {
+  fetchMailTemplates,
+  upsertMailTemplate,
+  type MailTemplateFields,
+} from '../../lib/tools/mailcraft/supabase-mail';
+import { isSupabaseConfigured } from '../../lib/supabase/client';
 import './mailcraft/mailcraft.css';
 
 declare global {
   interface Window {
     initMailCraft?: () => void;
+    __MAILCRAFT_DB_TEMPLATES?: Record<string, MailTemplateFields>;
+    __MAILCRAFT_CAN_EDIT_DB?: boolean;
+    __mailcraftSaveTemplate?: (
+      sceneId: string,
+      payload: MailTemplateFields,
+    ) => Promise<void>;
+    getMailcraftBundledTemplatesForSeed?: () => Record<string, MailTemplateFields>;
   }
 }
 
@@ -32,41 +46,66 @@ export default function MailCraftApp() {
     if (initStarted.current) return;
     initStarted.current = true;
 
-    const boot = () => {
+    const boot = async () => {
       const lang = getStoredLang();
       window.__ATCS_LANG = lang;
+
+      if (isSupabaseConfigured()) {
+        const templates = await fetchMailTemplates();
+        if (templates) window.__MAILCRAFT_DB_TEMPLATES = templates;
+        const profile = await fetchProfile();
+        window.__MAILCRAFT_CAN_EDIT_DB = profile ? isEditorOrAdmin(profile.role) : false;
+        window.__mailcraftSaveTemplate = async (sceneId, payload) => {
+          await upsertMailTemplate(sceneId, payload);
+          window.__MAILCRAFT_DB_TEMPLATES = {
+            ...(window.__MAILCRAFT_DB_TEMPLATES ?? {}),
+            [sceneId]: payload,
+          };
+        };
+      }
 
       const finishInit = () => {
         window.dispatchEvent(new CustomEvent('atcs-lang-change', { detail: lang }));
         setReady(true);
       };
 
-      if (window.initMailCraft) {
-        window.initMailCraft();
-        finishInit();
-        return;
-      }
-      const existing = document.querySelector('script[data-mailcraft-init]');
-      if (existing) return;
+      const loadScript = () =>
+        new Promise<void>((resolve, reject) => {
+          if (window.initMailCraft) {
+            window.initMailCraft();
+            resolve();
+            return;
+          }
+          const existing = document.querySelector('script[data-mailcraft-init]');
+          if (existing) {
+            existing.addEventListener('load', () => resolve());
+            return;
+          }
+          const s = document.createElement('script');
+          s.src = '/legacy/mailcraft-init.js';
+          s.async = true;
+          s.dataset.mailcraftInit = 'true';
+          s.onload = () => {
+            try {
+              window.initMailCraft?.();
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          };
+          s.onerror = () => reject(new Error('无法加载 MailCraft 脚本'));
+          document.body.appendChild(s);
+        });
 
-      const s = document.createElement('script');
-      s.src = '/legacy/mailcraft-init.js';
-      s.async = true;
-      s.dataset.mailcraftInit = 'true';
-      s.onload = () => {
-        try {
-          window.initMailCraft?.();
-          finishInit();
-        } catch (err) {
-          setLoadError(err instanceof Error ? err.message : 'MailCraft 初始化失败');
-        }
-      };
-      s.onerror = () => setLoadError('无法加载 MailCraft 脚本，请刷新页面重试');
-      document.body.appendChild(s);
+      try {
+        await loadScript();
+        finishInit();
+      } catch (err) {
+        setLoadError(err instanceof Error ? err.message : 'MailCraft 初始化失败');
+      }
     };
 
-    const id = requestAnimationFrame(boot);
-    return () => cancelAnimationFrame(id);
+    void boot();
   }, []);
 
   return (

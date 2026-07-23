@@ -1,5 +1,7 @@
 import { useCallback, useSyncExternalStore, type ReactNode } from 'react';
 import { getStoredLang, setStoredLang, type Lang } from './i18n';
+import { updateProfileLang } from './profile';
+import { isSupabaseConfigured } from './supabase/client';
 
 declare global {
   interface Window {
@@ -27,6 +29,7 @@ export function useLang() {
     document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
     window.__ATCS_LANG = next;
     window.dispatchEvent(new CustomEvent('atcs-lang-change', { detail: next }));
+    if (isSupabaseConfigured()) void updateProfileLang(next);
   }, []);
 
   return { lang, setLang };

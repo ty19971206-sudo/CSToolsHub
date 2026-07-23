@@ -19,39 +19,64 @@ jobs:
     runs-on: ubuntu-latest
     services:
       deeplx:
+        # latest includes oneshot free path; GHA shared IPs may still 429 upstream
         image: ghcr.io/owo-network/deeplx:latest
         ports:
           - 1188:1188
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Wait for DeepLX
+      - name: Wait for DeepLX container
+        id: deeplx
         run: |
+          # Only confirm the process accepts TCP — do NOT spam /translate (burns quota → 429).
           for i in $(seq 1 30); do
-            if curl -sf -X POST http://127.0.0.1:1188/translate \
-              -H 'Content-Type: application/json' \
-              -d '{"text":"ping","source_lang":"EN","target_lang":"ZH"}' >/dev/null; then
-              echo "DeepLX ready"
+            if curl -s -o /dev/null --connect-timeout 2 http://127.0.0.1:1188/ || \
+               curl -s -o /dev/null --connect-timeout 2 -X POST http://127.0.0.1:1188/translate \
+                 -H 'Content-Type: application/json' \
+                 -d '{"text":"x","source_lang":"EN","target_lang":"ZH"}'; then
+              echo "DeepLX port is reachable"
+              echo "up=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             sleep 2
           done
-          echo "DeepLX did not become ready in time"
-          exit 1
+          echo "DeepLX not reachable — will use MyMemory fallback only"
+          echo "up=false" >> "$GITHUB_OUTPUT"
+
+      - name: Probe DeepLX translate (single try)
+        id: translate_ok
+        run: |
+          if [ "${{ steps.deeplx.outputs.up }}" != "true" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # One probe only. On 429, skip DeepLX entirely (MyMemory fallback in script).
+          code=$(curl -s -o /tmp/deeplx-probe.json -w '%{http_code}' --max-time 20 \
+            -X POST http://127.0.0.1:1188/translate \
+            -H 'Content-Type: application/json' \
+            -d '{"text":"hello","source_lang":"EN","target_lang":"ZH"}' || echo 000)
+          echo "DeepLX probe HTTP $code"
+          if [ "$code" = "200" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Update forex news data
         env:
-          DEEPLX_URL: http://127.0.0.1:1188/translate
+          DEEPLX_URL: ${{ steps.translate_ok.outputs.ok == 'true' && 'http://127.0.0.1:1188/translate' || '' }}
+          TRANSLATE_FALLBACK: mymemory
         run: npm run news:update
 
       - name: Commit updated news data
@@ -65,4 +90,3 @@ jobs:
           git add src/data/forex-news.json
           git commit -m "chore: update daily forex news"
           git push
-

@@ -4,7 +4,10 @@ import '../styles/effects.css';
 import '../styles/hero-chart.css';
 import '../styles/perf.css';
 import '../styles/layout.css';
+import '../components/user-menu.css';
 import AppShellHeader from '../components/AppShellHeader.astro';
+import AuthGate from '../components/AuthGate';
+import ProfileLangBootstrap from '../components/ProfileLangBootstrap';
 
 interface Props {
   title?: string;
@@ -43,14 +46,17 @@ const shellClass = fullHeight ? 'shell shell-full' : 'shell';
     />
   </head>
   <body>
-    <div class={shellClass}>
-      <div class="page-ambient" aria-hidden="true">
-        <div class="page-ambient-spot"></div>
+    <AuthGate client:load>
+      <ProfileLangBootstrap client:load />
+      <div class={shellClass}>
+        <div class="page-ambient" aria-hidden="true">
+          <div class="page-ambient-spot"></div>
+        </div>
+        <AppShellHeader />
+        <main class="shell-main">
+          <slot />
+        </main>
       </div>
-      <AppShellHeader />
-      <main class="shell-main">
-        <slot />
-      </main>
-    </div>
+    </AuthGate>
   </body>
 </html>

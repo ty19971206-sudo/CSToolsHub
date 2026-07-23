@@ -227,6 +227,15 @@ window.addEventListener('atcs-lang-change', (e) => { if (e.detail && e.detail !=
 
             let sceneConfigs = JSON.parse(JSON.stringify(defaultSceneConfigs));
 
+            function applyDbTemplates() {
+                const db = window.__MAILCRAFT_DB_TEMPLATES;
+                if (!db) return;
+                Object.keys(db).forEach(function (sceneId) {
+                    const scene = sceneConfigs.find(function (s) { return s.id === sceneId; });
+                    if (scene && db[sceneId]) Object.assign(scene, db[sceneId]);
+                });
+            }
+
             function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
             function saveCalculatorToLocal() { try { localStorage.setItem('mailcraft_calculator_data', JSON.stringify(calculatorData)); } catch(e) {} }
             function loadCalculatorFromLocal() { try { const data = localStorage.getItem('mailcraft_calculator_data'); if(data) calculatorData = JSON.parse(data); } catch(e) {} }
@@ -750,14 +759,29 @@ window.addEventListener('atcs-lang-change', (e) => { if (e.detail && e.detail !=
                     overlay.innerHTML = `<div class="template-editor-dialog"><h3>${t('editTemplateTitle')}</h3><p style="font-size:11px;">${t('editTemplatePlaceholderHint')}</p><label>${t('editTemplateEnSubj')}</label><textarea id="eSubjEn">${escapeHtml(scene.subjectEn)}</textarea><label>${t('editTemplateEnBody')}</label><textarea id="eBodyEn">${escapeHtml(scene.bodyEn)}</textarea><label>${t('editTemplateZhSubj')}</label><textarea id="eSubjZh">${escapeHtml(scene.subjectZh)}</textarea><label>${t('editTemplateZhBody')}</label><textarea id="eBodyZh">${escapeHtml(scene.bodyZh)}</textarea><div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;"><button class="btn btn-ghost" id="resetTplBtn">${t('editTemplateResetBtn')}</button><button class="btn btn-primary" id="saveTplBtn">${t('editTemplateSaveBtn')}</button><button class="btn btn-secondary" id="closeEditorBtn">${t('editTemplateCancelBtn')}</button></div></div>`;
                     document.body.appendChild(overlay);
                     document.getElementById('closeEditorBtn').onclick = () => overlay.remove();
-                    document.getElementById('saveTplBtn').onclick = () => { scene.subjectEn = document.getElementById('eSubjEn').value; scene.bodyEn = document.getElementById('eBodyEn').value; scene.subjectZh = document.getElementById('eSubjZh').value; scene.bodyZh = document.getElementById('eBodyZh').value; updatePreview(); overlay.remove(); showToast(t('toastTemplateSaved')); saveFullState(); };
+                    document.getElementById('saveTplBtn').onclick = () => {
+                        scene.subjectEn = document.getElementById('eSubjEn').value;
+                        scene.bodyEn = document.getElementById('eBodyEn').value;
+                        scene.subjectZh = document.getElementById('eSubjZh').value;
+                        scene.bodyZh = document.getElementById('eBodyZh').value;
+                        updatePreview();
+                        overlay.remove();
+                        const payload = { subjectEn: scene.subjectEn, bodyEn: scene.bodyEn, subjectZh: scene.subjectZh, bodyZh: scene.bodyZh };
+                        if (window.__MAILCRAFT_CAN_EDIT_DB && typeof window.__mailcraftSaveTemplate === 'function') {
+                            window.__mailcraftSaveTemplate(scene.id, payload).then(function () { showToast(t('toastTemplateSaved')); }).catch(function () { showToast('保存到数据库失败', true); saveFullState(); });
+                        } else {
+                            showToast(t('toastTemplateSaved'));
+                            saveFullState();
+                        }
+                    };
                     document.getElementById('resetTplBtn').onclick = () => { if (confirm(t('confirmResetTemplate'))) { const def = defaultSceneConfigs.find(s => s.id === scene.id); if (def) { scene.subjectEn = def.subjectEn; scene.bodyEn = def.bodyEn; scene.subjectZh = def.subjectZh; scene.bodyZh = def.bodyZh; updatePreview(); overlay.remove(); showToast(t('toastTemplateReset')); saveFullState(); } } };
                 });
             }
 
             function initialize() {
+                applyDbTemplates();
                 loadCalculatorFromLocal();
-                applySavedTemplates();
+                if (!window.__MAILCRAFT_DB_TEMPLATES) applySavedTemplates();
                 const saved = loadFullState();
                 if (saved?.sceneId && sceneConfigs.some(s => s.id === saved.sceneId)) {
                     currentSceneId = saved.sceneId;
@@ -799,6 +823,8 @@ window.initMailCraft = function initMailCraft() {
   if (!document.getElementById('sceneGrid')) return;
   currentLang = readAtcsLang();
   window.__ATCS_LANG = currentLang;
+  sceneConfigs = JSON.parse(JSON.stringify(defaultSceneConfigs));
+  applyDbTemplates();
   if (window.__mailcraftInitialized) {
     buildSceneCards();
     buildParamsForm(getCurrentSceneConfig());
@@ -809,5 +835,22 @@ window.initMailCraft = function initMailCraft() {
   }
   window.__mailcraftInitialized = true;
   initialize();
+};
+
+window.getMailcraftBundledTemplatesForSeed = function () {
+  var staticIds = ['stop_loss_slippage', 'margin_call_stop_out'];
+  var out = {};
+  staticIds.forEach(function (id) {
+    var s = defaultSceneConfigs.find(function (x) { return x.id === id; });
+    if (s) {
+      out[id] = {
+        subjectEn: s.subjectEn,
+        subjectZh: s.subjectZh,
+        bodyEn: s.bodyEn,
+        bodyZh: s.bodyZh,
+      };
+    }
+  });
+  return out;
 };
 })();

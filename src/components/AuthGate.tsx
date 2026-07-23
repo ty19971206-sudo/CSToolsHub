@@ -1,20 +1,25 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { isAuthRequired } from '../lib/auth';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase/client';
+import AuthConfigError from './AuthConfigError';
 
 export default function AuthGate({ children }: { children: ReactNode }) {
   if (!isAuthRequired()) return <>{children}</>;
+  if (!isSupabaseConfigured()) return <AuthConfigError />;
   return <AuthGateWhenRequired>{children}</AuthGateWhenRequired>;
 }
 
 function AuthGateWhenRequired({ children }: { children: ReactNode }) {
-  const [authed, setAuthed] = useState(!isSupabaseConfigured());
+  const [authed, setAuthed] = useState(false);
 
   useEffect(() => {
     const supabase = getSupabase();
     if (!supabase) return;
 
-    if (window.location.pathname.startsWith('/login')) {
+    if (
+      window.location.pathname.startsWith('/login') ||
+      window.location.pathname.startsWith('/auth/')
+    ) {
       setAuthed(true);
       return;
     }
@@ -40,7 +45,6 @@ function AuthGateWhenRequired({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  if (!isSupabaseConfigured()) return <>{children}</>;
   if (!authed) return null;
   return <>{children}</>;
 }
