@@ -1,6 +1,28 @@
 {
-  "updatedAt": "2026-07-29T04:51:44.947Z",
+  "updatedAt": "2026-07-30T04:17:49.690Z",
   "items": [
+    {
+      "title": "investingLive Americas FX news wrap 29 Jul: Fed Stands Pat, Markets Lose Ground Subtitle:",
+      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-29-jul-fed-stands-pat-markets-lose-ground-subtitle/",
+      "source": "Greg Michalowski",
+      "publishedAt": "2026-07-29T21:11:36.000Z",
+      "summary": "The Federal Reserve left interest rates unchanged as expected, but the biggest takeaway from Chair Kevin Warsh's press conference was the continued shift away from forward guidance. Rather than signaling where policy is headed, Warsh emphasized that the economy, inflation, and ultimately the bond market will determine the path of interest rates.",
+      "impactZh": "央行政策预期变化可能提升主要货币对波动，杠杆仓位的保证金与回撤压力上升。",
+      "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
+      "summaryZh": "美联储一如既往地保持利率不变，但主席凯文·沃什（ Kevin Warsh ）的新闻发布会上最大的收获是继续偏离前瞻性指引。Warsh没有发出政策走向的信号，而是强调经济、通货膨胀和最终的债券市场将决定利率的路径。",
+      "summaryEn": "The Federal Reserve left interest rates unchanged as expected, but the biggest takeaway from Chair Kevin Warsh's press conference was the continued shift away from forward guidance. Rather than signaling where policy is headed, Warsh emphasized that the economy, inflation, and ultimately the bond market will determine the path of interest rates."
+    },
+    {
+      "title": "investingLive European markets wrap: Oil climbs again as Iran rejects Oman proposal on Strait of Hormuz, FOMC meeting eyed next",
+      "url": "https://investinglive.com/news/investinglive-european-markets-wrap-oil-climbs-again-as-iran-rejects-oman-proposal-on-strait-of-hormuz-fomc-meeting-eyed-next/",
+      "source": "Justin Low",
+      "publishedAt": "2026-07-29T11:33:26.000Z",
+      "summary": "Headlines: Iran official reportedly says Oman proposal on Strait of Hormuz has no chance of success Yemen's Houthis are considering fees for ships sailing through the Red Sea - Reuters Is the U.S.",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "头条新闻：据报道，伊朗官员表示，阿曼关于霍尔木兹海峡的提议没有成功的机会也门的胡塞武装正在考虑对通过红海的船只收取费用-路透社是美国",
+      "summaryEn": "Headlines: Iran official reportedly says Oman proposal on Strait of Hormuz has no chance of success Yemen's Houthis are considering fees for ships sailing through the Red Sea - Reuters Is the U.S."
+    },
     {
       "title": "investingLive Americas FX news wrap 28 Jul: Markets Await Fed and Big Tech Results",
       "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-28-jul-markets-await-fed-and-big-tech-results/",
@@ -11,28 +33,6 @@
       "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
       "summaryZh": "美国股市格局仍在继续。下跌。纳斯达克原油期货收于79.26美元内塔尼亚胡：向特朗普证实，对修复的伊朗核设施的额外打击是不可避免的，特朗普-内塔尼亚胡会议加强了伊朗的重点美国财政部以4.473 ％的高收益率出售440亿美元的7年期债券中东调解人认为美伊在……",
       "summaryEn": "US stock pattern continues. Dow up. Nasdaq down Crude oil futures settle at $79.26 Netanyahu: Confirmed to Trump that additional strikes on rehabilitated Iranian nuclear facilities are unavoidable Trump-Netanyahu meeting reinforces Iran focus US treasury sells $44B of 7-year notes at a high yield of 4.473% Middle East mediators see U.S.–Iran deal within…"
-    },
-    {
-      "title": "investingLive European FX news wrap: Oman's proposal on Hormuz strait gets regional backing",
-      "url": "https://investinglive.com/news/investinglive-european-fx-news-wrap-oman-s-proposal-on-hormuz-strait-gets-regional-backing/",
-      "source": "Giuseppe Dellamotta",
-      "publishedAt": "2026-07-28T11:40:21.000Z",
-      "summary": "Silver pulls back as hedging ahead of crucial Fed decision offsets US-Iran ceasefire relief USD/CHF breaks the August 2025 high after reports the SNB will stay on hold until the end of 2027 QatarEnergy said to extend force majeure for European buyers FOMC meeting risks to favour the dollar this week? USD/JPY consolidates around four-decade high as traders…",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "白银回调，因美联储关键决定之前的对冲抵消了美伊停火救济美元/瑞郎突破2025年8月高点，此前有报道称，瑞士央行将搁置至2027年底。卡塔尔能源公司表示，欧洲买家将面临不可抗力， FOMC本周将面临有利于美元的风险。作为交易者，美元/日元整合约40年高点……",
-      "summaryEn": "Silver pulls back as hedging ahead of crucial Fed decision offsets US-Iran ceasefire relief USD/CHF breaks the August 2025 high after reports the SNB will stay on hold until the end of 2027 QatarEnergy said to extend force majeure for European buyers FOMC meeting risks to favour the dollar this week? USD/JPY consolidates around four-decade high as traders…"
-    },
-    {
-      "title": "investingLive Americas FX news wrap 27 Jul: Oil was down sharply but the stocks, bonds, USD did not fully follow.",
-      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-27-jul-oil-was-down-sharply-but-the-stocks-bonds-usd-did-not-fully-follow/",
-      "source": "Greg Michalowski",
-      "publishedAt": "2026-07-27T20:55:05.000Z",
-      "summary": "US stocks close the day mixed with the Dow up, S&P unchanged and the Nasdaq modestly lower. Crude oil futures settled at $82.61 US Treasury sells $70B of 5 year notes at a high yield of 4.408% Trump: On Iran, I have plenty of time Pakistani Intelligence: U.S.",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "美国股市当天收盘，道琼斯指数上涨，标准普尔保持不变，纳斯达克小幅走低。原油期货以82.61美元结算美国国债以4.408%的高收益率出售700亿美元的5年期票据特朗普：关于伊朗，我有充足的时间巴基斯坦情报：美国",
-      "summaryEn": "US stocks close the day mixed with the Dow up, S&P unchanged and the Nasdaq modestly lower. Crude oil futures settled at $82.61 US Treasury sells $70B of 5 year notes at a high yield of 4.408% Trump: On Iran, I have plenty of time Pakistani Intelligence: U.S."
     }
   ]
 }
