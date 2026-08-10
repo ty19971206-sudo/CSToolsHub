@@ -1,6 +1,17 @@
 {
-  "updatedAt": "2026-08-09T03:19:36.089Z",
+  "updatedAt": "2026-08-10T03:17:02.858Z",
   "items": [
+    {
+      "title": "Newsquawk week ahead: RBA announcement and US retail sales",
+      "url": "https://investinglive.com/news/newsquawk-week-ahead/",
+      "source": "Adam Button",
+      "publishedAt": "2026-08-09T13:34:42.000Z",
+      "summary": "Mon:&nbsp;BoJ Summary of Opinions Tue:&nbsp;RBA Announcement Wed:&nbsp;German Final Inflation (Jul), IEA OMR, OPEC MOMR, US CPI (Jul) Thu:&nbsp;Norges Bank Announcement, UK GDP (Q2), US PPI (Jul) Fri:&nbsp;EZ Employment (Q2) and GDP 2nd Estimate (Q2), US Retail Sales (Jul), US University of Michigan Prelim (Aug) BoJ Summary of Opinions (Mon): The BoJ will…",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "周一：日本央行意见摘要周二：澳联储公告周三：德国最终通胀（ 7月）、IEA OMR、OPEC MOMR、美国CPI （ 7月）周四：挪威银行公告、英国GDP （第二季度）、美国PPI （ 7月）周五： EZ Employment （第二季度）和GDP 2nd Estimate （第二季度）、美国零售销售（ 7月）、美国密歇根大学Prelim （ 8月）日本央行意见摘要（周一） ：日本央行将…",
+      "summaryEn": "Mon:&nbsp;BoJ Summary of Opinions Tue:&nbsp;RBA Announcement Wed:&nbsp;German Final Inflation (Jul), IEA OMR, OPEC MOMR, US CPI (Jul) Thu:&nbsp;Norges Bank Announcement, UK GDP (Q2), US PPI (Jul) Fri:&nbsp;EZ Employment (Q2) and GDP 2nd Estimate (Q2), US Retail Sales (Jul), US University of Michigan Prelim (Aug) BoJ Summary of Opinions (Mon): The BoJ will…"
+    },
     {
       "title": "investingLive Asia-Pacific Financial Market news: Gulf on edge as Saudi attack warning sharpens",
       "url": "https://investinglive.com/news/investinglive-asia-pacific-financial-market-news-gulf-on-edge-as-saudi-attack-warning-sharpens/",
@@ -22,17 +33,6 @@
       "impactEn": "When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.",
       "summaryZh": "Headlines: All eyes on the US jobs report now美国NFP的预测分布如何？在中东降级期间，黄金仍受到支持，但美国CPI可能会抹去特朗普所说的加息并不完全取决于Warsh ，而是取决于董事会本周事件后利率预期发生了什么变化？中国黄金购买狂潮……",
       "summaryEn": "Headlines: All eyes on the US jobs report now What is the distribution of forecasts for the US NFP? Gold stays supported amid Middle East de-escalation, but the US CPI could erase the gains Trump says a rate hike isn't completely up to Warsh, it's up to the Board How have interest rate expectations changed after this week's events? China gold buying spree…"
-    },
-    {
-      "title": "What is the distribution of forecasts for the US NFP?",
-      "url": "https://investinglive.com/news/what-is-the-distribution-of-forecasts-for-the-us-nfp/",
-      "source": "Giuseppe Dellamotta",
-      "publishedAt": "2026-08-07T07:29:47.000Z",
-      "summary": "The ranges of estimates are important in terms of market reaction because when the actual data deviates from the expectations, it creates a surprise effect. Another important input in market's reaction is the distribution of forecasts.",
-      "impactZh": "关键宏观数据超预期时，点差与滑点风险通常放大，建议降低仓位并控制杠杆。",
-      "impactEn": "When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.",
-      "summaryZh": "估计的范围在市场反应方面很重要，因为当实际数据偏离预期时，会产生惊喜效应。市场反应的另一个重要输入是预测的分布。",
-      "summaryEn": "The ranges of estimates are important in terms of market reaction because when the actual data deviates from the expectations, it creates a surprise effect. Another important input in market's reaction is the distribution of forecasts."
     }
   ]
 }
