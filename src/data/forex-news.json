@@ -1,17 +1,6 @@
 {
-  "updatedAt": "2026-08-13T03:53:29.134Z",
+  "updatedAt": "2026-08-14T03:28:41.248Z",
   "items": [
-    {
-      "title": "investingLive Americas FX news wrap 11 Aug: Stocks /yields Slip as markets await US CPI",
-      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-11-aug-stocks-yields-slip-as-markets-await-us-cpi/",
-      "source": "Greg Michalowski",
-      "publishedAt": "2026-08-11T21:08:42.000Z",
-      "summary": "U.S. markets are wrapping up Tuesday with stocks mostly lower, Treasury yields modestly lower across most of the curve, and the U.S. dollar little changed against the major currencies.",
-      "impactZh": "关键宏观数据超预期时，点差与滑点风险通常放大，建议降低仓位并控制杠杆。",
-      "impactEn": "When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.",
-      "summaryZh": "美国股市周二收盘，股价主要走低，大部分曲线上的国债收益率略有下降，美元兑主要货币几乎没有变化。",
-      "summaryEn": "U.S. markets are wrapping up Tuesday with stocks mostly lower, Treasury yields modestly lower across most of the curve, and the U.S. dollar little changed against the major currencies."
-    },
     {
       "title": "investingLive Americas FX news wrap 12 Aug: CPI as expected. USD reverses declines and closes higher",
       "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-12-aug-cpi-as-expected-usd-reverses-declines-and-closes-higher/",
@@ -24,15 +13,26 @@
       "summaryEn": "US stocks closed mixed. The Dow is lower. NASDAQ indices lead the upside charge White House Press Secretary Leavitt will be departing her role at the end of the month. Crude oil futures settle at $83.27 The US government deficit in July was the highest in any month since 2021 Canadian consumers continued spending through another challenging quarter -- RBC…"
     },
     {
-      "title": "investingLive European markets wrap: Gold stays poised, dollar tentative awaiting US CPI report",
-      "url": "https://investinglive.com/news/investinglive-european-markets-wrap-gold-stays-poised-dollar-tentative-awaiting-us-cpi-report/",
-      "source": "Justin Low",
-      "publishedAt": "2026-08-12T11:58:02.000Z",
-      "summary": "Headlines: What is the distribution of forecasts for the US CPI? What to expect from the US CPI report later today? Iran reportedly maintains that there are no discussions over ceasefire extension as the pact doesn't exist anymore USD/JPY stalls ahead of a key US CPI report; BoJ expected to raise rates in September Bitcoin Forecast Today: Why BTC Is…",
-      "impactZh": "关键宏观数据超预期时，点差与滑点风险通常放大，建议降低仓位并控制杠杆。",
-      "impactEn": "When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.",
-      "summaryZh": "标题：美国消费物价指数预测的分布情况如何？今天晚些时候的美国消费物价指数报告有什么可期待的？据报道，伊朗坚持认为，由于该协议在美国重要的CPI报告之前不再存在美元/日元停滞，因此没有关于延长停火的讨论；日本央行预计将在9月份提高利率比特币预测今天：为什么比特币是......",
-      "summaryEn": "Headlines: What is the distribution of forecasts for the US CPI? What to expect from the US CPI report later today? Iran reportedly maintains that there are no discussions over ceasefire extension as the pact doesn't exist anymore USD/JPY stalls ahead of a key US CPI report; BoJ expected to raise rates in September Bitcoin Forecast Today: Why BTC Is…"
+      "title": "investingLive Americas market news wrap: S&P 500 hits a fresh record",
+      "url": "https://investinglive.com/news/investinglive-americas-market-news-wrap-s-p-500-hits-a-fresh-record/",
+      "source": "Adam Button",
+      "publishedAt": "2026-08-13T20:08:47.000Z",
+      "summary": "US July PPI 4.7% y/y vs 4.9% expected US initial claims for the current week 209K vs 202K estimate Fed's Barkin: Still an open question on whether the FOMC needs to hike rates Fed's Hammack: Need some restraint from mon pol to bring down inflation Fed's Barkin: It's hard to know whether policy is restrictive given standard errors in models US 30 year…",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "美国7月PPI同比增长4.7% ，而本周美国初始索赔预计为20.9万，而美联储的Barkin估计为20.2万：联邦公开市场委员会是否需要加息仍是一个悬而未决的问题美联储的哈马克：需要对单一货币政策进行一些限制，以降低通胀美联储的Barkin ：鉴于美国30年模型的标准误差，很难知道政策是否具有限制性……",
+      "summaryEn": "US July PPI 4.7% y/y vs 4.9% expected US initial claims for the current week 209K vs 202K estimate Fed's Barkin: Still an open question on whether the FOMC needs to hike rates Fed's Hammack: Need some restraint from mon pol to bring down inflation Fed's Barkin: It's hard to know whether policy is restrictive given standard errors in models US 30 year…"
+    },
+    {
+      "title": "Stock Market Today: AI lead so far this week but Cisco may cool things down",
+      "url": "https://investinglive.com/news/stock-market-today-ai-lead-so-far-this-week-but-cisco-may-cool-things-down/",
+      "source": "Itai Levitan",
+      "publishedAt": "2026-08-13T09:14:34.000Z",
+      "summary": "Analysts and traders were jolly about the continued AI trade as others were thinking it's oversold. The bulls were good with AI stocks being in the green but Cisco which reported last night, temporarily broke up its all-time high but then sold off and is now over 6% down U.S.",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "分析师和交易员对持续的人工智能交易感到高兴，因为其他人认为它超卖了。多头表现良好，人工智能股处于绿色状态，但昨晚报告的思科暂时打破了历史高位，但随后被抛售，现在美国股市下跌超过6%。",
+      "summaryEn": "Analysts and traders were jolly about the continued AI trade as others were thinking it's oversold. The bulls were good with AI stocks being in the green but Cisco which reported last night, temporarily broke up its all-time high but then sold off and is now over 6% down U.S."
     }
   ]
 }
