@@ -1,27 +1,16 @@
 {
-  "updatedAt": "2026-09-16T06:41:38.862Z",
+  "updatedAt": "2026-09-17T06:03:39.888Z",
   "items": [
     {
-      "title": "investingLive European news wrap: Crypto markets sink ahead of Clarity Act vote",
-      "url": "https://investinglive.com/news/investinglive-european-news-wrap-crypto-markets-sink-ahead-of-clarity-act-vote/",
-      "source": "Giuseppe Dellamotta",
-      "publishedAt": "2026-09-15T11:35:13.000Z",
-      "summary": "Headlines: USD/INR erases all RBI intervention gains as surging oil prices weigh on the Indian Rupee Oil remains supported as supply risks intensify and diplomatic progress stalls Bill Lipschutz's scale trading strategy: Why smart traders don't go all in at once Managing Currency Exposure With OANDA’s Forex Trading Platform Zcash outperformed most…",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "头条新闻：美元/印度卢比抹去了所有RBI干预收益，因为油价飙升对印度卢比石油构成压力，供应风险加剧和外交进展阻碍了Bill Lipschutz的规模交易策略：为什么聪明的交易者不会同时全力以赴管理货币敞口OANDA的外汇交易平台Zcash的表现最出色……",
-      "summaryEn": "Headlines: USD/INR erases all RBI intervention gains as surging oil prices weigh on the Indian Rupee Oil remains supported as supply risks intensify and diplomatic progress stalls Bill Lipschutz's scale trading strategy: Why smart traders don't go all in at once Managing Currency Exposure With OANDA’s Forex Trading Platform Zcash outperformed most…"
-    },
-    {
-      "title": "investingLive Americas FX news wrap 14 Sept: It’s a Wrap: Oil tops $100 as higher yields and AI worries pressure stocks",
-      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-14-sept-it-s-a-wrap-oil-tops-100-as-higher-yields-and-ai-worries-pressure-stocks/",
-      "source": "Greg Michalowski",
-      "publishedAt": "2026-09-14T20:59:59.000Z",
-      "summary": "AI and chip stocks tumble as weekend warnings challenge the sector’s growth assumptions Trump: AI will be the greatest economic development engine in history US seeks “step-by-step” agreement with Iran citing Pakistani sources Trump: Military conflict with Iran \"will not be long\" Zelensky says Trump's deal to stop energy strikes is just a proposal Trump:…",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "随着周末警告挑战该行业的增长假设，人工智能和芯片股暴跌特朗普：人工智能将成为历史上最大的经济发展引擎美国寻求与伊朗达成“逐步”协议援引巴基斯坦消息人士特朗普：与伊朗的军事冲突“不会太久”泽伦斯基表示，特朗普停止能源罢工的协议只是特朗普的一项提议：",
-      "summaryEn": "AI and chip stocks tumble as weekend warnings challenge the sector’s growth assumptions Trump: AI will be the greatest economic development engine in history US seeks “step-by-step” agreement with Iran citing Pakistani sources Trump: Military conflict with Iran \"will not be long\" Zelensky says Trump's deal to stop energy strikes is just a proposal Trump:…"
+      "title": "investingLive Asia-Pacific market news: Fed hike fallout dominates",
+      "url": "https://investinglive.com/news/investinglive-asia-pacific-market-news-fed-hike-fallout-dominates/",
+      "source": "Eamonn Sheridan",
+      "publishedAt": "2026-09-17T03:36:34.000Z",
+      "summary": "Nikkei, Kospi gain as expected Fed hike and lower oil ease market nerves TD forecast a Federal Reserve (FOMC) rate hike in October and January Goldman ditches one and done call, now sees a second Fed hike in October Saudi crude reroute via Oman pulls oil off four month highs PBOC sets USD/ CNY central rate at 6.7580 (vs.",
+      "impactZh": "央行政策预期变化可能提升主要货币对波动，杠杆仓位的保证金与回撤压力上升。",
+      "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
+      "summaryZh": "日经指数、Kospi因预期美联储加息而上涨，油价放松市场紧张情绪道明预测美联储（ FOMC ）在10月和1月加息，高盛放弃了一次加息，现在看到10月份美联储通过阿曼第二次加息，将油价从四个月高点拉低，中国人民银行将美元/人民币中央利率定为6.7580 （相对于",
+      "summaryEn": "Nikkei, Kospi gain as expected Fed hike and lower oil ease market nerves TD forecast a Federal Reserve (FOMC) rate hike in October and January Goldman ditches one and done call, now sees a second Fed hike in October Saudi crude reroute via Oman pulls oil off four month highs PBOC sets USD/ CNY central rate at 6.7580 (vs."
     },
     {
       "title": "What are the main events for today?",
@@ -33,6 +22,17 @@
       "impactEn": "",
       "summaryZh": "欧洲会议在欧洲会议上，主要亮点是英国CPI报告。这些数据基本符合预期，服务业CPI指标略有偏差。目前，鉴于就业数据疲软和通胀溢出效应有限，英国央行有足够的理由保持利率稳定并保持紧缩偏好。",
       "summaryEn": "EUROPEAN SESSION In the European session, the main highlight was the UK CPI report . The data came mostly in line with expectations, with a slight miss on Services CPI measure. For now, the BoE has enough reasons to keep rates steady and maintain a tightening bias given the soft employment data and limited inflation spillover."
+    },
+    {
+      "title": "UK CPI preview: Inflation test lands just before the BOE rate decision",
+      "url": "https://investinglive.com/news/uk-cpi-preview-inflation-test-lands-just-before-the-boe-rate-decision/",
+      "source": "Justin Low",
+      "publishedAt": "2026-09-16T04:12:38.000Z",
+      "summary": "The UK inflation report for August today is going to be the main highlight in terms of economic data releases in the European session later today. With it coming just a day before the BOE rate decision tomorrow, it is the last meaningful piece of the puzzle for policymakers before they cast their votes. To start off, let's see what the numbers have to say.",
+      "impactZh": "央行政策预期变化可能提升主要货币对波动，杠杆仓位的保证金与回撤压力上升。",
+      "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
+      "summaryZh": "今天8月的英国通胀报告将是今天晚些时候欧洲会议经济数据发布的主要亮点。在明天英国央行利率决定的前一天，这是政策制定者投票前最后一个有意义的难题。首先，让我们看看数字有什么含义。",
+      "summaryEn": "The UK inflation report for August today is going to be the main highlight in terms of economic data releases in the European session later today. With it coming just a day before the BOE rate decision tomorrow, it is the last meaningful piece of the puzzle for policymakers before they cast their votes. To start off, let's see what the numbers have to say."
     }
   ]
 }
