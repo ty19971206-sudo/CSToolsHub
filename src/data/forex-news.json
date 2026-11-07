@@ -1,6 +1,17 @@
 {
-  "updatedAt": "2026-11-06T08:28:25.648Z",
+  "updatedAt": "2026-11-07T07:01:37.413Z",
   "items": [
+    {
+      "title": "investingLive European news wrap: Markets consolidate ahead of the US NFP report",
+      "url": "https://investinglive.com/news/investinglive-european-news-wrap-markets-consolidate-ahead-of-the-us-nfp-report/",
+      "source": "Giuseppe Dellamotta",
+      "publishedAt": "2026-11-06T12:34:28.000Z",
+      "summary": "Articles: Zcash resists crypto market selloff as network upgrade goes live. What's next? US-Iran uncertainty keeps the downside in oil limited as markets await further developments Eurozone retail sales fall 0.7% in September, signalling weakening consumer demand Risk-off wave hits Bitcoin as tech stocks lead global selloff.",
+      "impactZh": "关键宏观数据超预期时，点差与滑点风险通常放大，建议降低仓位并控制杠杆。",
+      "impactEn": "When macro data surprises, spread/slippage risk often widens; consider smaller position size and tighter leverage control.",
+      "summaryZh": "文章：随着网络升级上线， Zcash抵制加密市场抛售。接下来会发生什么？随着市场等待进一步发展， 9月份欧元区零售额下降0.7% ，美国-伊朗的不确定性使石油有限下行，这表明随着科技股引领全球抛售，消费者需求减弱，风险降低浪潮打击了比特币。",
+      "summaryEn": "Articles: Zcash resists crypto market selloff as network upgrade goes live. What's next? US-Iran uncertainty keeps the downside in oil limited as markets await further developments Eurozone retail sales fall 0.7% in September, signalling weakening consumer demand Risk-off wave hits Bitcoin as tech stocks lead global selloff."
+    },
     {
       "title": "investingLive European news wrap: BoE raises bank rate to 4.00% as expected",
       "url": "https://investinglive.com/news/investinglive-european-news-wrap-boe-raises-bank-rate-to-4-00-as-expected/",
@@ -22,17 +33,6 @@
       "impactEn": "",
       "summaryZh": "欧洲会议在欧洲会议上，除了瑞士消费者信心和欧元区零售销售等几个低层次的发布之外，我们的议程上没有太多其他内容。数据不会改变各自央行的任何事情，因此市场反应将被淡化。重点仍然是美国中期选举的影响，以及……",
       "summaryEn": "EUROPEAN SESSION In the European session, we don't have much on the agenda other that a couple of low-tier releases like the Swiss consumer confidence and the Eurozone retail sales. The data won't change anything for the respective central banks, so the market reaction will be muted.&nbsp; The focus remains on the fallout from the US midterm elections and…"
-    },
-    {
-      "title": "investingLive Americas FX news wrap 5 Nov: Nasdaq 100 plunges 6.36% as AI selloff spreads",
-      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-5-nov-nasdaq-100-plunges-6-36-as-ai-selloff-spreads/",
-      "source": "Greg Michalowski",
-      "publishedAt": "2026-11-05T22:00:36.000Z",
-      "summary": "Nasdaq 100 suffers worst day since 2020 Magnificent 7: What are the technicals telling traders for each of those companies him WTI crude oil settles at $90.52, up 2.72% as buyers defend key support Non-farm payrolls preview: October numbers show a skew Europe Close: AI and chip liquidation drags equities lower in US, but Europe is mixed.",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "纳斯达克100指数遭遇自2020年以来最糟糕的一天华丽7 ： WTI原油结算价为90.52 $ ，上涨2.72% ，因买家捍卫关键支持非农就业预览： 10月数据显示欧洲收盘偏差：人工智能和芯片清算拖累美国股市走低，但欧洲情况喜忧参半。",
-      "summaryEn": "Nasdaq 100 suffers worst day since 2020 Magnificent 7: What are the technicals telling traders for each of those companies him WTI crude oil settles at $90.52, up 2.72% as buyers defend key support Non-farm payrolls preview: October numbers show a skew Europe Close: AI and chip liquidation drags equities lower in US, but Europe is mixed."
     }
   ]
 }
