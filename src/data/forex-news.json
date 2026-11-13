@@ -1,17 +1,6 @@
 {
-  "updatedAt": "2026-11-12T08:48:17.175Z",
+  "updatedAt": "2026-11-13T07:49:50.609Z",
   "items": [
-    {
-      "title": "investingLive Americas FX news wrap 10 Nov: It’s a Wrap. Hot US CPI puts a bigger Fed hike in play",
-      "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-10-nov-it-s-a-wrap-hot-us-cpi-puts-a-bigger-fed-hike-in-play/",
-      "source": "Greg Michalowski",
-      "publishedAt": "2026-11-10T21:33:59.000Z",
-      "summary": "US stock market close: Hot CPI leads to a selloff Fed's Bowman: Persistent inflation, firming labor conditions suggest 'work to do' Nvidia falls another 6% and is now testing a key support zone Fed's Schmid: Some concerning trends in prices, underneath the whole energy story Bank of Canada minutes: Governing Council sees possible need to hike rates further…",
-      "impactZh": "央行政策预期变化可能提升主要货币对波动，杠杆仓位的保证金与回撤压力上升。",
-      "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
-      "summaryZh": "美国股市收盘：高企的CPI引发抛售美联储鲍曼：持续的通胀和稳固的劳动力市场状况表明“仍有工作要做”英伟达再次下跌6%，目前正在考验关键支撑位美联储施密德：在整个能源局势之下，价格出现了一些令人担忧的趋势加拿大央行会议纪要：理事会认为可能有必要进一步加息……",
-      "summaryEn": "US stock market close: Hot CPI leads to a selloff Fed's Bowman: Persistent inflation, firming labor conditions suggest 'work to do' Nvidia falls another 6% and is now testing a key support zone Fed's Schmid: Some concerning trends in prices, underneath the whole energy story Bank of Canada minutes: Governing Council sees possible need to hike rates further…"
-    },
     {
       "title": "investingLive Asia-Pacific market news: Nvidia slides on Huang ouster reports",
       "url": "https://investinglive.com/news/investinglive-asia-pacific-market-news-nvidia-slides-on-huang-ouster-reports/",
@@ -20,7 +9,7 @@
       "summary": "Bernstein halves Nvidia target to $200, the 3rd broker in 2 days to step back over Huang CBA’s Chambers sees room for higher US 10-year yields despite the slide in oil prices ANZ says RBA hike bets have cooled, but 3.7% core inflation will keep it cautious Deutsche Bank sees 3 straight Fed hikes after hot CPI, adding a January move 5 forced sellers that can…",
       "impactZh": "",
       "impactEn": "",
-      "summaryZh": "伯恩斯坦将英伟达的目标价下调一半至 200 美元，这是两天内第三家因黄仁勋的言论而下调目标价的券商。CBA 的钱伯斯认为，尽管油价下跌，但美国 10 年期国债收益率仍有上行空间。澳新银行表示，对澳大利亚储备银行加息的押注已经降温，但 3.7% 的核心通胀率将使其保持谨慎。德意志银行认为，在强劲的 CPI 数据公布后，美联储将连续三次加息，并增加了 1 月份加息的可能性。5 家被迫抛售的机构可能会……",
+      "summaryZh": "伯恩斯坦将英伟达的目标价下调一半至 200 美元，这是两天内第三家下调目标价的券商，原因是黄仁勋的 CBA 股价下跌。尽管油价下跌，但钱伯斯认为美国 10 年期国债收益率仍有上行空间。澳新银行表示，对澳大利亚储备银行加息的押注已经降温，但 3.7% 的核心通胀率将使其保持谨慎。德意志银行认为，在强劲的 CPI 数据公布后，美联储将连续三次加息，并增加了 1 月份加息的可能性。5 家被迫卖出股票的机构可能会……",
       "summaryEn": "Bernstein halves Nvidia target to $200, the 3rd broker in 2 days to step back over Huang CBA’s Chambers sees room for higher US 10-year yields despite the slide in oil prices ANZ says RBA hike bets have cooled, but 3.7% core inflation will keep it cautious Deutsche Bank sees 3 straight Fed hikes after hot CPI, adding a January move 5 forced sellers that can…"
     },
     {
@@ -31,8 +20,19 @@
       "summary": "Vance considers face-to-face talks with top Iranian security official — WSJ U.S. asks Russia for new European security proposal as Ukraine talks regain momentum BOE’s Greene: Appropriate to proactively tighten policy against wage risks European stocks close higher. AI rebound sends Nasdaq indices sharply higher.",
       "impactZh": "",
       "impactEn": "",
-      "summaryZh": "万斯考虑与伊朗最高安全官员进行面对面会谈——《华尔街日报》随着乌克兰谈判重拾势头，美国要求俄罗斯提出新的欧洲安全提案英格兰银行的格林表示：应主动收紧政策以应对工资风险欧洲股市收涨。人工智能板块反弹推动纳斯达克指数大幅走高。",
+      "summaryZh": "万斯考虑与伊朗最高安全官员进行面对面会谈——《华尔街日报》随着乌克兰谈判重拾势头，美国要求俄罗斯提出新的欧洲安全提案英格兰银行的格林表示：应主动收紧政策以应对工资风险欧洲股市收涨。人工智能板块反弹，纳斯达克指数大幅走高。",
       "summaryEn": "Vance considers face-to-face talks with top Iranian security official — WSJ U.S. asks Russia for new European security proposal as Ukraine talks regain momentum BOE’s Greene: Appropriate to proactively tighten policy against wage risks European stocks close higher. AI rebound sends Nasdaq indices sharply higher."
+    },
+    {
+      "title": "investingLive European session wrap: Gold stumbles, equities mixed as Nvidia drags US futures down",
+      "url": "https://investinglive.com/news/investinglive-european-fx-news-wrap-12-nov/",
+      "source": "Justin Low",
+      "publishedAt": "2026-11-12T12:43:23.000Z",
+      "summary": "Headlines: Gold price faces a key test as $4,000 breaks and weekly support beckons Gold erases post-midterms gains as higher real yields and US dollar hurt. What's next? Chinese tech firms reportedly rushing to secure more Nvidia chip capacity amid fears that spy scandal would spur tighter restrictions Nvidia stock plunges 8.6%, but AMD and Broadcom rally.",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "头条：随着金价突破4000美元且周线支撑位若隐若现，金价正面临关键考验。由于实际收益率上升和美元走强，黄金抹去了中期选举后的涨幅。接下来会怎样？据报道，中国科技公司正争相抢购更多英伟达芯片产能，原因是担心间谍丑闻会引发更严厉的限制措施。英伟达股价暴跌8.6%，但AMD和博通股价却上涨。",
+      "summaryEn": "Headlines: Gold price faces a key test as $4,000 breaks and weekly support beckons Gold erases post-midterms gains as higher real yields and US dollar hurt. What's next? Chinese tech firms reportedly rushing to secure more Nvidia chip capacity amid fears that spy scandal would spur tighter restrictions Nvidia stock plunges 8.6%, but AMD and Broadcom rally."
     }
   ]
 }
