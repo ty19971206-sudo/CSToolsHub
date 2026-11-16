@@ -1,6 +1,17 @@
 {
-  "updatedAt": "2026-11-15T08:24:51.199Z",
+  "updatedAt": "2026-11-16T07:53:17.480Z",
   "items": [
+    {
+      "title": "investingLive Asia-Pacific market news: Chipmakers hit ahead of Nvidia",
+      "url": "https://investinglive.com/news/investinglive-asia-pacific-market-news-chipmakers-hit-ahead-of-nvidia/",
+      "source": "Eamonn Sheridan",
+      "publishedAt": "2026-11-16T04:34:28.000Z",
+      "summary": "AI: Daily quotas come to DeepSeek, a visible sign of China’s AI chip crunch BOJ’s Takata calls for nimble hikes after 1.5% bid, says neutral rate may top estimates Goldman sees Brent at $78 by end-2027 as oil surplus returns, flags near-term upside risk Records show $12bn Nvidia chips to China, US drafts licence rules on Nvidia chip exports Japan economy…",
+      "impactZh": "",
+      "impactEn": "",
+      "summaryZh": "人工智能：DeepSeek面临每日配额限制，这是中国人工智能芯片短缺的明显迹象。日本央行行长高田呼吁在1.5%的加息后灵活加息，并表示中性利率可能超过预期。高盛预计，随着石油供应过剩的回归，布伦特原油价格到2027年底将达到78美元，并指出短期存在上行风险。数据显示，英伟达向中国出口了价值120亿美元的芯片，美国正在起草英伟达芯片出口的许可规则。日本经济……",
+      "summaryEn": "AI: Daily quotas come to DeepSeek, a visible sign of China’s AI chip crunch BOJ’s Takata calls for nimble hikes after 1.5% bid, says neutral rate may top estimates Goldman sees Brent at $78 by end-2027 as oil surplus returns, flags near-term upside risk Records show $12bn Nvidia chips to China, US drafts licence rules on Nvidia chip exports Japan economy…"
+    },
     {
       "title": "investingLive European session wrap: Wall Street eyes a rebound but rising Treasury yields keep traders on edge",
       "url": "https://investinglive.com/news/investinglive-european-session-wrap-wall-street-eyes-a-rebound-but-rising-treasury-yields-keep-traders-on-edge/",
@@ -9,19 +20,8 @@
       "summary": "Headlines: Wall Street steadies despite Nvidia drama but dip buyers are still walking a tight rope US bond market cracks resurface as higher for longer fears return to haunt Wall Street Higher real yields and stronger US dollar weigh on gold as Trump puts Iran deal in jeopardy Japan prime minister Takaichi fires another verbal warning as USD/JPY flirts with…",
       "impactZh": "",
       "impactEn": "",
-      "summaryZh": "头条：尽管有英伟达的戏剧性事件，华尔街仍保持稳定，但抄底买家仍在走钢丝；随着“高利率将持续更长时间”的担忧再次困扰华尔街，美国债券市场裂痕重现；随着特朗普使伊朗核协议陷入危险境地，更高的实际收益率和更强势的美元对黄金构成压力；日本首相高市早苗再次发出口头警告，而美元/日元则在……",
+      "summaryZh": "头条新闻：尽管有英伟达的戏剧性事件，华尔街仍保持稳定，但抄底买家仍在走钢丝。随着“高利率将持续更长时间”的担忧卷土重来，美国债券市场裂痕再次显现，困扰着华尔街。随着特朗普使伊朗核协议陷入险境，实际收益率上升和美元走强对黄金构成压力。日本首相高市早苗再次发出口头警告，而美元/日元则徘徊在……",
       "summaryEn": "Headlines: Wall Street steadies despite Nvidia drama but dip buyers are still walking a tight rope US bond market cracks resurface as higher for longer fears return to haunt Wall Street Higher real yields and stronger US dollar weigh on gold as Trump puts Iran deal in jeopardy Japan prime minister Takaichi fires another verbal warning as USD/JPY flirts with…"
-    },
-    {
-      "title": "investingLive European session wrap: Gold stumbles, equities mixed as Nvidia drags US futures down",
-      "url": "https://investinglive.com/news/investinglive-european-fx-news-wrap-12-nov/",
-      "source": "Justin Low",
-      "publishedAt": "2026-11-12T12:43:23.000Z",
-      "summary": "Headlines: Gold price faces a key test as $4,000 breaks and weekly support beckons Gold erases post-midterms gains as higher real yields and US dollar hurt. What's next? Chinese tech firms reportedly rushing to secure more Nvidia chip capacity amid fears that spy scandal would spur tighter restrictions Nvidia stock plunges 8.6%, but AMD and Broadcom rally.",
-      "impactZh": "",
-      "impactEn": "",
-      "summaryZh": "头条：随着金价突破4000美元且周线支撑位若隐若现，金价正面临关键考验。受实际收益率走高和美元走强的影响，黄金抹去了中期选举后的涨幅。接下来会怎样？据报道，中国科技公司正争相抢购更多英伟达芯片产能，原因是担心间谍丑闻会引发更严厉的限制措施。英伟达股价暴跌8.6%，但AMD和博通股价却上涨。",
-      "summaryEn": "Headlines: Gold price faces a key test as $4,000 breaks and weekly support beckons Gold erases post-midterms gains as higher real yields and US dollar hurt. What's next? Chinese tech firms reportedly rushing to secure more Nvidia chip capacity amid fears that spy scandal would spur tighter restrictions Nvidia stock plunges 8.6%, but AMD and Broadcom rally."
     },
     {
       "title": "investingLive Americas market news wrap: Hawkish Fed worries ebb after PPI",
@@ -31,7 +31,7 @@
       "summary": "US October PPI +6.5% vs +6.6% expected Fed's Goolsbee: We're not on the way to 2% inflation and we have to deal with that Goldman Sachs: We can explain almost the entire US inflation overshoot by tariffs and the war in Iran Fed's Collins: I would think some additional policy tightening is warranted soon Fed's Daly: In all likelihood, we need to raise rates…",
       "impactZh": "央行政策预期变化可能提升主要货币对波动，杠杆仓位的保证金与回撤压力上升。",
       "impactEn": "Shifts in central-bank expectations may increase major-pair volatility and raise margin/drawdown pressure on leveraged positions.",
-      "summaryZh": "美国10月份PPI为+6.5%，而预期为+6.6%美联储古尔斯比：我们没有走上通胀率2%的道路，我们必须应对这一问题高盛：我们可以用关税和伊朗战争来解释几乎所有美国的通胀超标美联储柯林斯：我认为很快就有必要采取一些额外的政策紧缩措施美联储戴利：很可能我们需要加息……",
+      "summaryZh": "美国10月份PPI为+6.5%，而预期为+6.6%。美联储的古尔斯比表示：我们还没有走上通胀率2%的道路，我们必须解决这个问题。高盛表示：我们可以用关税和伊朗战争来解释几乎所有美国的通胀超标。美联储的柯林斯表示：我认为很快就有必要采取一些额外的政策紧缩措施。美联储的戴利表示：很可能我们需要加息……",
       "summaryEn": "US October PPI +6.5% vs +6.6% expected Fed's Goolsbee: We're not on the way to 2% inflation and we have to deal with that Goldman Sachs: We can explain almost the entire US inflation overshoot by tariffs and the war in Iran Fed's Collins: I would think some additional policy tightening is warranted soon Fed's Daly: In all likelihood, we need to raise rates…"
     }
   ]
